@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'conversations' }) %>
+
+    <main class="content">
+      <p><a href="/dashboard/conversations"><%= t('conversations.back_link') %></a></p>
+      <h1><%= t('conversations.title') %></h1>
+      <p><%= new Date(conversation.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %></p>
+
+      <div class="card">
+        <div class="conversation-thread">
+          <% messages.forEach(function(m) { %>
+            <div class="conversation-msg conversation-msg-<%= m.role %>">
+              <div class="conversation-msg-role"><%= m.role === 'user' ? t('conversations.role_user') : t('conversations.role_assistant') %></div>
+              <div class="conversation-msg-content"><%= m.content %></div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <a href="/dashboard/widget" class="button"><%= t('conversations.edit_knowledge_link') %></a>
+    </main>
+  </div>
+</body>
+</html>

@@ -14,6 +14,7 @@ const billingRoutes = require('./routes/billing');
 const widgetConfigRoutes = require('./routes/widgetConfig');
 const widgetPublicRoutes = require('./routes/widgetPublic');
 const leadsRoutes = require('./routes/leads');
+const conversationsRoutes = require('./routes/conversations');
 const demoRoutes = require('./routes/demo');
 const webhookRoutes = require('./routes/webhooks');
 
@@ -57,6 +58,7 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/dashboard/billing', billingRoutes);
 app.use('/dashboard/widget', widgetConfigRoutes);
 app.use('/dashboard/leads', leadsRoutes);
+app.use('/dashboard/conversations', conversationsRoutes);
 
 app.get('/', (req, res) => {
   res.redirect(req.session.userId ? '/dashboard' : '/login');

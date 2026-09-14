@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'conversations' }) %>
+
+    <main class="content">
+      <h1><%= t('conversations.title') %></h1>
+      <p><%= t('conversations.intro') %></p>
+
+      <div class="card">
+        <% if (conversations.length === 0) { %>
+          <p><%= t('conversations.empty') %></p>
+        <% } else { %>
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th><%= t('conversations.col_date') %></th>
+                <th><%= t('conversations.col_preview') %></th>
+                <th><%= t('conversations.col_messages') %></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% conversations.forEach(function(conv) { %>
+                <tr>
+                  <td><%= new Date(conv.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %></td>
+                  <td><%= conv.first_message || '-' %></td>
+                  <td><%= conv.message_count %></td>
+                  <td><a href="/dashboard/conversations/<%= conv.id %>"><%= t('conversations.view_link') %></a></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

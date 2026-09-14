@@ -5,6 +5,7 @@ module.exports = {
   'nav.billing': { fr: 'Facturation', en: 'Billing' },
   'nav.account': { fr: 'Compte', en: 'Account' },
   'nav.leads': { fr: 'Prospects', en: 'Leads' },
+  'nav.conversations': { fr: 'Conversations', en: 'Conversations' },
   'nav.logout': { fr: 'Déconnexion', en: 'Log out' },
 
   'common.save': { fr: 'Enregistrer', en: 'Save' },
@@ -20,6 +21,7 @@ module.exports = {
   'title.billing': { fr: 'Facturation', en: 'Billing' },
   'title.account': { fr: 'Compte', en: 'Account' },
   'title.leads': { fr: 'Prospects', en: 'Leads' },
+  'title.conversations': { fr: 'Conversations', en: 'Conversations' },
   'title.login': { fr: 'Connexion', en: 'Log in' },
   'title.register': { fr: 'Créer un compte', en: 'Sign up' },
   'title.not_found': { fr: 'Page introuvable', en: 'Page not found' },
@@ -236,4 +238,20 @@ module.exports = {
   'leads.col_name': { fr: 'Nom', en: 'Name' },
   'leads.col_contact': { fr: 'Contact', en: 'Contact' },
   'leads.col_message': { fr: 'Message', en: 'Message' },
+
+  // Page Conversations (journal)
+  'conversations.title': { fr: 'Conversations', en: 'Conversations' },
+  'conversations.intro': {
+    fr: 'Consultez les questions posées à votre assistant pour vérifier ses réponses et repérer ce qui manque à sa base de connaissances.',
+    en: 'Review the questions asked to your assistant to check its answers and spot gaps in its knowledge base.',
+  },
+  'conversations.empty': { fr: 'Aucune conversation pour l’instant.', en: 'No conversations yet.' },
+  'conversations.col_date': { fr: 'Date', en: 'Date' },
+  'conversations.col_preview': { fr: 'Première question', en: 'First question' },
+  'conversations.col_messages': { fr: 'Messages', en: 'Messages' },
+  'conversations.view_link': { fr: 'Voir', en: 'View' },
+  'conversations.back_link': { fr: '← Retour aux conversations', en: '← Back to conversations' },
+  'conversations.edit_knowledge_link': { fr: 'Modifier la base de connaissances', en: 'Edit knowledge base' },
+  'conversations.role_user': { fr: 'Visiteur', en: 'Visitor' },
+  'conversations.role_assistant': { fr: 'Assistant', en: 'Assistant' },
 };
