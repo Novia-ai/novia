@@ -127,6 +127,37 @@ module.exports = {
   'widget.color_label': { fr: 'Couleur principale', en: 'Main color' },
   'widget.preview_title': { fr: 'Aperçu de la bulle', en: 'Bubble preview' },
 
+  'widget.install_title': { fr: 'Comment installer ce code sur mon site ?', en: 'How do I install this code on my site?' },
+  'widget.install_intro': {
+    fr: "Copiez d'abord le code ci-dessus, puis suivez les instructions selon la plateforme de votre site.",
+    en: 'First copy the code above, then follow the instructions for your site’s platform.',
+  },
+  'widget.install_wordpress_title': { fr: 'WordPress', en: 'WordPress' },
+  'widget.install_wordpress_text': {
+    fr: "Installez l'extension gratuite « WPCode » ou « Insert Headers and Footers » (menu Extensions → Ajouter). Dans ses réglages, collez le code dans la section « Scripts du pied de page » (Footer), puis enregistrez.",
+    en: 'Install the free "WPCode" or "Insert Headers and Footers" plugin (Plugins → Add New). In its settings, paste the code into the "Footer scripts" section, then save.',
+  },
+  'widget.install_wix_title': { fr: 'Wix', en: 'Wix' },
+  'widget.install_wix_text': {
+    fr: 'Dans le tableau de bord Wix : Paramètres → Code personnalisé → Ajouter du code personnalisé. Collez le code, choisissez « Toutes les pages » et « Body - end », puis appliquez.',
+    en: 'In your Wix dashboard: Settings → Custom Code → Add Custom Code. Paste the code, choose "All pages" and "Body - end", then apply.',
+  },
+  'widget.install_shopify_title': { fr: 'Shopify', en: 'Shopify' },
+  'widget.install_shopify_text': {
+    fr: 'Dans l’admin Shopify : Boutique en ligne → Thèmes → menu « ... » → Modifier le code. Ouvrez theme.liquid et collez le code juste avant la balise </body>, puis enregistrez.',
+    en: 'In Shopify admin: Online Store → Themes → "..." menu → Edit code. Open theme.liquid and paste the code right before the </body> tag, then save.',
+  },
+  'widget.install_squarespace_title': { fr: 'Squarespace', en: 'Squarespace' },
+  'widget.install_squarespace_text': {
+    fr: 'Paramètres → Avancé → Injection de code. Collez le code dans la section « Pied de page » (Footer), puis enregistrez.',
+    en: 'Settings → Advanced → Code Injection. Paste the code into the "Footer" section, then save.',
+  },
+  'widget.install_html_title': { fr: 'Site HTML classique', en: 'Plain HTML site' },
+  'widget.install_html_text': {
+    fr: 'Ouvrez le fichier HTML de votre site (ou le gabarit utilisé sur toutes les pages) et collez le code juste avant la balise fermante </body>, puis republiez votre site.',
+    en: 'Open your site’s HTML file (or the template used on every page) and paste the code right before the closing </body> tag, then republish your site.',
+  },
+
   // Page Facturation
   'billing.title': { fr: 'Facturation', en: 'Billing' },
   'billing.plans_title': { fr: 'Forfaits', en: 'Plans' },

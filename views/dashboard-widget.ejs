@@ -14,6 +14,32 @@
         <h2><%= t('widget.snippet_title') %></h2>
         <pre id="snippet" class="snippet">&lt;script src="<%= appBaseUrl %>/widget.js" data-client="<%= widgetConfig.client_key %>" async&gt;&lt;/script&gt;</pre>
         <button type="button" class="button" onclick="navigator.clipboard.writeText(document.getElementById('snippet').innerText)"><%= t('common.copy') %></button>
+
+        <details class="install-guide">
+          <summary><%= t('widget.install_title') %></summary>
+          <p class="install-guide-intro"><%= t('widget.install_intro') %></p>
+
+          <div class="install-guide-item">
+            <h3><%= t('widget.install_wordpress_title') %></h3>
+            <p><%= t('widget.install_wordpress_text') %></p>
+          </div>
+          <div class="install-guide-item">
+            <h3><%= t('widget.install_wix_title') %></h3>
+            <p><%= t('widget.install_wix_text') %></p>
+          </div>
+          <div class="install-guide-item">
+            <h3><%= t('widget.install_shopify_title') %></h3>
+            <p><%= t('widget.install_shopify_text') %></p>
+          </div>
+          <div class="install-guide-item">
+            <h3><%= t('widget.install_squarespace_title') %></h3>
+            <p><%= t('widget.install_squarespace_text') %></p>
+          </div>
+          <div class="install-guide-item">
+            <h3><%= t('widget.install_html_title') %></h3>
+            <p><%= t('widget.install_html_text') %></p>
+          </div>
+        </details>
       </div>
 
       <div class="card">

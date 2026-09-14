@@ -170,6 +170,40 @@ a {
   margin-bottom: 12px;
 }
 
+.install-guide {
+  margin-top: 16px;
+  border-top: 1px solid #e2e4ea;
+  padding-top: 14px;
+}
+
+.install-guide summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #3b4256;
+}
+
+.install-guide-intro {
+  color: #5b6070;
+  font-size: 0.9rem;
+  margin: 10px 0 16px;
+}
+
+.install-guide-item {
+  margin-bottom: 14px;
+}
+
+.install-guide-item h3 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+}
+
+.install-guide-item p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #3f4452;
+  line-height: 1.45;
+}
+
 .plan-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
