@@ -3,10 +3,12 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const rateLimit = require('express-rate-limit');
 const pool = require('../db/pool');
 const requireAuth = require('../middleware/requireAuth');
 const requireBranding = require('../middleware/requireBranding');
 const { getAccountContext } = require('../services/accountService');
+const { fetchPageText, ImportError } = require('../services/urlImportService');
 
 const router = express.Router();
 
@@ -27,6 +29,10 @@ const upload = multer({
     cb(null, allowed.includes(path.extname(file.originalname).toLowerCase()));
   },
 });
+
+const importLimiter = rateLimit({ windowMs: 60 * 1000, max: 10 });
+
+const MAX_KNOWLEDGE_LENGTH = 8000;
 
 async function ensureWidgetConfig(userId) {
   const { rows } = await pool.query('SELECT * FROM widget_configs WHERE user_id = $1', [userId]);
@@ -51,26 +57,53 @@ router.get('/', requireAuth, async (req, res) => {
   });
 });
 
-router.post('/', requireAuth, requireBranding, upload.single('logo'), async (req, res) => {
+router.post('/branding', requireAuth, requireBranding, upload.single('logo'), async (req, res) => {
   const widgetConfig = await ensureWidgetConfig(req.session.userId);
-  const { primaryColor, botName, greetingMessage } = req.body;
+  const { primaryColor } = req.body;
 
   const logoPath = req.file ? `/uploads/logos/${req.file.filename}` : widgetConfig.logo_path;
 
   await pool.query(
+    `UPDATE widget_configs SET primary_color = $1, logo_path = $2, updated_at = now() WHERE user_id = $3`,
+    [primaryColor || widgetConfig.primary_color, logoPath, req.session.userId]
+  );
+
+  res.redirect('/dashboard/widget');
+});
+
+router.post('/knowledge', requireAuth, async (req, res) => {
+  const widgetConfig = await ensureWidgetConfig(req.session.userId);
+  const { botName, greetingMessage, knowledgeBase } = req.body;
+
+  await pool.query(
     `UPDATE widget_configs
-     SET primary_color = $1, bot_name = $2, greeting_message = $3, logo_path = $4, updated_at = now()
-     WHERE user_id = $5`,
+     SET bot_name = $1, greeting_message = $2, knowledge_base = $3, updated_at = now()
+     WHERE user_id = $4`,
     [
-      primaryColor || widgetConfig.primary_color,
-      botName || widgetConfig.bot_name,
-      greetingMessage || widgetConfig.greeting_message,
-      logoPath,
+      (botName || widgetConfig.bot_name).slice(0, 40),
+      (greetingMessage || widgetConfig.greeting_message).slice(0, 300),
+      (knowledgeBase || '').slice(0, MAX_KNOWLEDGE_LENGTH),
       req.session.userId,
     ]
   );
 
   res.redirect('/dashboard/widget');
+});
+
+router.post('/import-url', requireAuth, importLimiter, async (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ error: 'URL manquante.' });
+
+  try {
+    const text = await fetchPageText(url);
+    res.json({ text });
+  } catch (err) {
+    if (err instanceof ImportError) {
+      return res.status(err.status).json({ error: err.message });
+    }
+    console.error('Erreur import URL:', err);
+    res.status(500).json({ error: 'Erreur inattendue.' });
+  }
 });
 
 module.exports = router;

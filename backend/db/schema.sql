@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS widget_configs (
   primary_color TEXT NOT NULL DEFAULT '#3b4256',
   bot_name TEXT NOT NULL DEFAULT 'NovIA',
   greeting_message TEXT NOT NULL DEFAULT 'Bonjour, comment puis-je vous aider ?',
+  knowledge_base TEXT NOT NULL DEFAULT '',
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

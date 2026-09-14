@@ -33,9 +33,10 @@ router.get('/widget/frame/:clientKey', async (req, res) => {
 });
 
 router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
-  const { rows } = await pool.query('SELECT user_id, bot_name FROM widget_configs WHERE client_key = $1', [
-    req.params.clientKey,
-  ]);
+  const { rows } = await pool.query(
+    'SELECT user_id, bot_name, knowledge_base FROM widget_configs WHERE client_key = $1',
+    [req.params.clientKey]
+  );
   const config = rows[0];
   if (!config) return res.status(404).json({ error: 'widget_introuvable' });
 
@@ -73,9 +74,17 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
     [conversationId]
   );
 
+  let systemPrompt = `Tu es ${config.bot_name}, un assistant virtuel utile et concis pour le site web de ce client.`;
+  if (config.knowledge_base && config.knowledge_base.trim()) {
+    systemPrompt +=
+      "\n\nInformations sur l'entreprise a utiliser en priorite pour repondre. " +
+      "Si la question porte sur l'entreprise et que la reponse ne s'y trouve pas, dis que tu ne sais pas plutot que d'inventer :\n" +
+      config.knowledge_base;
+  }
+
   try {
     const { reply, tokensUsed } = await openaiService.getChatReply({
-      systemPrompt: `Tu es ${config.bot_name}, un assistant virtuel utile et concis pour le site web de ce client.`,
+      systemPrompt,
       history: historyRows,
       userMessage,
     });

@@ -186,6 +186,37 @@ a {
   width: fit-content;
 }
 
+.import-url {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #f4f5f7;
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.import-url label {
+  flex: 1;
+  min-width: 220px;
+  margin-bottom: 0;
+}
+
+.import-status {
+  width: 100%;
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+}
+
+.import-status.success {
+  color: #1a7a3c;
+}
+
+.import-status.error {
+  color: #b3261e;
+}
+
 .widget-preview {
   display: flex;
   align-items: center;

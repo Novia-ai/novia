@@ -17,7 +17,37 @@
       </div>
 
       <div class="card">
-        <h2>Personnalisation</h2>
+        <h2>Base de connaissances</h2>
+        <p>
+          Ce que vous ecrivez ici sert de reference a l'assistant pour repondre
+          aux questions de vos visiteurs (horaires, services, FAQ, politiques...).
+          Vous gardez le controle total sur ce que l'IA sait de votre entreprise.
+        </p>
+
+        <div class="import-url">
+          <label>Importer le texte d'une page de votre site
+            <input type="url" id="import-url-input" placeholder="https://votre-site.com/a-propos">
+          </label>
+          <button type="button" class="button" id="import-url-button">Importer</button>
+          <p id="import-url-status" class="import-status"></p>
+        </div>
+
+        <form method="POST" action="/dashboard/widget/knowledge">
+          <label>Nom de l'assistant
+            <input type="text" name="botName" value="<%= widgetConfig.bot_name %>" maxlength="40">
+          </label>
+          <label>Message d'accueil
+            <textarea name="greetingMessage" maxlength="300"><%= widgetConfig.greeting_message %></textarea>
+          </label>
+          <label>Base de connaissances (8000 caracteres max)
+            <textarea name="knowledgeBase" id="knowledge-base-field" maxlength="8000" rows="10"><%= widgetConfig.knowledge_base %></textarea>
+          </label>
+          <button type="submit" class="button">Enregistrer</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Personnalisation visuelle</h2>
         <% if (!account || !account.allow_custom_branding) { %>
           <p>
             Votre forfait actuel utilise le logo et les couleurs NovIA par defaut.
@@ -26,18 +56,12 @@
           </p>
           <a href="/dashboard/billing" class="button">Voir les forfaits</a>
         <% } else { %>
-          <form method="POST" action="/dashboard/widget" enctype="multipart/form-data">
+          <form method="POST" action="/dashboard/widget/branding" enctype="multipart/form-data">
             <label>Logo (png, jpg ou svg, 2 Mo max)
               <input type="file" name="logo" accept=".png,.jpg,.jpeg,.svg">
             </label>
             <label>Couleur principale
               <input type="color" name="primaryColor" value="<%= widgetConfig.primary_color %>">
-            </label>
-            <label>Nom de l'assistant
-              <input type="text" name="botName" value="<%= widgetConfig.bot_name %>" maxlength="40">
-            </label>
-            <label>Message d'accueil
-              <textarea name="greetingMessage" maxlength="300"><%= widgetConfig.greeting_message %></textarea>
             </label>
             <button type="submit" class="button">Enregistrer</button>
           </form>
@@ -53,5 +77,40 @@
       </div>
     </main>
   </div>
+
+  <script>
+    document.getElementById('import-url-button').addEventListener('click', function () {
+      var urlInput = document.getElementById('import-url-input');
+      var status = document.getElementById('import-url-status');
+      var field = document.getElementById('knowledge-base-field');
+      var url = urlInput.value.trim();
+      if (!url) return;
+
+      status.textContent = 'Import en cours...';
+      status.className = 'import-status';
+
+      fetch('/dashboard/widget/import-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: url }),
+      })
+        .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+        .then(function (result) {
+          if (!result.ok) {
+            status.textContent = result.data.error || "Erreur lors de l'import.";
+            status.className = 'import-status error';
+            return;
+          }
+          var separator = field.value.trim() ? '\n\n' : '';
+          field.value = (field.value + separator + result.data.text).slice(0, 8000);
+          status.textContent = 'Texte importe. Relisez-le puis cliquez sur Enregistrer.';
+          status.className = 'import-status success';
+        })
+        .catch(function () {
+          status.textContent = "Erreur lors de l'import.";
+          status.className = 'import-status error';
+        });
+    });
+  </script>
 </body>
 </html>
