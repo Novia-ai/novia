@@ -32,7 +32,24 @@ router.get('/widget/frame/:clientKey', async (req, res) => {
     greeting: config.greeting_message,
     primaryColor: branded ? config.primary_color : '#3b4256',
     logoUrl: branded && config.logo_path ? config.logo_path : '/images/capybara-logo.png',
+    novaHomeUrl: process.env.APP_BASE_URL || 'https://novia.help',
   });
+});
+
+router.get('/widget/logo/:clientKey', async (req, res) => {
+  const { rows } = await pool.query(
+    `SELECT wc.logo_path, p.allow_custom_branding
+     FROM widget_configs wc
+     JOIN users u ON u.id = wc.user_id
+     LEFT JOIN subscriptions s ON s.user_id = u.id
+     LEFT JOIN plans p ON p.id = s.plan_id
+     WHERE wc.client_key = $1`,
+    [req.params.clientKey]
+  );
+  const config = rows[0];
+  const branded = Boolean(config && config.allow_custom_branding);
+  const logoUrl = branded && config.logo_path ? config.logo_path : '/images/capybara-logo.png';
+  res.redirect(logoUrl);
 });
 
 router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {

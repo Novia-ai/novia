@@ -79,6 +79,8 @@ module.exports = {
     fr: 'Vos données et celles de vos clients restent hébergées de façon autonome, jamais revendues à des tiers',
     en: "Your data and your customers' data stay self-hosted, never resold to third parties",
   },
+  'site.tagline': { fr: 'Votre site travaille pour vous.', en: 'Your website works for you.' },
+
   'pitch.demo_hint': {
     fr: '→ Essayez-le tout de suite : cliquez sur le capybara en bas à droite.',
     en: '→ Try it right now: click the capybara in the bottom-right corner.',
