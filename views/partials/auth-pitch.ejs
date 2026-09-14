@@ -1,19 +1,16 @@
 <div class="auth-pitch">
-  <img src="/images/capybara-logo.png" alt="NovIA" class="auth-pitch-logo">
-
-  <div class="auth-pitch-bubble">
-    <p class="auth-pitch-quote"><%= t('pitch.quote') %></p>
+  <div class="pitch-chat">
+    <img src="/images/capybara-logo.png" alt="NovIA" class="pitch-chat-avatar">
+    <div class="pitch-chat-bubbles">
+      <div class="pitch-bubble pitch-bubble-quote"><%= t('pitch.quote') %></div>
+      <div class="pitch-bubble pitch-bubble-title"><%= t('pitch.title') %></div>
+      <div class="pitch-bubble"><%= t('pitch.item1') %></div>
+      <div class="pitch-bubble"><%= t('pitch.item2') %></div>
+      <div class="pitch-bubble"><%= t('pitch.item3') %></div>
+      <div class="pitch-bubble"><%= t('pitch.item4') %></div>
+      <div class="pitch-bubble"><%= t('pitch.item5') %></div>
+    </div>
   </div>
-
-  <h2 class="auth-pitch-title"><%= t('pitch.title') %></h2>
-
-  <ul class="auth-pitch-list">
-    <li><%= t('pitch.item1') %></li>
-    <li><%= t('pitch.item2') %></li>
-    <li><%= t('pitch.item3') %></li>
-    <li><%= t('pitch.item4') %></li>
-    <li><%= t('pitch.item5') %></li>
-  </ul>
 
   <p class="auth-pitch-demo-hint"><%= t('pitch.demo_hint') %></p>
 </div>

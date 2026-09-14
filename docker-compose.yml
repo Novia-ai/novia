@@ -18,24 +18,12 @@ services:
       - postgres
     ports:
       - "3002:3002"
+    env_file:
+      - .env
     environment:
       - PORT=3002
       - NODE_ENV=production
       - DATABASE_URL=postgresql://novia:novia@postgres:5432/novia
-      - APP_BASE_URL=${APP_BASE_URL}
-      - SESSION_SECRET=${SESSION_SECRET}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - OPENAI_MODEL=${OPENAI_MODEL}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
-      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
-      - STRIPE_PRICE_BASE=${STRIPE_PRICE_BASE}
-      - STRIPE_PRICE_BASE_PLUS=${STRIPE_PRICE_BASE_PLUS}
-      - STRIPE_PRICE_PRO=${STRIPE_PRICE_PRO}
-      - STRIPE_PRICE_ENTERPRISE=${STRIPE_PRICE_ENTERPRISE}
-      - STRIPE_PRICE_PACK_SMALL=${STRIPE_PRICE_PACK_SMALL}
-      - STRIPE_PRICE_PACK_MEDIUM=${STRIPE_PRICE_PACK_MEDIUM}
-      - STRIPE_PRICE_PACK_LARGE=${STRIPE_PRICE_PACK_LARGE}
     volumes:
       - ./public/uploads:/app/public/uploads
 
