@@ -293,6 +293,21 @@ form textarea {
   min-height: 100vh;
   display: flex;
   flex-wrap: wrap;
+  position: relative;
+}
+
+.site-brand {
+  position: absolute;
+  top: 22px;
+  left: 26px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+  color: #8b93a6;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.35),
+    2px 2px 3px rgba(0, 0, 0, 0.25);
+  z-index: 2;
 }
 
 .auth-pitch {
@@ -310,13 +325,13 @@ form textarea {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  margin-left: -6px;
+  margin-left: -14px;
 }
 
 .pitch-chat-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
   object-fit: cover;
   flex-shrink: 0;
   margin-top: 2px;
@@ -353,10 +368,10 @@ form textarea {
 }
 
 .auth-pitch-demo-hint {
-  margin: 0 0 0 42px;
-  font-size: 0.85rem;
-  color: #9aa1b4;
-  font-style: italic;
+  margin: 0 0 0 22px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffd166;
 }
 
 .auth-form-panel {

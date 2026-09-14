@@ -76,8 +76,8 @@ module.exports = {
     en: "Your data and your customers' data stay self-hosted, never resold to third parties",
   },
   'pitch.demo_hint': {
-    fr: 'Essayez-le tout de suite : cliquez sur le capybara en bas à droite.',
-    en: 'Try it right now: click the capybara in the bottom-right corner.',
+    fr: '→ Essayez-le tout de suite : cliquez sur le capybara en bas à droite.',
+    en: '→ Try it right now: click the capybara in the bottom-right corner.',
   },
 
   // Tableau de bord - vue d'ensemble
