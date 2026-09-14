@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'widget' }) %>
+
+    <main class="content">
+      <h1>Widget</h1>
+
+      <div class="card">
+        <h2>Code a inserer sur votre site</h2>
+        <pre id="snippet" class="snippet">&lt;script src="<%= appBaseUrl %>/widget.js" data-client="<%= widgetConfig.client_key %>" async&gt;&lt;/script&gt;</pre>
+        <button type="button" class="button" onclick="navigator.clipboard.writeText(document.getElementById('snippet').innerText)">Copier</button>
+      </div>
+
+      <div class="card">
+        <h2>Personnalisation</h2>
+        <% if (!account || !account.allow_custom_branding) { %>
+          <p>
+            Votre forfait actuel utilise le logo et les couleurs NovIA par defaut.
+            Passez au forfait <strong>Base+</strong> ou superieur pour personnaliser
+            le widget avec votre propre logo et vos couleurs.
+          </p>
+          <a href="/dashboard/billing" class="button">Voir les forfaits</a>
+        <% } else { %>
+          <form method="POST" action="/dashboard/widget" enctype="multipart/form-data">
+            <label>Logo (png, jpg ou svg, 2 Mo max)
+              <input type="file" name="logo" accept=".png,.jpg,.jpeg,.svg">
+            </label>
+            <label>Couleur principale
+              <input type="color" name="primaryColor" value="<%= widgetConfig.primary_color %>">
+            </label>
+            <label>Nom de l'assistant
+              <input type="text" name="botName" value="<%= widgetConfig.bot_name %>" maxlength="40">
+            </label>
+            <label>Message d'accueil
+              <textarea name="greetingMessage" maxlength="300"><%= widgetConfig.greeting_message %></textarea>
+            </label>
+            <button type="submit" class="button">Enregistrer</button>
+          </form>
+        <% } %>
+      </div>
+
+      <div class="card">
+        <h2>Apercu de la bulle</h2>
+        <div class="widget-preview">
+          <img src="<%= widgetConfig.logo_path || '/images/capybara-logo.png' %>" alt="Logo widget" class="widget-preview-logo">
+          <span><%= widgetConfig.bot_name %></span>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

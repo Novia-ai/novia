@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'billing' }) %>
+
+    <main class="content">
+      <h1>Facturation</h1>
+
+      <% if (error) { %>
+        <p class="error">Une erreur est survenue (<%= error %>). Contactez le support si cela persiste.</p>
+      <% } %>
+
+      <div class="card">
+        <h2>Forfaits</h2>
+        <div class="plan-grid">
+          <% plans.forEach(function(plan) { %>
+            <div class="plan-card <%= account && account.plan_key === plan.key ? 'plan-card-active' : '' %>">
+              <h3><%= plan.name %></h3>
+              <p class="plan-price"><%= (plan.price_cents / 100).toFixed(2) %>$ / mois</p>
+              <p><%= plan.monthly_token_limit.toLocaleString('fr-CA') %> tokens / mois</p>
+              <p><%= plan.allow_custom_branding ? 'Logo et couleurs personnalisables' : 'Branding NovIA' %></p>
+              <% if (account && account.plan_key === plan.key) { %>
+                <span class="badge">Forfait actuel</span>
+              <% } else { %>
+                <form method="POST" action="/dashboard/billing/checkout/<%= plan.key %>">
+                  <button type="submit" class="button">Choisir</button>
+                </form>
+              <% } %>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <% if (account && account.subscription_id) { %>
+        <div class="card">
+          <h2>Renouvellement automatique</h2>
+          <p>Autopay actuellement : <strong><%= account.autopay ? 'active' : 'desactive' %></strong></p>
+          <form method="POST" action="/dashboard/billing/autopay">
+            <input type="hidden" name="autopay" value="<%= account.autopay ? 'false' : 'true' %>">
+            <button type="submit" class="button"><%= account.autopay ? 'Desactiver' : 'Activer' %> l'autopay</button>
+          </form>
+        </div>
+      <% } %>
+
+      <div class="card">
+        <h2>Packs de tokens</h2>
+        <div class="plan-grid">
+          <% tokenPacks.forEach(function(pack) { %>
+            <div class="plan-card">
+              <h3><%= pack.name %></h3>
+              <p class="plan-price"><%= (pack.price_cents / 100).toFixed(2) %>$</p>
+              <p><%= pack.token_amount.toLocaleString('fr-CA') %> tokens</p>
+              <form method="POST" action="/dashboard/billing/token-pack/<%= pack.key %>">
+                <button type="submit" class="button">Acheter</button>
+              </form>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Historique des achats de tokens</h2>
+        <% if (purchases.length === 0) { %>
+          <p>Aucun achat pour l'instant.</p>
+        <% } else { %>
+          <ul>
+            <% purchases.forEach(function(p) { %>
+              <li><%= new Date(p.created_at).toLocaleDateString('fr-CA') %> — <%= p.pack_name %> (+<%= p.tokens_granted %> tokens)</li>
+            <% }); %>
+          </ul>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

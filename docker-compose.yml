@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: novia-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=novia
+      - POSTGRES_PASSWORD=novia
+      - POSTGRES_DB=novia
+    volumes:
+      - novia_pgdata:/var/lib/postgresql/data
+
+  novia:
+    build: .
+    container_name: novia
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://novia:novia@postgres:5432/novia
+      - APP_BASE_URL=${APP_BASE_URL}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+      - STRIPE_PRICE_BASE=${STRIPE_PRICE_BASE}
+      - STRIPE_PRICE_BASE_PLUS=${STRIPE_PRICE_BASE_PLUS}
+      - STRIPE_PRICE_PRO=${STRIPE_PRICE_PRO}
+      - STRIPE_PRICE_ENTERPRISE=${STRIPE_PRICE_ENTERPRISE}
+      - STRIPE_PRICE_PACK_SMALL=${STRIPE_PRICE_PACK_SMALL}
+      - STRIPE_PRICE_PACK_MEDIUM=${STRIPE_PRICE_PACK_MEDIUM}
+      - STRIPE_PRICE_PACK_LARGE=${STRIPE_PRICE_PACK_LARGE}
+    volumes:
+      - ./public/uploads:/app/public/uploads
+
+volumes:
+  novia_pgdata:

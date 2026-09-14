@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant NovIA</title>
+  <link rel="stylesheet" href="/css/widget.css">
+</head>
+<body style="--novia-color: <%= primaryColor %>;">
+  <div class="widget-header">
+    <img src="<%= logoUrl %>" alt="<%= botName %>">
+    <span><%= botName %></span>
+  </div>
+  <div id="messages" class="widget-messages">
+    <div class="widget-msg widget-msg-bot"><%= greeting %></div>
+  </div>
+  <form id="widget-form" class="widget-form">
+    <input type="text" id="widget-input" placeholder="Ecrivez un message..." autocomplete="off" required>
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <script>
+    var clientKey = <%- JSON.stringify(clientKey) %>;
+    var messagesEl = document.getElementById('messages');
+    var form = document.getElementById('widget-form');
+    var input = document.getElementById('widget-input');
+
+    function getVisitorId() {
+      try {
+        var id = localStorage.getItem('novia_visitor');
+        if (!id) {
+          id = (crypto.randomUUID ? crypto.randomUUID() : (String(Date.now()) + Math.random()));
+          localStorage.setItem('novia_visitor', id);
+        }
+        return id;
+      } catch (e) {
+        return String(Date.now()) + Math.random();
+      }
+    }
+
+    function addMessage(text, who) {
+      var div = document.createElement('div');
+      div.className = 'widget-msg widget-msg-' + who;
+      div.textContent = text;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+
+      fetch('/api/widget/' + encodeURIComponent(clientKey) + '/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, visitorId: getVisitorId() }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data.reply) {
+            addMessage(data.reply, 'bot');
+          } else if (data.message) {
+            addMessage(data.message, 'bot');
+          } else {
+            addMessage('Desole, une erreur est survenue.', 'bot');
+          }
+        })
+        .catch(function () {
+          addMessage('Desole, une erreur est survenue.', 'bot');
+        });
+    });
+  </script>
+</body>
+</html>

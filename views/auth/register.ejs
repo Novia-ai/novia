@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('../partials/head') %>
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-card">
+      <img src="/images/capybara-logo.png" alt="NovIA" class="auth-logo">
+      <h1>Creer un compte NovIA</h1>
+      <% if (error) { %><p class="error"><%= error %></p><% } %>
+      <form method="POST" action="/register">
+        <label>Email
+          <input type="email" name="email" required>
+        </label>
+        <label>Mot de passe (8 caracteres minimum)
+          <input type="password" name="password" required minlength="8">
+        </label>
+        <button type="submit" class="button">Creer mon compte</button>
+      </form>
+      <p class="auth-switch">Deja un compte ? <a href="/login">Se connecter</a></p>
+    </div>
+  </main>
+</body>
+</html>

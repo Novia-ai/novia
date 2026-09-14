@@ -1,0 +1,15 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="/images/capybara-logo.png" alt="Logo NovIA" class="sidebar-logo">
+    <span class="sidebar-title">NovIA</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/dashboard" class="sidebar-link <%= active === 'overview' ? 'active' : '' %>">Vue d'ensemble</a>
+    <a href="/dashboard/widget" class="sidebar-link <%= active === 'widget' ? 'active' : '' %>">Widget</a>
+    <a href="/dashboard/billing" class="sidebar-link <%= active === 'billing' ? 'active' : '' %>">Facturation</a>
+    <a href="/dashboard/account" class="sidebar-link <%= active === 'account' ? 'active' : '' %>">Compte</a>
+  </nav>
+  <form action="/logout" method="POST" class="sidebar-logout-form">
+    <button type="submit" class="sidebar-link sidebar-logout">Deconnexion</button>
+  </form>
+</aside>

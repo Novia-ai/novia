@@ -1,0 +1,27 @@
+{
+  "name": "novia",
+  "version": "1.0.0",
+  "description": "NovIA - plateforme SaaS de widget d'assistant IA (novia.help)",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "nodemon backend/index.js",
+    "migrate": "node backend/db/migrate.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-pg-simple": "^9.0.1",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "express-session": "^1.18.0",
+    "multer": "^2.0.0",
+    "openai": "^4.60.0",
+    "pg": "^8.12.0",
+    "stripe": "^16.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

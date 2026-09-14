@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'overview' }) %>
+
+    <main class="content">
+      <h1>Vue d'ensemble</h1>
+
+      <% if (account && account.plan_name) { %>
+        <div class="card">
+          <h2>Forfait actuel : <%= account.plan_name %></h2>
+          <p>Statut : <%= account.status %></p>
+          <p>Tokens utilises ce cycle : <%= account.tokens_used_current_period %> / <%= account.monthly_token_limit %></p>
+          <p>Solde de tokens bonus : <%= account.bonus_token_balance %></p>
+          <p>
+            Renouvellement :
+            <%= account.current_period_end ? new Date(account.current_period_end).toLocaleDateString('fr-CA') : '-' %>
+            (<%= account.autopay ? 'autopay actif' : 'ne se renouvelle pas' %>)
+          </p>
+        </div>
+      <% } else { %>
+        <div class="card">
+          <p>Vous n'avez pas encore de forfait actif.</p>
+          <a href="/dashboard/billing" class="button">Choisir un forfait</a>
+        </div>
+      <% } %>
+
+      <div class="card">
+        <h2>Integration</h2>
+        <p>
+          Rendez-vous dans <a href="/dashboard/widget">Widget</a> pour personnaliser votre assistant
+          et recuperer le code a inserer sur votre site.
+        </p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

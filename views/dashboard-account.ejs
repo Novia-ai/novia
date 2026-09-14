@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'account' }) %>
+
+    <main class="content">
+      <h1>Compte</h1>
+
+      <div class="card">
+        <p>Email : <strong><%= account.email %></strong></p>
+      </div>
+
+      <div class="card">
+        <h2>Changer de mot de passe</h2>
+        <% if (message) { %><p class="success"><%= message %></p><% } %>
+        <% if (error) { %><p class="error"><%= error %></p><% } %>
+        <form method="POST" action="/dashboard/account/password">
+          <label>Mot de passe actuel
+            <input type="password" name="currentPassword" required>
+          </label>
+          <label>Nouveau mot de passe
+            <input type="password" name="newPassword" required minlength="8">
+          </label>
+          <button type="submit" class="button">Mettre a jour</button>
+        </form>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
