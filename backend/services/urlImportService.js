@@ -101,16 +101,58 @@ async function fetchPageText(rawUrl) {
     chunks.push(value);
   }
   const html = Buffer.concat(chunks.map((c) => Buffer.from(c))).toString('utf8');
-
   const $ = cheerio.load(html);
-  $('script, style, noscript, svg, nav, footer, iframe').remove();
-  const text = $('body').text().replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
 
-  if (!text) {
+  const links = extractSameOriginLinks($, url);
+
+  $('script, style, noscript, svg, nav, footer, iframe').remove();
+  const bodyText = $('body').text().replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
+
+  if (!bodyText) {
     throw new ImportError('no_text', 400);
   }
 
-  return text.slice(0, MAX_TEXT_LENGTH);
+  let result = '';
+  if (links.length > 0) {
+    const indexLines = links.map((l) => `- ${l.text} : ${l.url}`).join('\n');
+    result += `Pages disponibles sur ce site (a utiliser pour recommander la bonne page a un visiteur) :\n${indexLines}\n\n`;
+  }
+  result += bodyText;
+
+  return result.slice(0, MAX_TEXT_LENGTH);
+}
+
+function extractSameOriginLinks($, baseUrl) {
+  const seen = new Set();
+  const links = [];
+
+  $('a[href]').each((i, el) => {
+    if (links.length >= 40) return;
+
+    const href = $(el).attr('href') || '';
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) {
+      return;
+    }
+
+    const text = $(el).text().replace(/\s+/g, ' ').trim();
+    if (!text || text.length < 2 || text.length > 80) return;
+
+    let absolute;
+    try {
+      absolute = new URL(href, baseUrl);
+    } catch {
+      return;
+    }
+    if (absolute.hostname !== baseUrl.hostname) return;
+
+    absolute.hash = '';
+    const key = absolute.toString();
+    if (seen.has(key)) return;
+    seen.add(key);
+    links.push({ text, url: key });
+  });
+
+  return links;
 }
 
 module.exports = { fetchPageText, ImportError };

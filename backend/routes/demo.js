@@ -52,7 +52,8 @@ router.post('/:demoId/message', messageLimiter, async (req, res) => {
 
   const systemPrompt =
     "Tu es NovIA, un assistant virtuel qui fait une démonstration en direct à partir du contenu du site web ci-dessous. " +
-    "Réponds uniquement à partir de ces informations. Si la réponse ne s'y trouve pas, dis-le poliment plutôt que d'inventer :\n\n" +
+    "Réponds uniquement à partir de ces informations. Si la réponse ne s'y trouve pas, dis-le poliment plutôt que d'inventer. " +
+    "Si une page listée ci-dessous correspond à la demande du visiteur, recommande-la clairement en incluant son URL complète :\n\n" +
     session.knowledgeBase;
 
   try {

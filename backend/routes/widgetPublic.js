@@ -81,7 +81,8 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
   if (config.knowledge_base && config.knowledge_base.trim()) {
     systemPrompt +=
       "\n\nInformations sur l'entreprise à utiliser en priorité pour répondre. " +
-      "Si la question porte sur l'entreprise et que la réponse ne s'y trouve pas, dis que tu ne sais pas plutôt que d'inventer :\n" +
+      "Si la question porte sur l'entreprise et que la réponse ne s'y trouve pas, dis que tu ne sais pas plutôt que d'inventer. " +
+      "Si une page listée ci-dessous correspond à la demande du visiteur, recommande-la clairement en incluant son URL complète :\n" +
       config.knowledge_base;
   }
   systemPrompt +=

@@ -53,10 +53,24 @@
     var suffix = <%- JSON.stringify(' ' + t('demo.messages_remaining')) %>;
     var limitMessage = <%- JSON.stringify(t('demo.limit_reached')) %>;
 
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function linkify(text) {
+      return escapeHtml(text).replace(/(https?:\/\/[^\s<]+)/g, function (url) {
+        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+      });
+    }
+
     function addMessage(text, who) {
       var div = document.createElement('div');
       div.className = 'demo-msg demo-msg-' + who;
-      div.textContent = text;
+      if (who === 'bot') {
+        div.innerHTML = linkify(text);
+      } else {
+        div.textContent = text;
+      }
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }

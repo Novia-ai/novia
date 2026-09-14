@@ -437,6 +437,17 @@ form textarea {
   color: inherit;
 }
 
+/* Repositionne la bulle de demo (novia-demo) au bas de la partie grise,
+   pour qu'elle se retrouve pres du centre de l'ecran plutot que dans
+   le coin. Sans effet sur le widget embarque chez un vrai client :
+   widget.js n'injecte jamais ce fichier CSS sur un site tiers. */
+@media (min-width: 800px) {
+  .novia-bubble,
+  .novia-frame {
+    right: calc(50vw + 20px) !important;
+  }
+}
+
 .auth-form-panel {
   flex: 1 1 380px;
   display: flex;
@@ -555,6 +566,11 @@ form textarea {
   background: #fff;
   align-self: flex-start;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.demo-msg-bot a {
+  color: #3b4256;
+  font-weight: 600;
 }
 
 .demo-msg-user {
