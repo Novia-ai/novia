@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="site-brand">NovIA</div>
+
+  <main class="demo-page">
+    <div class="demo-card">
+      <img src="/images/capybara-logo.png" alt="NovIA" class="demo-logo">
+      <h1><%= t('demo.hero_title') %></h1>
+      <p class="demo-subtitle"><%= t('demo.hero_subtitle') %></p>
+
+      <% if (error) { %><p class="error"><%= t(error) %></p><% } %>
+
+      <% if (!session) { %>
+        <form method="POST" action="/demo/analyze" class="demo-form">
+          <label><%= t('demo.url_label') %>
+            <input type="url" name="url" placeholder="https://votreentreprise.com" required>
+          </label>
+          <button type="submit" class="button"><%= t('demo.analyze_button') %></button>
+        </form>
+      <% } else { %>
+        <p class="demo-analyzed-from"><%= t('demo.analyzed_from') %><strong><%= session.url %></strong></p>
+
+        <div id="demo-messages" class="demo-messages"></div>
+
+        <form id="demo-form" class="demo-form-chat">
+          <input type="text" id="demo-input" placeholder="<%= t('demo.input_placeholder') %>" autocomplete="off" required>
+          <button type="submit" aria-label="<%= t('demo.send') %>">&#10148;</button>
+        </form>
+        <p id="demo-remaining" class="demo-remaining"></p>
+
+        <p class="demo-try-again"><a href="/demo"><%= t('demo.try_again') %></a></p>
+
+        <div class="demo-cta">
+          <h2><%= t('demo.cta_title') %></h2>
+          <p><%= t('demo.cta_text') %></p>
+          <a href="/register" class="button"><%= t('demo.cta_button') %></a>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <% if (session) { %>
+  <script>
+    var demoId = <%- JSON.stringify(demoId) %>;
+    var messagesEl = document.getElementById('demo-messages');
+    var form = document.getElementById('demo-form');
+    var input = document.getElementById('demo-input');
+    var remainingEl = document.getElementById('demo-remaining');
+    var suffix = <%- JSON.stringify(' ' + t('demo.messages_remaining')) %>;
+    var limitMessage = <%- JSON.stringify(t('demo.limit_reached')) %>;
+
+    function addMessage(text, who) {
+      var div = document.createElement('div');
+      div.className = 'demo-msg demo-msg-' + who;
+      div.textContent = text;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+
+      fetch('/demo/' + demoId + '/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text }),
+      })
+        .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+        .then(function (result) {
+          if (!result.ok) {
+            addMessage(result.data.error || limitMessage, 'bot');
+            if (result.data.capped) {
+              input.disabled = true;
+              form.querySelector('button').disabled = true;
+            }
+            return;
+          }
+          addMessage(result.data.reply, 'bot');
+          if (typeof result.data.remaining === 'number') {
+            remainingEl.textContent = result.data.remaining + suffix;
+            if (result.data.remaining <= 0) {
+              input.disabled = true;
+              form.querySelector('button').disabled = true;
+            }
+          }
+        })
+        .catch(function () {
+          addMessage(limitMessage, 'bot');
+        });
+    });
+  </script>
+  <% } %>
+</body>
+</html>

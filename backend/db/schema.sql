@@ -83,3 +83,16 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 CREATE INDEX IF NOT EXISTS messages_conversation_idx ON messages(conversation_id);
+
+CREATE TABLE IF NOT EXISTS leads (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  conversation_id INTEGER REFERENCES conversations(id) ON DELETE SET NULL,
+  name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT,
+  message TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS leads_user_idx ON leads(user_id, created_at DESC);

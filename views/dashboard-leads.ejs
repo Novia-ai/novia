@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'leads' }) %>
+
+    <main class="content">
+      <h1><%= t('leads.title') %></h1>
+      <p><%= t('leads.intro') %></p>
+
+      <div class="card">
+        <% if (leads.length === 0) { %>
+          <p><%= t('leads.empty') %></p>
+        <% } else { %>
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th><%= t('leads.col_date') %></th>
+                <th><%= t('leads.col_name') %></th>
+                <th><%= t('leads.col_contact') %></th>
+                <th><%= t('leads.col_message') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% leads.forEach(function(lead) { %>
+                <tr>
+                  <td><%= new Date(lead.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %></td>
+                  <td><%= lead.name %></td>
+                  <td>
+                    <% if (lead.email) { %><div><%= lead.email %></div><% } %>
+                    <% if (lead.phone) { %><div><%= lead.phone %></div><% } %>
+                  </td>
+                  <td><%= lead.message || '' %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

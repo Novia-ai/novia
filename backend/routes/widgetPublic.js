@@ -8,6 +8,9 @@ const tokenService = require('../services/tokenService');
 const router = express.Router();
 
 const chatLimiter = rateLimit({ windowMs: 60 * 1000, max: 20 });
+const leadLimiter = rateLimit({ windowMs: 60 * 1000, max: 5 });
+
+const CONTACT_MARKER = '[[CONTACT]]';
 
 router.get('/widget/frame/:clientKey', async (req, res) => {
   const { rows } = await pool.query(
@@ -81,13 +84,20 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
       "Si la question porte sur l'entreprise et que la réponse ne s'y trouve pas, dis que tu ne sais pas plutôt que d'inventer :\n" +
       config.knowledge_base;
   }
+  systemPrompt +=
+    `\n\nSi le visiteur demande un prix précis, un devis, un rendez-vous, ou toute demande qui mérite un suivi humain direct, ` +
+    `termine ta réponse par le jeton ${CONTACT_MARKER} seul sur sa propre ligne, sans rien ajouter apres. ` +
+    `Ne l'utilise pas pour des questions simples auxquelles tu peux deja repondre completement.`;
 
   try {
-    const { reply, tokensUsed } = await openaiService.getChatReply({
+    const { reply: rawReply, tokensUsed } = await openaiService.getChatReply({
       systemPrompt,
       history: historyRows,
       userMessage,
     });
+
+    const suggestContact = rawReply.includes(CONTACT_MARKER);
+    const reply = rawReply.split(CONTACT_MARKER).join('').trim();
 
     await pool.query("INSERT INTO messages (conversation_id, role, content) VALUES ($1, 'user', $2)", [
       conversationId,
@@ -100,11 +110,37 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
 
     await tokenService.recordUsage(config.user_id, quota.subscriptionId, tokensUsed);
 
-    res.json({ reply, visitorId });
+    res.json({ reply, visitorId, conversationId, suggestContact });
   } catch (err) {
     console.error('Erreur OpenAI:', err);
     res.status(500).json({ error: 'erreur_ia', message: 'Désolé, une erreur est survenue.' });
   }
+});
+
+router.post('/api/widget/:clientKey/lead', leadLimiter, async (req, res) => {
+  const { rows } = await pool.query('SELECT user_id FROM widget_configs WHERE client_key = $1', [
+    req.params.clientKey,
+  ]);
+  const config = rows[0];
+  if (!config) return res.status(404).json({ error: 'widget_introuvable' });
+
+  const name = (req.body.name || '').toString().trim().slice(0, 200);
+  const email = (req.body.email || '').toString().trim().slice(0, 200);
+  const phone = (req.body.phone || '').toString().trim().slice(0, 50);
+  const message = (req.body.message || '').toString().trim().slice(0, 2000);
+  const conversationId = Number.isInteger(req.body.conversationId) ? req.body.conversationId : null;
+
+  if (!name || (!email && !phone)) {
+    return res.status(400).json({ error: 'champs_requis' });
+  }
+
+  await pool.query(
+    `INSERT INTO leads (user_id, conversation_id, name, email, phone, message)
+     VALUES ($1, $2, $3, $4, $5, $6)`,
+    [config.user_id, conversationId, name, email || null, phone || null, message || null]
+  );
+
+  res.json({ ok: true });
 });
 
 module.exports = router;

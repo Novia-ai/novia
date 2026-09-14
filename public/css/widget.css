@@ -93,6 +93,87 @@ body {
   align-self: flex-end;
 }
 
+.widget-contact-prompt {
+  align-self: flex-start;
+}
+
+.widget-contact-prompt button {
+  background: #fff;
+  border: 1px solid var(--novia-color);
+  color: var(--novia-color);
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.widget-footer {
+  padding: 4px 12px;
+  background: #fff;
+  border-top: 1px solid #eef0f4;
+  text-align: center;
+}
+
+.talk-human-link {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.talk-human-link:hover {
+  color: var(--novia-color);
+}
+
+.lead-form-wrap {
+  padding: 12px;
+  background: #f4f5f7;
+  border-top: 1px solid #e2e4ea;
+}
+
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lead-form input,
+.lead-form textarea {
+  padding: 8px 10px;
+  border: 1px solid #d5d8e0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.lead-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.lead-form-cancel,
+.lead-form-submit {
+  border: none;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.lead-form-cancel {
+  background: #e2e4ea;
+  color: #1f2430;
+}
+
+.lead-form-submit {
+  background: var(--novia-color);
+  color: #fff;
+}
+
 .widget-form {
   display: flex;
   align-items: center;

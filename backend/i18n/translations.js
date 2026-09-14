@@ -4,6 +4,7 @@ module.exports = {
   'nav.widget': { fr: 'Widget', en: 'Widget' },
   'nav.billing': { fr: 'Facturation', en: 'Billing' },
   'nav.account': { fr: 'Compte', en: 'Account' },
+  'nav.leads': { fr: 'Prospects', en: 'Leads' },
   'nav.logout': { fr: 'Déconnexion', en: 'Log out' },
 
   'common.save': { fr: 'Enregistrer', en: 'Save' },
@@ -18,6 +19,7 @@ module.exports = {
   'title.widget': { fr: 'Widget', en: 'Widget' },
   'title.billing': { fr: 'Facturation', en: 'Billing' },
   'title.account': { fr: 'Compte', en: 'Account' },
+  'title.leads': { fr: 'Prospects', en: 'Leads' },
   'title.login': { fr: 'Connexion', en: 'Log in' },
   'title.register': { fr: 'Créer un compte', en: 'Sign up' },
   'title.not_found': { fr: 'Page introuvable', en: 'Page not found' },
@@ -189,4 +191,49 @@ module.exports = {
   'import.error.too_large': { fr: 'Cette page est trop volumineuse.', en: 'This page is too large.' },
   'import.error.no_text': { fr: "Aucun texte lisible n'a été trouvé sur cette page.", en: 'No readable text was found on this page.' },
   'import.error.generic': { fr: 'Erreur inattendue.', en: 'Unexpected error.' },
+
+  // Page publique de demonstration (/demo)
+  'demo.title': { fr: 'Testez votre assistant IA', en: 'Test your AI assistant' },
+  'demo.hero_title': {
+    fr: 'Votre site pourrait déjà répondre à vos clients',
+    en: 'Your website could already be answering your customers',
+  },
+  'demo.hero_subtitle': {
+    fr: "Entrez l'adresse de votre site web. Nous analysons son contenu et vous laissons discuter avec votre futur assistant, en direct.",
+    en: 'Enter your website address. We analyze its content and let you chat with your future assistant, live.',
+  },
+  'demo.url_label': { fr: 'Adresse de votre site web', en: 'Your website address' },
+  'demo.analyze_button': { fr: 'Analyser mon site', en: 'Analyze my site' },
+  'demo.analyzed_from': { fr: 'Assistant généré à partir de : ', en: 'Assistant generated from: ' },
+  'demo.expired': {
+    fr: 'Cette démonstration a expiré ou est introuvable. Recommencez avec votre URL.',
+    en: 'This demo has expired or could not be found. Start again with your URL.',
+  },
+  'demo.limit_reached': {
+    fr: 'Vous avez atteint la limite de messages pour cette démonstration.',
+    en: 'You have reached the message limit for this demo.',
+  },
+  'demo.cta_title': { fr: 'Convaincu ?', en: 'Convinced?' },
+  'demo.cta_text': {
+    fr: 'Installez ce même assistant sur votre site en quelques minutes.',
+    en: 'Install this same assistant on your site in minutes.',
+  },
+  'demo.cta_button': { fr: 'Créer mon compte', en: 'Create my account' },
+  'demo.try_again': { fr: 'Essayer un autre site', en: 'Try another site' },
+  'demo.messages_remaining': { fr: 'messages restants dans cette démo', en: 'messages left in this demo' },
+  'demo.input_placeholder': { fr: 'Posez une question sur cette entreprise...', en: 'Ask a question about this business...' },
+  'demo.send': { fr: 'Envoyer', en: 'Send' },
+  'demo.pitch_cta': { fr: 'Essayez avec votre propre site →', en: 'Try it with your own site →' },
+
+  // Page Prospects
+  'leads.title': { fr: 'Prospects', en: 'Leads' },
+  'leads.intro': {
+    fr: "Les visiteurs qui demandent à être contactés via votre widget apparaissent ici.",
+    en: 'Visitors who ask to be contacted through your widget show up here.',
+  },
+  'leads.empty': { fr: 'Aucun prospect pour l’instant.', en: 'No leads yet.' },
+  'leads.col_date': { fr: 'Date', en: 'Date' },
+  'leads.col_name': { fr: 'Nom', en: 'Name' },
+  'leads.col_contact': { fr: 'Contact', en: 'Contact' },
+  'leads.col_message': { fr: 'Message', en: 'Message' },
 };

@@ -17,6 +17,24 @@
   <div id="messages" class="widget-messages">
     <div class="widget-msg widget-msg-bot"><%= greeting %></div>
   </div>
+
+  <div id="lead-form-wrap" class="lead-form-wrap" hidden>
+    <form id="lead-form" class="lead-form">
+      <input type="text" id="lead-name" placeholder="Votre nom" required>
+      <input type="email" id="lead-email" placeholder="Votre courriel">
+      <input type="tel" id="lead-phone" placeholder="Votre téléphone">
+      <textarea id="lead-message" placeholder="Votre demande (optionnel)" rows="2"></textarea>
+      <div class="lead-form-actions">
+        <button type="button" id="lead-cancel" class="lead-form-cancel">Annuler</button>
+        <button type="submit" class="lead-form-submit">Envoyer</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="widget-footer">
+    <button type="button" id="talk-human" class="talk-human-link">&#128100; Parler à un humain</button>
+  </div>
+
   <form id="widget-form" class="widget-form">
     <input type="text" id="widget-input" placeholder="Écrivez votre message..." autocomplete="off" required>
     <button type="submit" aria-label="Envoyer">&#10148;</button>
@@ -28,6 +46,11 @@
     var form = document.getElementById('widget-form');
     var input = document.getElementById('widget-input');
     var closeButton = document.getElementById('widget-close');
+    var leadFormWrap = document.getElementById('lead-form-wrap');
+    var leadForm = document.getElementById('lead-form');
+    var talkHumanButton = document.getElementById('talk-human');
+    var leadCancelButton = document.getElementById('lead-cancel');
+    var currentConversationId = null;
 
     closeButton.addEventListener('click', function () {
       window.parent.postMessage({ noviaAction: 'close' }, '*');
@@ -52,7 +75,60 @@
       div.textContent = text;
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
+      return div;
     }
+
+    function addContactPrompt() {
+      var div = document.createElement('div');
+      div.className = 'widget-contact-prompt';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = 'Être recontacté par l’équipe';
+      btn.addEventListener('click', openLeadForm);
+      div.appendChild(btn);
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function openLeadForm() {
+      leadFormWrap.hidden = false;
+      document.getElementById('lead-name').focus();
+    }
+
+    function closeLeadForm() {
+      leadFormWrap.hidden = true;
+      leadForm.reset();
+    }
+
+    talkHumanButton.addEventListener('click', openLeadForm);
+    leadCancelButton.addEventListener('click', closeLeadForm);
+
+    leadForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('lead-name').value.trim();
+      var email = document.getElementById('lead-email').value.trim();
+      var phone = document.getElementById('lead-phone').value.trim();
+      var message = document.getElementById('lead-message').value.trim();
+
+      if (!name || (!email && !phone)) {
+        addMessage('Merci d’indiquer votre nom et au moins un moyen de vous joindre (courriel ou téléphone).', 'bot');
+        return;
+      }
+
+      fetch('/api/widget/' + encodeURIComponent(clientKey) + '/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, phone: phone, message: message, conversationId: currentConversationId }),
+      })
+        .then(function (r) { return r.json(); })
+        .then(function () {
+          closeLeadForm();
+          addMessage('Merci ! L’équipe vous recontactera bientôt.', 'bot');
+        })
+        .catch(function () {
+          addMessage('Désolé, une erreur est survenue. Réessayez plus tard.', 'bot');
+        });
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -68,12 +144,16 @@
       })
         .then(function (r) { return r.json(); })
         .then(function (data) {
+          if (data.conversationId) currentConversationId = data.conversationId;
           if (data.reply) {
             addMessage(data.reply, 'bot');
           } else if (data.message) {
             addMessage(data.message, 'bot');
           } else {
             addMessage('Désolé, une erreur est survenue.', 'bot');
+          }
+          if (data.suggestContact) {
+            addContactPrompt();
           }
         })
         .catch(function () {

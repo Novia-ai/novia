@@ -13,6 +13,8 @@ const dashboardRoutes = require('./routes/dashboard');
 const billingRoutes = require('./routes/billing');
 const widgetConfigRoutes = require('./routes/widgetConfig');
 const widgetPublicRoutes = require('./routes/widgetPublic');
+const leadsRoutes = require('./routes/leads');
+const demoRoutes = require('./routes/demo');
 const webhookRoutes = require('./routes/webhooks');
 
 const app = express();
@@ -50,9 +52,11 @@ app.use(
 
 app.use('/', authRoutes);
 app.use('/', widgetPublicRoutes);
+app.use('/demo', demoRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/dashboard/billing', billingRoutes);
 app.use('/dashboard/widget', widgetConfigRoutes);
+app.use('/dashboard/leads', leadsRoutes);
 
 app.get('/', (req, res) => {
   res.redirect(req.session.userId ? '/dashboard' : '/login');
