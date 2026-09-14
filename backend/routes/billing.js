@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', requireAuth, async (req, res) => {
   const account = await getAccountContext(req.session.userId);
-  const { rows: plans } = await pool.query('SELECT * FROM plans ORDER BY price_cents');
+  const { rows: plans } = await pool.query("SELECT * FROM plans WHERE key != 'demo' ORDER BY price_cents");
   const { rows: tokenPacks } = await pool.query('SELECT * FROM token_packs ORDER BY price_cents');
   const { rows: purchases } = await pool.query(
     `SELECT tp.tokens_granted, tp.created_at, k.name AS pack_name
@@ -21,7 +21,7 @@ router.get('/', requireAuth, async (req, res) => {
   );
 
   res.render('dashboard-billing', {
-    title: 'NovIA - Facturation',
+    titleKey: 'title.billing',
     account,
     plans,
     tokenPacks,

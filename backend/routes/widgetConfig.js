@@ -50,7 +50,7 @@ router.get('/', requireAuth, async (req, res) => {
   const account = await getAccountContext(req.session.userId);
   const widgetConfig = await ensureWidgetConfig(req.session.userId);
   res.render('dashboard-widget', {
-    title: 'NovIA - Widget',
+    titleKey: 'title.widget',
     account,
     widgetConfig,
     appBaseUrl: process.env.APP_BASE_URL,
@@ -92,17 +92,17 @@ router.post('/knowledge', requireAuth, async (req, res) => {
 
 router.post('/import-url', requireAuth, importLimiter, async (req, res) => {
   const { url } = req.body;
-  if (!url) return res.status(400).json({ error: 'URL manquante.' });
+  if (!url) return res.status(400).json({ error: res.locals.t('import.error.missing_url') });
 
   try {
     const text = await fetchPageText(url);
     res.json({ text });
   } catch (err) {
     if (err instanceof ImportError) {
-      return res.status(err.status).json({ error: err.message });
+      return res.status(err.status).json({ error: res.locals.t('import.error.' + err.code) });
     }
     console.error('Erreur import URL:', err);
-    res.status(500).json({ error: 'Erreur inattendue.' });
+    res.status(500).json({ error: res.locals.t('import.error.generic') });
   }
 });
 

@@ -8,15 +8,18 @@
 </head>
 <body style="--novia-color: <%= primaryColor %>;">
   <div class="widget-header">
-    <img src="<%= logoUrl %>" alt="<%= botName %>">
-    <span><%= botName %></span>
+    <div class="widget-header-brand">
+      <img src="<%= logoUrl %>" alt="<%= botName %>">
+      <span><%= botName %></span>
+    </div>
+    <button type="button" id="widget-close" aria-label="Fermer">&#10005;</button>
   </div>
   <div id="messages" class="widget-messages">
     <div class="widget-msg widget-msg-bot"><%= greeting %></div>
   </div>
   <form id="widget-form" class="widget-form">
-    <input type="text" id="widget-input" placeholder="Ecrivez un message..." autocomplete="off" required>
-    <button type="submit">Envoyer</button>
+    <input type="text" id="widget-input" placeholder="Écrivez votre message..." autocomplete="off" required>
+    <button type="submit" aria-label="Envoyer">&#10148;</button>
   </form>
 
   <script>
@@ -24,6 +27,11 @@
     var messagesEl = document.getElementById('messages');
     var form = document.getElementById('widget-form');
     var input = document.getElementById('widget-input');
+    var closeButton = document.getElementById('widget-close');
+
+    closeButton.addEventListener('click', function () {
+      window.parent.postMessage({ noviaAction: 'close' }, '*');
+    });
 
     function getVisitorId() {
       try {
@@ -65,11 +73,11 @@
           } else if (data.message) {
             addMessage(data.message, 'bot');
           } else {
-            addMessage('Desole, une erreur est survenue.', 'bot');
+            addMessage('Désolé, une erreur est survenue.', 'bot');
           }
         })
         .catch(function () {
-          addMessage('Desole, une erreur est survenue.', 'bot');
+          addMessage('Désolé, une erreur est survenue.', 'bot');
         });
     });
   </script>

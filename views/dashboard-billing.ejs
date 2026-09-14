@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= lang %>">
 <head>
   <%- include('partials/head') %>
 </head>
@@ -8,26 +8,26 @@
     <%- include('partials/sidebar', { active: 'billing' }) %>
 
     <main class="content">
-      <h1>Facturation</h1>
+      <h1><%= t('billing.title') %></h1>
 
       <% if (error) { %>
-        <p class="error">Une erreur est survenue (<%= error %>). Contactez le support si cela persiste.</p>
+        <p class="error"><%= t('billing.error_prefix') %><%= error %><%= t('billing.error_suffix') %></p>
       <% } %>
 
       <div class="card">
-        <h2>Forfaits</h2>
+        <h2><%= t('billing.plans_title') %></h2>
         <div class="plan-grid">
           <% plans.forEach(function(plan) { %>
             <div class="plan-card <%= account && account.plan_key === plan.key ? 'plan-card-active' : '' %>">
-              <h3><%= plan.name %></h3>
-              <p class="plan-price"><%= (plan.price_cents / 100).toFixed(2) %>$ / mois</p>
-              <p><%= plan.monthly_token_limit.toLocaleString('fr-CA') %> tokens / mois</p>
-              <p><%= plan.allow_custom_branding ? 'Logo et couleurs personnalisables' : 'Branding NovIA' %></p>
+              <h3><%= t('plan.' + plan.key + '.name') %></h3>
+              <p class="plan-price"><%= (plan.price_cents / 100).toFixed(2) %><%= t('billing.per_month') %></p>
+              <p><%= plan.monthly_token_limit.toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %> <%= t('billing.tokens_per_month') %></p>
+              <p><%= plan.allow_custom_branding ? t('billing.branding_yes') : t('billing.branding_no') %></p>
               <% if (account && account.plan_key === plan.key) { %>
-                <span class="badge">Forfait actuel</span>
+                <span class="badge"><%= t('billing.current_plan_badge') %></span>
               <% } else { %>
                 <form method="POST" action="/dashboard/billing/checkout/<%= plan.key %>">
-                  <button type="submit" class="button">Choisir</button>
+                  <button type="submit" class="button"><%= t('common.choose') %></button>
                 </form>
               <% } %>
             </div>
@@ -37,25 +37,25 @@
 
       <% if (account && account.subscription_id) { %>
         <div class="card">
-          <h2>Renouvellement automatique</h2>
-          <p>Autopay actuellement : <strong><%= account.autopay ? 'active' : 'desactive' %></strong></p>
+          <h2><%= t('billing.autopay_title') %></h2>
+          <p><%= t('billing.autopay_current') %><strong><%= account.autopay ? t('billing.autopay_active') : t('billing.autopay_inactive') %></strong></p>
           <form method="POST" action="/dashboard/billing/autopay">
             <input type="hidden" name="autopay" value="<%= account.autopay ? 'false' : 'true' %>">
-            <button type="submit" class="button"><%= account.autopay ? 'Desactiver' : 'Activer' %> l'autopay</button>
+            <button type="submit" class="button"><%= account.autopay ? t('billing.autopay_disable') : t('billing.autopay_enable') %></button>
           </form>
         </div>
       <% } %>
 
       <div class="card">
-        <h2>Packs de tokens</h2>
+        <h2><%= t('billing.packs_title') %></h2>
         <div class="plan-grid">
           <% tokenPacks.forEach(function(pack) { %>
             <div class="plan-card">
               <h3><%= pack.name %></h3>
               <p class="plan-price"><%= (pack.price_cents / 100).toFixed(2) %>$</p>
-              <p><%= pack.token_amount.toLocaleString('fr-CA') %> tokens</p>
+              <p><%= pack.token_amount.toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %> tokens</p>
               <form method="POST" action="/dashboard/billing/token-pack/<%= pack.key %>">
-                <button type="submit" class="button">Acheter</button>
+                <button type="submit" class="button"><%= t('common.buy') %></button>
               </form>
             </div>
           <% }); %>
@@ -63,13 +63,13 @@
       </div>
 
       <div class="card">
-        <h2>Historique des achats de tokens</h2>
+        <h2><%= t('billing.history_title') %></h2>
         <% if (purchases.length === 0) { %>
-          <p>Aucun achat pour l'instant.</p>
+          <p><%= t('billing.history_empty') %></p>
         <% } else { %>
           <ul>
             <% purchases.forEach(function(p) { %>
-              <li><%= new Date(p.created_at).toLocaleDateString('fr-CA') %> — <%= p.pack_name %> (+<%= p.tokens_granted %> tokens)</li>
+              <li><%= new Date(p.created_at).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA') %> — <%= p.pack_name %> (+<%= p.tokens_granted %> tokens)</li>
             <% }); %>
           </ul>
         <% } %>

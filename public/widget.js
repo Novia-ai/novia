@@ -41,6 +41,12 @@
     frame.classList.toggle('novia-open');
   });
 
+  window.addEventListener('message', function (event) {
+    if (event.data && event.data.noviaAction === 'close') {
+      frame.classList.remove('novia-open');
+    }
+  });
+
   function mount() {
     document.body.appendChild(frame);
     document.body.appendChild(bubble);

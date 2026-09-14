@@ -44,7 +44,7 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
   if (!quota.allowed) {
     return res.status(402).json({
       error: 'quota_depasse',
-      message: "Ce site a atteint sa limite de messages pour l'instant. Merci de reessayer plus tard.",
+      message: "Ce site a atteint sa limite de messages pour l'instant. Merci de réessayer plus tard.",
     });
   }
 
@@ -77,8 +77,8 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
   let systemPrompt = `Tu es ${config.bot_name}, un assistant virtuel utile et concis pour le site web de ce client.`;
   if (config.knowledge_base && config.knowledge_base.trim()) {
     systemPrompt +=
-      "\n\nInformations sur l'entreprise a utiliser en priorite pour repondre. " +
-      "Si la question porte sur l'entreprise et que la reponse ne s'y trouve pas, dis que tu ne sais pas plutot que d'inventer :\n" +
+      "\n\nInformations sur l'entreprise à utiliser en priorité pour répondre. " +
+      "Si la question porte sur l'entreprise et que la réponse ne s'y trouve pas, dis que tu ne sais pas plutôt que d'inventer :\n" +
       config.knowledge_base;
   }
 
@@ -103,7 +103,7 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
     res.json({ reply, visitorId });
   } catch (err) {
     console.error('Erreur OpenAI:', err);
-    res.status(500).json({ error: 'erreur_ia', message: 'Desole, une erreur est survenue.' });
+    res.status(500).json({ error: 'erreur_ia', message: 'Désolé, une erreur est survenue.' });
   }
 });
 

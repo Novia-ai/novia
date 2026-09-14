@@ -57,4 +57,13 @@ const TOKEN_PACKS = [
   },
 ];
 
-module.exports = { PLANS, TOKEN_PACKS };
+const DEMO_PLAN = {
+  key: 'demo',
+  name: 'Demo (interne)',
+  priceCents: 0,
+  monthlyTokenLimit: 500000,
+  allowCustomBranding: true,
+  stripePriceEnv: null,
+};
+
+module.exports = { PLANS, TOKEN_PACKS, DEMO_PLAN };

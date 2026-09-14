@@ -2,10 +2,12 @@ require('dotenv').config();
 
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 
 const pool = require('./db/pool');
+const i18n = require('./middleware/i18n');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
 const billingRoutes = require('./routes/billing');
@@ -28,6 +30,8 @@ app.use('/webhooks', webhookRoutes);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(i18n);
 
 app.use(
   session({
@@ -55,9 +59,9 @@ app.get('/', (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).render('error', { title: 'Page introuvable', message: "Cette page n'existe pas." });
+  res.status(404).render('error', { titleKey: 'error.not_found_title', messageKey: 'error.not_found_message' });
 });
 
 app.listen(PORT, () => {
-  console.log(`NovIA demarree sur http://localhost:${PORT}`);
+  console.log(`NovIA démarrée sur http://localhost:${PORT}`);
 });

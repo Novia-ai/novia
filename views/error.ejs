@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= lang %>">
 <head>
   <%- include('partials/head') %>
 </head>
 <body>
   <main class="content" style="padding:40px;">
-    <h1><%= title %></h1>
-    <p><%= message %></p>
-    <p><a href="/dashboard">Retour au tableau de bord</a></p>
+    <h1><%= t(titleKey) %></h1>
+    <p><%= t(messageKey) %></p>
+    <p><a href="/dashboard"><%= t('common.back_to_dashboard') %></a></p>
   </main>
 </body>
 </html>

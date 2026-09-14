@@ -8,12 +8,12 @@ const router = express.Router();
 
 router.get('/', requireAuth, async (req, res) => {
   const account = await getAccountContext(req.session.userId);
-  res.render('dashboard', { title: 'NovIA - Tableau de bord', account });
+  res.render('dashboard', { titleKey: 'title.dashboard', account });
 });
 
 router.get('/account', requireAuth, async (req, res) => {
   const account = await getAccountContext(req.session.userId);
-  res.render('dashboard-account', { title: 'NovIA - Compte', account, message: null, error: null });
+  res.render('dashboard-account', { titleKey: 'title.account', account, message: null, error: null });
 });
 
 router.post('/account/password', requireAuth, async (req, res) => {
@@ -24,28 +24,28 @@ router.post('/account/password', requireAuth, async (req, res) => {
 
   if (!valid) {
     return res.status(400).render('dashboard-account', {
-      title: 'NovIA - Compte',
+      titleKey: 'title.account',
       account,
       message: null,
-      error: 'Mot de passe actuel incorrect.',
+      error: 'account.wrong_current_password',
     });
   }
 
   if (!newPassword || newPassword.length < 8) {
     return res.status(400).render('dashboard-account', {
-      title: 'NovIA - Compte',
+      titleKey: 'title.account',
       account,
       message: null,
-      error: 'Le nouveau mot de passe doit contenir au moins 8 caracteres.',
+      error: 'account.password_too_short',
     });
   }
 
   const newHash = await bcrypt.hash(newPassword, 12);
   await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [newHash, req.session.userId]);
   res.render('dashboard-account', {
-    title: 'NovIA - Compte',
+    titleKey: 'title.account',
     account,
-    message: 'Mot de passe mis a jour.',
+    message: 'account.password_updated',
     error: null,
   });
 });

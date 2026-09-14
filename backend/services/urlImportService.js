@@ -7,8 +7,9 @@ const TIMEOUT_MS = 8000;
 const MAX_TEXT_LENGTH = 8000;
 
 class ImportError extends Error {
-  constructor(message, status) {
-    super(message);
+  constructor(code, status) {
+    super(code);
+    this.code = code;
     this.status = status;
   }
 }
@@ -40,20 +41,20 @@ async function assertPublicUrl(rawUrl) {
   try {
     parsed = new URL(rawUrl);
   } catch {
-    throw new ImportError('URL invalide.', 400);
+    throw new ImportError('invalid_url', 400);
   }
   if (!['http:', 'https:'].includes(parsed.protocol)) {
-    throw new ImportError('Seuls les liens http:// et https:// sont acceptes.', 400);
+    throw new ImportError('invalid_protocol', 400);
   }
 
   let address;
   try {
     ({ address } = await dns.lookup(parsed.hostname));
   } catch {
-    throw new ImportError('Impossible de resoudre ce nom de domaine.', 400);
+    throw new ImportError('dns_error', 400);
   }
   if (isPrivateIp(address)) {
-    throw new ImportError("Cette adresse n'est pas autorisee.", 400);
+    throw new ImportError('private_address', 400);
   }
 
   return parsed;
@@ -73,18 +74,18 @@ async function fetchPageText(rawUrl) {
       headers: { 'User-Agent': 'NovIA-Widget-Import/1.0' },
     });
   } catch {
-    throw new ImportError('Impossible de recuperer cette page (delai depasse ou site inaccessible).', 502);
+    throw new ImportError('fetch_failed', 502);
   } finally {
     clearTimeout(timeout);
   }
 
   if (!response.ok) {
-    throw new ImportError(`La page a renvoye une erreur (HTTP ${response.status}).`, 502);
+    throw new ImportError('bad_status', 502);
   }
 
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.includes('text/html') && !contentType.includes('text/plain')) {
-    throw new ImportError('Cette page ne semble pas etre une page HTML.', 400);
+    throw new ImportError('not_html', 400);
   }
 
   const reader = response.body.getReader();
@@ -95,7 +96,7 @@ async function fetchPageText(rawUrl) {
     if (done) break;
     received += value.length;
     if (received > MAX_BYTES) {
-      throw new ImportError('Cette page est trop volumineuse.', 413);
+      throw new ImportError('too_large', 413);
     }
     chunks.push(value);
   }
@@ -106,7 +107,7 @@ async function fetchPageText(rawUrl) {
   const text = $('body').text().replace(/[ \t]+/g, ' ').replace(/\n\s*\n+/g, '\n').trim();
 
   if (!text) {
-    throw new ImportError("Aucun texte lisible n'a ete trouve sur cette page.", 400);
+    throw new ImportError('no_text', 400);
   }
 
   return text.slice(0, MAX_TEXT_LENGTH);

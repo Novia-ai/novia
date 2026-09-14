@@ -5,17 +5,14 @@ const pool = require('../db/pool');
 const router = express.Router();
 
 router.get('/register', (req, res) => {
-  res.render('auth/register', { title: 'Creer un compte - NovIA', error: null });
+  res.render('auth/register', { titleKey: 'title.register', error: null });
 });
 
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password || password.length < 8) {
-    return res.status(400).render('auth/register', {
-      title: 'Creer un compte - NovIA',
-      error: 'Email invalide ou mot de passe trop court (8 caracteres minimum).',
-    });
+    return res.status(400).render('auth/register', { titleKey: 'title.register', error: 'auth.error.invalid_signup' });
   }
 
   try {
@@ -28,21 +25,15 @@ router.post('/register', async (req, res) => {
     res.redirect('/dashboard');
   } catch (err) {
     if (err.code === '23505') {
-      return res.status(400).render('auth/register', {
-        title: 'Creer un compte - NovIA',
-        error: 'Un compte existe deja avec cet email.',
-      });
+      return res.status(400).render('auth/register', { titleKey: 'title.register', error: 'auth.error.account_exists' });
     }
     console.error(err);
-    res.status(500).render('auth/register', {
-      title: 'Creer un compte - NovIA',
-      error: 'Une erreur est survenue, reessayez.',
-    });
+    res.status(500).render('auth/register', { titleKey: 'title.register', error: 'auth.error.generic' });
   }
 });
 
 router.get('/login', (req, res) => {
-  res.render('auth/login', { title: 'Connexion - NovIA', error: null });
+  res.render('auth/login', { titleKey: 'title.login', error: null });
 });
 
 router.post('/login', async (req, res) => {
@@ -54,10 +45,7 @@ router.post('/login', async (req, res) => {
   const valid = user && (await bcrypt.compare(password || '', user.password_hash));
 
   if (!valid) {
-    return res.status(400).render('auth/login', {
-      title: 'Connexion - NovIA',
-      error: 'Email ou mot de passe incorrect.',
-    });
+    return res.status(400).render('auth/login', { titleKey: 'title.login', error: 'auth.error.invalid_credentials' });
   }
 
   req.session.userId = user.id;

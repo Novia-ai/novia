@@ -4,8 +4,8 @@ async function requireBranding(req, res, next) {
   const account = await getAccountContext(req.session.userId);
   if (!account || !account.allow_custom_branding) {
     return res.status(403).render('error', {
-      title: 'Fonctionnalite non disponible',
-      message: "La personnalisation du logo et des couleurs necessite un forfait Base+ ou superieur.",
+      titleKey: 'error.branding_locked_title',
+      messageKey: 'error.branding_locked_message',
     });
   }
   req.account = account;

@@ -2,19 +2,20 @@
   <img src="/images/capybara-logo.png" alt="NovIA" class="auth-pitch-logo">
 
   <div class="auth-pitch-bubble">
-    <p class="auth-pitch-quote">
-      "Un visiteur qui ne trouve pas sa reponse en 10 secondes... va la
-      chercher ailleurs. Je reponds avant qu'il ne parte."
-    </p>
+    <p class="auth-pitch-quote"><%= t('pitch.quote') %></p>
   </div>
 
-  <h2 class="auth-pitch-title">Chaque question sans reponse est un client qui vous echappe</h2>
+  <h2 class="auth-pitch-title"><%= t('pitch.title') %></h2>
 
   <ul class="auth-pitch-list">
-    <li>Vos visiteurs posent toujours les memes questions — horaires, prix, disponibilites — NovIA y repond a votre place, meme a 3h du matin ou un dimanche</li>
-    <li>Un site qui repond instantanement inspire confiance et garde l'attention avant qu'un visiteur n'aille voir ailleurs</li>
-    <li>Il repond avec les vraies informations de votre entreprise — jamais avec des suppositions ou des reponses hors sujet</li>
-    <li>Aucune embauche, aucune formation : votre assistant s'installe en une ligne de code, pret en quelques minutes</li>
-    <li>Vos donnees et celles de vos clients restent hebergees de facon autonome, jamais reveendues a des tiers</li>
+    <li><%= t('pitch.item1') %></li>
+    <li><%= t('pitch.item2') %></li>
+    <li><%= t('pitch.item3') %></li>
+    <li><%= t('pitch.item4') %></li>
+    <li><%= t('pitch.item5') %></li>
   </ul>
+
+  <p class="auth-pitch-demo-hint"><%= t('pitch.demo_hint') %></p>
 </div>
+
+<script src="/widget.js" data-client="novia-demo" async></script>

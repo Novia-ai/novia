@@ -4,12 +4,16 @@
     <span class="sidebar-title">NovIA</span>
   </div>
   <nav class="sidebar-nav">
-    <a href="/dashboard" class="sidebar-link <%= active === 'overview' ? 'active' : '' %>">Vue d'ensemble</a>
-    <a href="/dashboard/widget" class="sidebar-link <%= active === 'widget' ? 'active' : '' %>">Widget</a>
-    <a href="/dashboard/billing" class="sidebar-link <%= active === 'billing' ? 'active' : '' %>">Facturation</a>
-    <a href="/dashboard/account" class="sidebar-link <%= active === 'account' ? 'active' : '' %>">Compte</a>
+    <a href="/dashboard" class="sidebar-link <%= active === 'overview' ? 'active' : '' %>"><%= t('nav.overview') %></a>
+    <a href="/dashboard/widget" class="sidebar-link <%= active === 'widget' ? 'active' : '' %>"><%= t('nav.widget') %></a>
+    <a href="/dashboard/billing" class="sidebar-link <%= active === 'billing' ? 'active' : '' %>"><%= t('nav.billing') %></a>
+    <a href="/dashboard/account" class="sidebar-link <%= active === 'account' ? 'active' : '' %>"><%= t('nav.account') %></a>
   </nav>
+  <div class="lang-switch">
+    <a href="?lang=fr" class="<%= lang === 'fr' ? 'active' : '' %>">FR</a>
+    <a href="?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+  </div>
   <form action="/logout" method="POST" class="sidebar-logout-form">
-    <button type="submit" class="sidebar-link sidebar-logout">Deconnexion</button>
+    <button type="submit" class="sidebar-link sidebar-logout"><%= t('nav.logout') %></button>
   </form>
 </aside>

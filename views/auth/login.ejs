@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= lang %>">
 <head>
   <%- include('../partials/head') %>
 </head>
@@ -9,19 +9,23 @@
 
     <div class="auth-form-panel">
       <div class="auth-card">
+        <div class="lang-switch lang-switch-auth">
+          <a href="?lang=fr" class="<%= lang === 'fr' ? 'active' : '' %>">FR</a>
+          <a href="?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+        </div>
         <img src="/images/capybara-logo.png" alt="NovIA" class="auth-logo">
-        <h1>Connexion a NovIA</h1>
-        <% if (error) { %><p class="error"><%= error %></p><% } %>
+        <h1><%= t('auth.login.title') %></h1>
+        <% if (error) { %><p class="error"><%= t(error) %></p><% } %>
         <form method="POST" action="/login">
-          <label>Email
+          <label><%= t('auth.login.email') %>
             <input type="email" name="email" required>
           </label>
-          <label>Mot de passe
+          <label><%= t('auth.login.password') %>
             <input type="password" name="password" required>
           </label>
-          <button type="submit" class="button">Se connecter</button>
+          <button type="submit" class="button"><%= t('auth.login.submit') %></button>
         </form>
-        <p class="auth-switch">Pas encore de compte ? <a href="/register">Creer un compte</a></p>
+        <p class="auth-switch"><%= t('auth.login.switch') %> <a href="/register"><%= t('auth.login.switch_link') %></a></p>
       </div>
     </div>
   </main>

@@ -17,18 +17,49 @@ body {
 .widget-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  padding: 12px 16px;
+  padding: 12px 14px;
   background: var(--novia-color);
   color: #fff;
   font-weight: 600;
 }
 
-.widget-header img {
+.widget-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.widget-header-brand img {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
+}
+
+.widget-header-brand span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#widget-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+#widget-close:hover {
+  opacity: 1;
 }
 
 .widget-messages {
@@ -64,6 +95,7 @@ body {
 
 .widget-form {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: 10px;
   border-top: 1px solid #e2e4ea;
@@ -72,9 +104,9 @@ body {
 
 .widget-form input {
   flex: 1;
-  padding: 8px 10px;
+  padding: 8px 12px;
   border: 1px solid #d5d8e0;
-  border-radius: 6px;
+  border-radius: 20px;
   font: inherit;
 }
 
@@ -82,8 +114,13 @@ body {
   background: var(--novia-color);
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 8px 14px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   cursor: pointer;
-  font: inherit;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= lang %>">
 <head>
   <%- include('partials/head') %>
 </head>
@@ -8,24 +8,24 @@
     <%- include('partials/sidebar', { active: 'account' }) %>
 
     <main class="content">
-      <h1>Compte</h1>
+      <h1><%= t('account.title') %></h1>
 
       <div class="card">
-        <p>Email : <strong><%= account.email %></strong></p>
+        <p><%= t('account.email_label') %><strong><%= account.email %></strong></p>
       </div>
 
       <div class="card">
-        <h2>Changer de mot de passe</h2>
-        <% if (message) { %><p class="success"><%= message %></p><% } %>
-        <% if (error) { %><p class="error"><%= error %></p><% } %>
+        <h2><%= t('account.change_password_title') %></h2>
+        <% if (message) { %><p class="success"><%= t(message) %></p><% } %>
+        <% if (error) { %><p class="error"><%= t(error) %></p><% } %>
         <form method="POST" action="/dashboard/account/password">
-          <label>Mot de passe actuel
+          <label><%= t('account.current_password') %>
             <input type="password" name="currentPassword" required>
           </label>
-          <label>Nouveau mot de passe
+          <label><%= t('account.new_password') %>
             <input type="password" name="newPassword" required minlength="8">
           </label>
-          <button type="submit" class="button">Mettre a jour</button>
+          <button type="submit" class="button"><%= t('account.update_button') %></button>
         </form>
       </div>
     </main>

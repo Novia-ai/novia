@@ -73,6 +73,30 @@ a {
   font-weight: 600;
 }
 
+.lang-switch {
+  display: flex;
+  gap: 6px;
+}
+
+.lang-switch a {
+  color: #c7cbd6;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+.lang-switch a:hover {
+  background-color: #2c3242;
+  color: #fff;
+}
+
+.lang-switch a.active {
+  background-color: #3b4256;
+  color: #fff;
+}
+
 .sidebar-logout-form {
   margin-top: auto;
 }
@@ -283,10 +307,17 @@ form textarea {
 }
 
 .auth-pitch-logo {
-  width: 72px;
-  height: 72px;
-  border-radius: 16px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   object-fit: cover;
+}
+
+.auth-pitch-demo-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #9aa1b4;
+  font-style: italic;
 }
 
 .auth-pitch-bubble {
@@ -376,4 +407,23 @@ form textarea {
 .auth-switch {
   margin-top: 16px;
   font-size: 0.9rem;
+}
+
+.lang-switch-auth {
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.lang-switch-auth a {
+  color: #8f95a3;
+}
+
+.lang-switch-auth a:hover {
+  background-color: #f4f5f7;
+  color: #1f2430;
+}
+
+.lang-switch-auth a.active {
+  background-color: #f4f5f7;
+  color: #1f2430;
 }

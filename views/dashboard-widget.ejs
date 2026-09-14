@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<%= lang %>">
 <head>
   <%- include('partials/head') %>
 </head>
@@ -8,68 +8,64 @@
     <%- include('partials/sidebar', { active: 'widget' }) %>
 
     <main class="content">
-      <h1>Widget</h1>
+      <h1><%= t('widget.title') %></h1>
 
       <div class="card">
-        <h2>Code a inserer sur votre site</h2>
+        <h2><%= t('widget.snippet_title') %></h2>
         <pre id="snippet" class="snippet">&lt;script src="<%= appBaseUrl %>/widget.js" data-client="<%= widgetConfig.client_key %>" async&gt;&lt;/script&gt;</pre>
-        <button type="button" class="button" onclick="navigator.clipboard.writeText(document.getElementById('snippet').innerText)">Copier</button>
+        <button type="button" class="button" onclick="navigator.clipboard.writeText(document.getElementById('snippet').innerText)"><%= t('common.copy') %></button>
       </div>
 
       <div class="card">
-        <h2>Base de connaissances</h2>
+        <h2><%= t('widget.knowledge_title') %></h2>
         <p>
-          Ce que vous ecrivez ici sert de reference a l'assistant pour repondre
-          aux questions de vos visiteurs (horaires, services, FAQ, politiques...).
-          Vous gardez le controle total sur ce que l'IA sait de votre entreprise.
+          <%= t('widget.knowledge_intro') %>
         </p>
 
         <div class="import-url">
-          <label>Importer le texte d'une page de votre site
+          <label><%= t('widget.import_label') %>
             <input type="url" id="import-url-input" placeholder="https://votre-site.com/a-propos">
           </label>
-          <button type="button" class="button" id="import-url-button">Importer</button>
+          <button type="button" class="button" id="import-url-button"><%= t('widget.import_button') %></button>
           <p id="import-url-status" class="import-status"></p>
         </div>
 
         <form method="POST" action="/dashboard/widget/knowledge">
-          <label>Nom de l'assistant
+          <label><%= t('widget.bot_name_label') %>
             <input type="text" name="botName" value="<%= widgetConfig.bot_name %>" maxlength="40">
           </label>
-          <label>Message d'accueil
+          <label><%= t('widget.greeting_label') %>
             <textarea name="greetingMessage" maxlength="300"><%= widgetConfig.greeting_message %></textarea>
           </label>
-          <label>Base de connaissances (8000 caracteres max)
+          <label><%= t('widget.knowledge_field_label') %>
             <textarea name="knowledgeBase" id="knowledge-base-field" maxlength="8000" rows="10"><%= widgetConfig.knowledge_base %></textarea>
           </label>
-          <button type="submit" class="button">Enregistrer</button>
+          <button type="submit" class="button"><%= t('common.save') %></button>
         </form>
       </div>
 
       <div class="card">
-        <h2>Personnalisation visuelle</h2>
+        <h2><%= t('widget.branding_title') %></h2>
         <% if (!account || !account.allow_custom_branding) { %>
           <p>
-            Votre forfait actuel utilise le logo et les couleurs NovIA par defaut.
-            Passez au forfait <strong>Base+</strong> ou superieur pour personnaliser
-            le widget avec votre propre logo et vos couleurs.
+            <%= t('widget.branding_locked') %>
           </p>
-          <a href="/dashboard/billing" class="button">Voir les forfaits</a>
+          <a href="/dashboard/billing" class="button"><%= t('common.see_plans') %></a>
         <% } else { %>
           <form method="POST" action="/dashboard/widget/branding" enctype="multipart/form-data">
-            <label>Logo (png, jpg ou svg, 2 Mo max)
+            <label><%= t('widget.logo_label') %>
               <input type="file" name="logo" accept=".png,.jpg,.jpeg,.svg">
             </label>
-            <label>Couleur principale
+            <label><%= t('widget.color_label') %>
               <input type="color" name="primaryColor" value="<%= widgetConfig.primary_color %>">
             </label>
-            <button type="submit" class="button">Enregistrer</button>
+            <button type="submit" class="button"><%= t('common.save') %></button>
           </form>
         <% } %>
       </div>
 
       <div class="card">
-        <h2>Apercu de la bulle</h2>
+        <h2><%= t('widget.preview_title') %></h2>
         <div class="widget-preview">
           <img src="<%= widgetConfig.logo_path || '/images/capybara-logo.png' %>" alt="Logo widget" class="widget-preview-logo">
           <span><%= widgetConfig.bot_name %></span>
@@ -79,6 +75,12 @@
   </div>
 
   <script>
+    var I18N = {
+      inProgress: <%- JSON.stringify(t('widget.import_in_progress')) %>,
+      success: <%- JSON.stringify(t('widget.import_success')) %>,
+      error: <%- JSON.stringify(t('widget.import_error')) %>,
+    };
+
     document.getElementById('import-url-button').addEventListener('click', function () {
       var urlInput = document.getElementById('import-url-input');
       var status = document.getElementById('import-url-status');
@@ -86,7 +88,7 @@
       var url = urlInput.value.trim();
       if (!url) return;
 
-      status.textContent = 'Import en cours...';
+      status.textContent = I18N.inProgress;
       status.className = 'import-status';
 
       fetch('/dashboard/widget/import-url', {
@@ -97,17 +99,17 @@
         .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
         .then(function (result) {
           if (!result.ok) {
-            status.textContent = result.data.error || "Erreur lors de l'import.";
+            status.textContent = result.data.error || I18N.error;
             status.className = 'import-status error';
             return;
           }
           var separator = field.value.trim() ? '\n\n' : '';
           field.value = (field.value + separator + result.data.text).slice(0, 8000);
-          status.textContent = 'Texte importe. Relisez-le puis cliquez sur Enregistrer.';
+          status.textContent = I18N.success;
           status.className = 'import-status success';
         })
         .catch(function () {
-          status.textContent = "Erreur lors de l'import.";
+          status.textContent = I18N.error;
           status.className = 'import-status error';
         });
     });
