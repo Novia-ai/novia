@@ -5,20 +5,24 @@
 </head>
 <body>
   <main class="auth-page">
-    <div class="auth-card">
-      <img src="/images/capybara-logo.png" alt="NovIA" class="auth-logo">
-      <h1>Connexion a NovIA</h1>
-      <% if (error) { %><p class="error"><%= error %></p><% } %>
-      <form method="POST" action="/login">
-        <label>Email
-          <input type="email" name="email" required>
-        </label>
-        <label>Mot de passe
-          <input type="password" name="password" required>
-        </label>
-        <button type="submit" class="button">Se connecter</button>
-      </form>
-      <p class="auth-switch">Pas encore de compte ? <a href="/register">Creer un compte</a></p>
+    <%- include('../partials/auth-pitch') %>
+
+    <div class="auth-form-panel">
+      <div class="auth-card">
+        <img src="/images/capybara-logo.png" alt="NovIA" class="auth-logo">
+        <h1>Connexion a NovIA</h1>
+        <% if (error) { %><p class="error"><%= error %></p><% } %>
+        <form method="POST" action="/login">
+          <label>Email
+            <input type="email" name="email" required>
+          </label>
+          <label>Mot de passe
+            <input type="password" name="password" required>
+          </label>
+          <button type="submit" class="button">Se connecter</button>
+        </form>
+        <p class="auth-switch">Pas encore de compte ? <a href="/register">Creer un compte</a></p>
+      </div>
     </div>
   </main>
 </body>
