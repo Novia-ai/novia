@@ -415,6 +415,18 @@ form textarea {
   text-shadow: none;
 }
 
+/* Sur mobile, le contenu du panneau sombre n'est plus centre verticalement :
+   le titre en position absolue chevauchait la premiere bulle. On le remet
+   dans le flux, en bandeau pleine largeur au-dessus du panneau. */
+@media (max-width: 799px) {
+  .site-brand {
+    position: static;
+    flex: 1 1 100%;
+    background: #1f2430;
+    padding: 20px 26px 0;
+  }
+}
+
 .auth-pitch {
   flex: 1 1 380px;
   background: #1f2430;
@@ -424,6 +436,12 @@ form textarea {
   flex-direction: column;
   justify-content: center;
   gap: 18px;
+}
+
+@media (max-width: 799px) {
+  .auth-pitch {
+    padding-top: 24px;
+  }
 }
 
 .pitch-chat {
