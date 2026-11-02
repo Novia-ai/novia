@@ -69,22 +69,21 @@ router.get('/', async (req, res) => {
 router.post('/codes', async (req, res) => {
   const code = normalizeCode(req.body.code) || generateCode();
   const months = parseInt(req.body.months, 10);
-  const maxUses = parseInt(req.body.max_uses, 10);
   const planId = parseInt(req.body.plan_id, 10);
   const note = String(req.body.note || '').trim().slice(0, 200);
 
-  if (!isValidCode(code) || !(months >= 1 && months <= 24) || !(maxUses >= 1 && maxUses <= 1000)) {
+  if (!isValidCode(code) || !(months >= 1 && months <= 24)) {
     return res.redirect('/dashboard/admin?error=invalid_code');
   }
   const { rows: planRows } = await pool.query("SELECT id FROM plans WHERE id = $1 AND key != 'demo'", [planId]);
   if (!planRows[0]) return res.redirect('/dashboard/admin?error=invalid_code');
 
   try {
-    await pool.query('INSERT INTO promo_codes (code, plan_id, months, max_uses, note) VALUES ($1, $2, $3, $4, $5)', [
+    // Chaque code ne sert qu'une seule fois : un code par personne.
+    await pool.query('INSERT INTO promo_codes (code, plan_id, months, max_uses, note) VALUES ($1, $2, $3, 1, $4)', [
       code,
       planId,
       months,
-      maxUses,
       note,
     ]);
   } catch (err) {
