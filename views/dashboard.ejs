@@ -16,11 +16,18 @@
           <p><%= t('dashboard.status') %><%= account.status %></p>
           <p><%= t('dashboard.tokens_used') %><%= account.tokens_used_current_period %> / <%= account.monthly_token_limit %></p>
           <p><%= t('dashboard.bonus_balance') %><%= account.bonus_token_balance %></p>
-          <p>
-            <%= t('dashboard.renewal') %>
-            <%= account.current_period_end ? new Date(account.current_period_end).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA') : '-' %>
-            (<%= account.autopay ? t('dashboard.autopay_on') : t('dashboard.autopay_off') %>)
-          </p>
+          <% var dateLocale = lang === 'en' ? 'en-US' : 'fr-CA'; %>
+          <% if (account.free_forever) { %>
+            <p><%= t('dashboard.free_forever') %></p>
+          <% } else if (account.free_until) { %>
+            <p><%= t('dashboard.free_until') %><%= new Date(account.free_until).toLocaleDateString(dateLocale) %></p>
+          <% } else { %>
+            <p>
+              <%= t('dashboard.renewal') %>
+              <%= account.current_period_end ? new Date(account.current_period_end).toLocaleDateString(dateLocale) : '-' %>
+              (<%= account.autopay ? t('dashboard.autopay_on') : t('dashboard.autopay_off') %>)
+            </p>
+          <% } %>
         </div>
       <% } else { %>
         <div class="card">

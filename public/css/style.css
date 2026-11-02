@@ -409,6 +409,23 @@ form label.checkbox-label {
   margin: 0;
 }
 
+.admin-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-form label {
+  flex: 1 1 140px;
+  margin: 0;
+}
+
+.admin-form .admin-form-wide {
+  flex-basis: 260px;
+}
+
 .account-deleted-notice {
   background: #e3f3e9;
   color: #1a7a3c;
@@ -1012,6 +1029,50 @@ body.home {
   background: #ffd166;
   color: #1f2430;
   font-weight: 700;
+}
+
+.home-showcase {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px 26px 28px;
+  border-top: 1px solid #2c3242;
+  text-align: center;
+}
+
+.home-showcase h2 {
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+}
+
+.home-showcase p {
+  color: #a9afbd;
+  font-size: 0.9rem;
+  margin: 0 0 14px;
+}
+
+.home-showcase ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-showcase a {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid #3a4154;
+  border-radius: 999px;
+  color: #ffd166;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.home-showcase a:hover {
+  border-color: #ffd166;
 }
 
 .home-footer {

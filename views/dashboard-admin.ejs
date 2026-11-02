@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+  <div class="layout">
+    <%- include('partials/sidebar', { active: 'admin' }) %>
+
+    <main class="content">
+      <h1><%= t('admin.title') %></h1>
+
+      <% if (error) { %><p class="error"><%= t('admin.error_' + error) %></p><% } %>
+      <% if (created) { %><p class="success"><%= t('admin.code_created') %><strong><%= created %></strong></p><% } %>
+
+      <div class="card">
+        <h2><%= t('admin.codes_title') %></h2>
+        <p><%= t('admin.codes_intro') %></p>
+        <form method="POST" action="/dashboard/admin/codes" class="admin-form">
+          <label><%= t('admin.field_code') %>
+            <input type="text" name="code" maxlength="30" placeholder="<%= t('admin.field_code_placeholder') %>" autocomplete="off">
+          </label>
+          <label><%= t('admin.field_plan') %>
+            <select name="plan_id">
+              <% plans.forEach(function(plan) { %>
+                <option value="<%= plan.id %>"><%= t('plan.' + plan.key + '.name') %></option>
+              <% }); %>
+            </select>
+          </label>
+          <label><%= t('admin.field_months') %>
+            <input type="number" name="months" min="1" max="24" value="3" required>
+          </label>
+          <label><%= t('admin.field_max_uses') %>
+            <input type="number" name="max_uses" min="1" max="1000" value="1" required>
+          </label>
+          <label class="admin-form-wide"><%= t('admin.field_note') %>
+            <input type="text" name="note" maxlength="200" placeholder="<%= t('admin.field_note_placeholder') %>">
+          </label>
+          <button type="submit" class="button"><%= t('admin.create_code') %></button>
+        </form>
+
+        <% if (codes.length > 0) { %>
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th><%= t('admin.col_code') %></th>
+                <th><%= t('admin.col_offer') %></th>
+                <th><%= t('admin.col_uses') %></th>
+                <th><%= t('admin.field_note') %></th>
+                <th><%= t('admin.col_redeemed_by') %></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% codes.forEach(function(code) { %>
+                <tr>
+                  <td><strong><%= code.code %></strong></td>
+                  <td><%= t('plan.' + code.plan_key + '.name') %> — <%= code.months %> <%= t('admin.months') %></td>
+                  <td><%= code.uses_count %> / <%= code.max_uses %></td>
+                  <td><%= code.note %></td>
+                  <td><%= code.redeemed_by %></td>
+                  <td>
+                    <form method="POST" action="/dashboard/admin/codes/<%= code.id %>/delete" class="inline-form" onsubmit="return confirm('<%= t('admin.delete_code_confirm') %>')">
+                      <button type="submit" class="button button-small button-danger"><%= t('common.delete') %></button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+
+      <div class="card" id="showcase">
+        <h2><%= t('admin.showcase_title') %></h2>
+        <p><%= t('admin.showcase_intro') %></p>
+        <form method="POST" action="/dashboard/admin/showcase" class="admin-form">
+          <label><%= t('admin.field_site_name') %>
+            <input type="text" name="name" maxlength="80" required>
+          </label>
+          <label class="admin-form-wide"><%= t('admin.field_site_url') %>
+            <input type="text" name="url" maxlength="300" placeholder="https://" required>
+          </label>
+          <button type="submit" class="button"><%= t('admin.add_site') %></button>
+        </form>
+
+        <% if (sites.length > 0) { %>
+          <table class="leads-table">
+            <tbody>
+              <% sites.forEach(function(site) { %>
+                <tr>
+                  <td><%= site.name %></td>
+                  <td><a href="<%= site.url %>" target="_blank" rel="noopener noreferrer"><%= site.url %></a></td>
+                  <td>
+                    <form method="POST" action="/dashboard/admin/showcase/<%= site.id %>/delete" class="inline-form" onsubmit="return confirm('<%= t('common.delete_confirm') %>')">
+                      <button type="submit" class="button button-small button-danger"><%= t('common.delete') %></button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

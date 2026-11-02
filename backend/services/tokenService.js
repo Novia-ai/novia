@@ -1,6 +1,27 @@
 const pool = require('../db/pool');
 
+// Les abonnements offerts (free_until) n'ont pas de webhook Stripe pour faire
+// avancer leur cycle : on le fait ici, a la demande. Chaque mois ecoule remet
+// les tokens a zero ; une fois free_until passe, l'abonnement expire.
+async function refreshFreePeriod(userId) {
+  await pool.query(
+    `UPDATE subscriptions SET status = 'expired', updated_at = now()
+     WHERE user_id = $1 AND status = 'active' AND stripe_subscription_id IS NULL
+       AND free_until IS NOT NULL AND free_until <= now()`,
+    [userId]
+  );
+  await pool.query(
+    `UPDATE subscriptions
+     SET tokens_used_current_period = 0, current_period_start = now(),
+         current_period_end = LEAST(now() + interval '1 month', free_until), updated_at = now()
+     WHERE user_id = $1 AND status = 'active' AND stripe_subscription_id IS NULL
+       AND free_until IS NOT NULL AND (current_period_end IS NULL OR current_period_end <= now())`,
+    [userId]
+  );
+}
+
 async function checkQuota(userId) {
+  await refreshFreePeriod(userId);
   const { rows } = await pool.query(
     `SELECT s.id AS subscription_id, s.tokens_used_current_period, s.monthly_token_limit,
             u.bonus_token_balance
@@ -68,4 +89,4 @@ async function resetCycle(subscriptionId, newPeriodStart, newPeriodEnd) {
   );
 }
 
-module.exports = { checkQuota, recordUsage, grantBonusTokens, resetCycle };
+module.exports = { refreshFreePeriod, checkQuota, recordUsage, grantBonusTokens, resetCycle };

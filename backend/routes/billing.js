@@ -3,8 +3,13 @@ const pool = require('../db/pool');
 const requireAuth = require('../middleware/requireAuth');
 const { getAccountContext } = require('../services/accountService');
 const stripeService = require('../services/stripeService');
+const rateLimit = require('express-rate-limit');
+const { normalizeCode } = require('./admin');
 
 const router = express.Router();
+
+// Empeche de deviner des codes promo a la chaine.
+const redeemLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10 });
 
 router.get('/', requireAuth, async (req, res) => {
   const account = await getAccountContext(req.session.userId);
@@ -27,6 +32,8 @@ router.get('/', requireAuth, async (req, res) => {
     tokenPacks,
     purchases,
     error: req.query.error || null,
+    promoError: req.query.promo_error || null,
+    promoSuccess: req.query.promo === 'ok',
   });
 });
 
@@ -82,6 +89,86 @@ router.post('/token-pack/:packKey', requireAuth, async (req, res) => {
   });
 
   res.redirect(303, session.url);
+});
+
+// Code promo : offre des mois d'un forfait, sans carte ni Stripe. Si un
+// abonnement offert est deja en cours sur le meme forfait, les mois s'ajoutent.
+router.post('/redeem', requireAuth, redeemLimiter, async (req, res) => {
+  const code = normalizeCode(req.body.code);
+  const userId = req.session.userId;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const { rows: codeRows } = await client.query(
+      `UPDATE promo_codes SET uses_count = uses_count + 1
+       WHERE code = $1 AND uses_count < max_uses
+       RETURNING id, plan_id, months`,
+      [code]
+    );
+    const promo = codeRows[0];
+    if (!promo) {
+      await client.query('ROLLBACK');
+      return res.redirect('/dashboard/billing?promo_error=invalid');
+    }
+
+    const { rows: subRows } = await client.query(
+      `SELECT s.plan_id, s.status, s.stripe_subscription_id, s.free_until, p.key AS plan_key
+       FROM subscriptions s JOIN plans p ON p.id = s.plan_id WHERE s.user_id = $1`,
+      [userId]
+    );
+    const sub = subRows[0];
+    if (sub && sub.status === 'active' && (sub.stripe_subscription_id || sub.plan_key === 'demo')) {
+      await client.query('ROLLBACK');
+      return res.redirect('/dashboard/billing?promo_error=paid_plan');
+    }
+
+    const { rowCount } = await client.query(
+      'INSERT INTO promo_redemptions (promo_code_id, user_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+      [promo.id, userId]
+    );
+    if (rowCount === 0) {
+      await client.query('ROLLBACK');
+      return res.redirect('/dashboard/billing?promo_error=already_used');
+    }
+
+    const extending = sub && sub.status === 'active' && sub.free_until && sub.plan_id === promo.plan_id;
+    if (extending) {
+      await client.query(
+        `UPDATE subscriptions SET free_until = free_until + make_interval(months => $1), updated_at = now()
+         WHERE user_id = $2`,
+        [promo.months, userId]
+      );
+    } else {
+      await client.query(
+        `INSERT INTO subscriptions
+           (user_id, plan_id, stripe_subscription_id, status, autopay, current_period_start, current_period_end,
+            tokens_used_current_period, monthly_token_limit, free_until)
+         SELECT $1, p.id, NULL, 'active', false, now(), now() + interval '1 month', 0, p.monthly_token_limit,
+                now() + make_interval(months => $3)
+         FROM plans p WHERE p.id = $2
+         ON CONFLICT (user_id) DO UPDATE SET
+           plan_id = EXCLUDED.plan_id,
+           stripe_subscription_id = NULL,
+           status = 'active',
+           autopay = false,
+           current_period_start = EXCLUDED.current_period_start,
+           current_period_end = EXCLUDED.current_period_end,
+           tokens_used_current_period = 0,
+           monthly_token_limit = EXCLUDED.monthly_token_limit,
+           free_until = EXCLUDED.free_until,
+           updated_at = now()`,
+        [userId, promo.plan_id, promo.months]
+      );
+    }
+    await client.query('COMMIT');
+    res.redirect('/dashboard/billing?promo=ok');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    console.error(err);
+    res.redirect('/dashboard/billing?promo_error=invalid');
+  } finally {
+    client.release();
+  }
 });
 
 router.post('/autopay', requireAuth, async (req, res) => {

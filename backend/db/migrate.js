@@ -49,8 +49,8 @@ async function seedDemoAccount() {
   const demoPlan = planRows[0];
 
   await pool.query(
-    `INSERT INTO subscriptions (user_id, plan_id, status, autopay, tokens_used_current_period, monthly_token_limit)
-     VALUES ($1, $2, 'active', false, 0, $3)
+    `INSERT INTO subscriptions (user_id, plan_id, status, autopay, tokens_used_current_period, monthly_token_limit, free_until)
+     VALUES ($1, $2, 'active', false, 0, $3, 'infinity')
      ON CONFLICT (user_id) DO NOTHING`,
     [demoUserId, demoPlan.id, demoPlan.monthly_token_limit]
   );
@@ -80,6 +80,14 @@ async function migrate() {
     `UPDATE subscriptions s SET monthly_token_limit = p.monthly_token_limit, updated_at = now()
      FROM plans p
      WHERE s.plan_id = p.id AND s.monthly_token_limit <> p.monthly_token_limit`
+  );
+
+  // Les comptes demo crees avant la colonne free_until n'avaient aucun cycle
+  // mensuel : leurs tokens ne repartaient jamais a zero.
+  await pool.query(
+    `UPDATE subscriptions s SET free_until = 'infinity'
+     FROM plans p
+     WHERE s.plan_id = p.id AND p.key = 'demo' AND s.free_until IS NULL AND s.stripe_subscription_id IS NULL`
   );
 
   for (const pack of TOKEN_PACKS) {

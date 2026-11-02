@@ -73,6 +73,18 @@
     <% }); %>
   </section>
 
+  <% if (showcaseSites.length > 0) { %>
+    <section class="home-showcase">
+      <h2><%= t('home.showcase_title') %></h2>
+      <p><%= t('home.showcase_sub') %></p>
+      <ul>
+        <% showcaseSites.forEach(function(site) { %>
+          <li><a href="<%= site.url %>" target="_blank" rel="noopener"><%= site.name %> ↗</a></li>
+        <% }); %>
+      </ul>
+    </section>
+  <% } %>
+
   <footer class="home-footer">
     <span>© <%= new Date().getFullYear() %> NovIA — <%= t('site.tagline') %></span>
     <span class="home-footer-links">

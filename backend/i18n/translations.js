@@ -4,6 +4,7 @@ module.exports = {
   'nav.widget': { fr: 'Widget', en: 'Widget' },
   'nav.billing': { fr: 'Facturation', en: 'Billing' },
   'nav.account': { fr: 'Compte', en: 'Account' },
+  'nav.admin': { fr: 'Admin', en: 'Admin' },
   'nav.leads': { fr: 'Prospects', en: 'Leads' },
   'nav.conversations': { fr: 'Conversations', en: 'Conversations' },
   'nav.logout': { fr: 'Déconnexion', en: 'Log out' },
@@ -26,6 +27,7 @@ module.exports = {
   'title.dashboard': { fr: 'Tableau de bord', en: 'Dashboard' },
   'title.widget': { fr: 'Widget', en: 'Widget' },
   'title.billing': { fr: 'Facturation', en: 'Billing' },
+  'title.admin': { fr: 'Admin', en: 'Admin' },
   'title.account': { fr: 'Compte', en: 'Account' },
   'title.leads': { fr: 'Prospects', en: 'Leads' },
   'title.conversations': { fr: 'Conversations', en: 'Conversations' },
@@ -151,6 +153,11 @@ module.exports = {
     fr: "Nombre de réponses estimé selon l'usage moyen. Recharges disponibles à tout moment.",
     en: 'Number of replies estimated from average usage. Top-ups available anytime.',
   },
+  'home.showcase_title': { fr: "Ils l'utilisent déjà", en: 'Already using it' },
+  'home.showcase_sub': {
+    fr: 'Allez voir NovIA en action sur leur site : la bulle en bas à droite.',
+    en: 'See NovIA in action on their website: the bubble in the bottom right.',
+  },
 
   // Conditions d'utilisation
   'terms.link': { fr: "Conditions d'utilisation", en: 'Terms of use' },
@@ -172,6 +179,8 @@ module.exports = {
   'dashboard.tokens_used': { fr: 'Tokens utilisés ce cycle : ', en: 'Tokens used this cycle: ' },
   'dashboard.bonus_balance': { fr: 'Solde de tokens bonus : ', en: 'Bonus token balance: ' },
   'dashboard.renewal': { fr: 'Renouvellement : ', en: 'Renewal: ' },
+  'dashboard.free_until': { fr: "Offert, sans frais, jusqu'au : ", en: 'Free of charge until: ' },
+  'dashboard.free_forever': { fr: 'Compte offert, sans date de fin.', en: 'Complimentary account, no end date.' },
   'dashboard.autopay_on': { fr: 'autopay actif', en: 'autopay on' },
   'dashboard.autopay_off': { fr: 'ne se renouvelle pas', en: 'will not renew' },
   'dashboard.no_plan': { fr: "Vous n'avez pas encore de forfait actif.", en: "You don't have an active plan yet." },
@@ -262,11 +271,27 @@ module.exports = {
   'billing.history_empty': { fr: "Aucun achat pour l'instant.", en: 'No purchases yet.' },
   'billing.error_prefix': { fr: 'Une erreur est survenue (', en: 'Something went wrong (' },
   'billing.error_suffix': { fr: '). Contactez le support si cela persiste.', en: '). Contact support if this persists.' },
+  'billing.promo_title': { fr: 'Code promo', en: 'Promo code' },
+  'billing.promo_submit': { fr: 'Appliquer', en: 'Apply' },
+  'billing.promo_success': {
+    fr: 'Code appliqué ! Vos mois offerts sont actifs, aucune carte requise.',
+    en: 'Code applied! Your free months are active, no card required.',
+  },
+  'billing.promo_error_invalid': {
+    fr: 'Ce code est invalide ou a déjà été utilisé au maximum.',
+    en: 'This code is invalid or has reached its usage limit.',
+  },
+  'billing.promo_error_already_used': { fr: 'Vous avez déjà utilisé ce code.', en: 'You have already used this code.' },
+  'billing.promo_error_paid_plan': {
+    fr: 'Votre compte a déjà un forfait actif : un code promo ne peut pas le remplacer.',
+    en: 'Your account already has an active plan: a promo code cannot replace it.',
+  },
 
   'plan.base.name': { fr: 'Base', en: 'Base' },
   'plan.base_plus.name': { fr: 'Base+', en: 'Base+' },
   'plan.pro.name': { fr: 'Pro', en: 'Pro' },
   'plan.enterprise.name': { fr: 'Entreprise', en: 'Enterprise' },
+  'plan.demo.name': { fr: 'Démo (illimité)', en: 'Demo (unlimited)' },
 
   // Page Compte
   'account.title': { fr: 'Compte', en: 'Account' },
@@ -393,4 +418,43 @@ module.exports = {
   'conversations.delete_button': { fr: 'Supprimer cette conversation', en: 'Delete this conversation' },
   'conversations.role_user': { fr: 'Visiteur', en: 'Visitor' },
   'conversations.role_assistant': { fr: 'Assistant', en: 'Assistant' },
+
+  'admin.title': { fr: 'Administration', en: 'Administration' },
+  'admin.codes_title': { fr: 'Codes promo (mois gratuits)', en: 'Promo codes (free months)' },
+  'admin.codes_intro': {
+    fr: "Créez un code et donnez-le à la personne : elle crée son compte, va dans Facturation et entre le code. Aucune carte n'est demandée ; à la fin des mois offerts, le forfait s'arrête simplement.",
+    en: 'Create a code and give it to the person: they create an account, open Billing and enter the code. No card is required; when the free months end, the plan simply stops.',
+  },
+  'admin.field_code': { fr: 'Code', en: 'Code' },
+  'admin.field_code_placeholder': { fr: 'Vide = généré automatiquement', en: 'Empty = generated automatically' },
+  'admin.field_plan': { fr: 'Forfait offert', en: 'Plan offered' },
+  'admin.field_months': { fr: 'Nombre de mois', en: 'Number of months' },
+  'admin.field_max_uses': { fr: 'Utilisations max.', en: 'Max uses' },
+  'admin.field_note': { fr: 'Note (pour qui ?)', en: 'Note (for whom?)' },
+  'admin.field_note_placeholder': { fr: 'ex. Marie — salon de coiffure', en: 'e.g. Marie — hair salon' },
+  'admin.create_code': { fr: 'Créer le code', en: 'Create code' },
+  'admin.code_created': { fr: 'Code créé : ', en: 'Code created: ' },
+  'admin.col_code': { fr: 'Code', en: 'Code' },
+  'admin.col_offer': { fr: 'Offre', en: 'Offer' },
+  'admin.col_uses': { fr: 'Utilisé', en: 'Used' },
+  'admin.col_redeemed_by': { fr: 'Utilisé par', en: 'Used by' },
+  'admin.months': { fr: 'mois', en: 'months' },
+  'admin.delete_code_confirm': {
+    fr: 'Supprimer ce code ? Les mois déjà offerts restent actifs.',
+    en: 'Delete this code? Free months already given stay active.',
+  },
+  'admin.error_invalid_code': {
+    fr: 'Code invalide : lettres, chiffres et tirets seulement (4 à 30), de 1 à 24 mois.',
+    en: 'Invalid code: letters, numbers and dashes only (4 to 30), 1 to 24 months.',
+  },
+  'admin.error_code_exists': { fr: 'Ce code existe déjà.', en: 'This code already exists.' },
+  'admin.error_invalid_site': { fr: 'Nom ou adresse du site invalide.', en: 'Invalid site name or address.' },
+  'admin.showcase_title': { fr: "Vitrine de la page d'accueil", en: 'Home page showcase' },
+  'admin.showcase_intro': {
+    fr: "Les sites ajoutés ici s'affichent sur novia.help dans « Ils l'utilisent déjà », pour que les visiteurs voient NovIA en action. Demandez d'abord l'accord de la personne.",
+    en: 'Sites added here appear on novia.help under "Already using it", so visitors can see NovIA in action. Ask the person for permission first.',
+  },
+  'admin.field_site_name': { fr: 'Nom affiché', en: 'Display name' },
+  'admin.field_site_url': { fr: 'Adresse du site', en: 'Website address' },
+  'admin.add_site': { fr: 'Ajouter à la vitrine', en: 'Add to showcase' },
 };

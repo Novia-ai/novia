@@ -96,3 +96,37 @@ CREATE TABLE IF NOT EXISTS leads (
 );
 
 CREATE INDEX IF NOT EXISTS leads_user_idx ON leads(user_id, created_at DESC);
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT false;
+
+-- Abonnement offert (code promo ou compte demo), sans Stripe : actif jusqu'a
+-- cette date, avec un cycle de tokens qui repart chaque mois. 'infinity' pour
+-- un compte demo. NULL pour un abonnement paye par Stripe.
+ALTER TABLE subscriptions ADD COLUMN IF NOT EXISTS free_until TIMESTAMPTZ;
+
+CREATE TABLE IF NOT EXISTS promo_codes (
+  id SERIAL PRIMARY KEY,
+  code TEXT UNIQUE NOT NULL,
+  plan_id INTEGER NOT NULL REFERENCES plans(id),
+  months INTEGER NOT NULL CHECK (months > 0),
+  max_uses INTEGER NOT NULL DEFAULT 1 CHECK (max_uses > 0),
+  uses_count INTEGER NOT NULL DEFAULT 0,
+  note TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS promo_redemptions (
+  id SERIAL PRIMARY KEY,
+  promo_code_id INTEGER NOT NULL REFERENCES promo_codes(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (promo_code_id, user_id)
+);
+
+-- Sites clients affiches sur la page d'accueil ("Ils l'utilisent deja").
+CREATE TABLE IF NOT EXISTS showcase_sites (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  url TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);

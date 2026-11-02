@@ -15,6 +15,19 @@
       <% } %>
 
       <div class="card">
+        <h2><%= t('billing.promo_title') %></h2>
+        <% if (promoSuccess) { %><p class="success"><%= t('billing.promo_success') %></p><% } %>
+        <% if (promoError) { %><p class="error"><%= t('billing.promo_error_' + promoError) %></p><% } %>
+        <% if (account && account.free_until && account.status === 'active' && !account.free_forever) { %>
+          <p><%= t('dashboard.free_until') %><strong><%= new Date(account.free_until).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA') %></strong></p>
+        <% } %>
+        <form method="POST" action="/dashboard/billing/redeem" class="inline-form">
+          <input type="text" name="code" required maxlength="30" placeholder="NOVIA-XXXXXX" autocomplete="off">
+          <button type="submit" class="button"><%= t('billing.promo_submit') %></button>
+        </form>
+      </div>
+
+      <div class="card">
         <h2><%= t('billing.plans_title') %></h2>
         <div class="plan-grid">
           <% plans.forEach(function(plan) { %>
@@ -36,7 +49,7 @@
         <p class="billing-terms-note"><%= t('billing.terms_note') %> <a href="/conditions" target="_blank"><%= t('terms.link') %></a></p>
       </div>
 
-      <% if (account && account.subscription_id) { %>
+      <% if (account && account.subscription_id && !account.free_until) { %>
         <div class="card">
           <h2><%= t('billing.autopay_title') %></h2>
           <p><%= t('billing.autopay_current') %><strong><%= account.autopay ? t('billing.autopay_active') : t('billing.autopay_inactive') %></strong></p>

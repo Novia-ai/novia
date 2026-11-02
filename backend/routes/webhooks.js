@@ -66,6 +66,7 @@ async function activateSubscriptionFromSession(session) {
        current_period_end = EXCLUDED.current_period_end,
        tokens_used_current_period = 0,
        monthly_token_limit = EXCLUDED.monthly_token_limit,
+       free_until = NULL,
        updated_at = now()`,
     [
       userId,

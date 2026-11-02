@@ -63,7 +63,9 @@ const DEMO_PLAN = {
   key: 'demo',
   name: 'Demo (interne)',
   priceCents: 0,
-  monthlyTokenLimit: 500000,
+  // Pratiquement illimite (~5 000 reponses / mois), mais garde un plafond
+  // pour qu'un abus du widget de demo ne fasse pas exploser la facture OpenAI.
+  monthlyTokenLimit: 3000000,
   allowCustomBranding: true,
   stripePriceEnv: null,
 };

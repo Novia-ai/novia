@@ -10,6 +10,9 @@
     <a href="/dashboard/conversations" class="sidebar-link <%= active === 'conversations' ? 'active' : '' %>"><%= t('nav.conversations') %></a>
     <a href="/dashboard/billing" class="sidebar-link <%= active === 'billing' ? 'active' : '' %>"><%= t('nav.billing') %></a>
     <a href="/dashboard/account" class="sidebar-link <%= active === 'account' ? 'active' : '' %>"><%= t('nav.account') %></a>
+    <% if (isAdmin) { %>
+      <a href="/dashboard/admin" class="sidebar-link <%= active === 'admin' ? 'active' : '' %>"><%= t('nav.admin') %></a>
+    <% } %>
   </nav>
   <div class="lang-switch">
     <a href="?lang=fr" class="<%= lang === 'fr' ? 'active' : '' %>">FR</a>
