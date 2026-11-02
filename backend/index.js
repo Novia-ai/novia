@@ -7,6 +7,7 @@ const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 
 const pool = require('./db/pool');
+const { PLANS } = require('./config/plans');
 const i18n = require('./middleware/i18n');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
@@ -60,8 +61,18 @@ app.use('/dashboard/widget', widgetConfigRoutes);
 app.use('/dashboard/leads', leadsRoutes);
 app.use('/dashboard/conversations', conversationsRoutes);
 
+// Moyenne mesuree en production le 2026-11-02 (29 reponses, ~600 tokens
+// chacune) : sert a traduire les limites des forfaits en "reponses / mois"
+// sur la page d'accueil, plus parlant qu'un nombre de tokens.
+const AVG_TOKENS_PER_REPLY = 600;
+
 app.get('/', (req, res) => {
-  res.redirect(req.session.userId ? '/dashboard' : '/login');
+  if (req.session.userId) return res.redirect('/dashboard');
+  const plans = PLANS.map((plan) => ({
+    ...plan,
+    approxReplies: Math.floor(plan.monthlyTokenLimit / AVG_TOKENS_PER_REPLY / 10) * 10,
+  }));
+  res.render('home', { titleKey: 'title.home', plans });
 });
 
 app.use((req, res) => {

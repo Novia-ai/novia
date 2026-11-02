@@ -22,6 +22,7 @@ module.exports = {
   'title.account': { fr: 'Compte', en: 'Account' },
   'title.leads': { fr: 'Prospects', en: 'Leads' },
   'title.conversations': { fr: 'Conversations', en: 'Conversations' },
+  'title.home': { fr: 'Assistant IA pour votre site web', en: 'AI assistant for your website' },
   'title.login': { fr: 'Connexion', en: 'Log in' },
   'title.register': { fr: 'Créer un compte', en: 'Sign up' },
   'title.not_found': { fr: 'Page introuvable', en: 'Page not found' },
@@ -84,6 +85,59 @@ module.exports = {
   'pitch.demo_hint': {
     fr: '→ Essayez-le tout de suite : cliquez sur le capybara en bas à droite.',
     en: '→ Try it right now: click the capybara in the bottom-right corner.',
+  },
+
+  // Page d'accueil publique
+  'home.meta_description': {
+    fr: "NovIA ajoute à votre site un assistant IA qui répond à vos visiteurs 24h/24 avec les vraies informations de votre entreprise, et vous transmet les demandes de contact.",
+    en: "NovIA adds an AI assistant to your website that answers your visitors 24/7 using your business's real information, and passes contact requests on to you.",
+  },
+  'home.nav_login': { fr: 'Connexion', en: 'Log in' },
+  'home.cta_start': { fr: 'Commencer', en: 'Get started' },
+  'home.cta_demo': { fr: 'Essayer avec mon site', en: 'Try it with my site' },
+  'home.cta_register': { fr: 'Créer mon compte', en: 'Create my account' },
+  'home.hero_sub': {
+    fr: "NovIA ajoute à votre site un assistant qui répond à vos visiteurs, jour et nuit, avec les vraies informations de votre entreprise — et vous transmet ceux qui veulent être rappelés.",
+    en: "NovIA adds an assistant to your website that answers your visitors day and night with your business's real information — and passes on the ones who want a call back.",
+  },
+  'home.steps_title': { fr: 'Prêt en 3 étapes', en: 'Ready in 3 steps' },
+  'home.step1_title': { fr: 'Indiquez votre site', en: 'Enter your website' },
+  'home.step1_text': {
+    fr: "NovIA lit le contenu de votre site et s'en sert comme seule source pour répondre.",
+    en: 'NovIA reads your website content and uses it as its only source for answers.',
+  },
+  'home.step2_title': { fr: 'Collez une ligne de code', en: 'Paste one line of code' },
+  'home.step2_text': {
+    fr: 'Un guide pas à pas pour WordPress, Wix, Shopify, Squarespace ou un site HTML.',
+    en: 'A step-by-step guide for WordPress, Wix, Shopify, Squarespace or a plain HTML site.',
+  },
+  'home.step3_title': { fr: 'Recevez vos prospects', en: 'Get your leads' },
+  'home.step3_text': {
+    fr: 'Les visiteurs qui veulent être recontactés et toutes les conversations apparaissent dans votre tableau de bord.',
+    en: 'Visitors who want to be contacted and every conversation show up in your dashboard.',
+  },
+  'home.benefits_title': {
+    fr: 'Pourquoi NovIA ?',
+    en: 'Why NovIA?',
+  },
+  'home.benefit_leads': {
+    fr: "Quand un visiteur veut aller plus loin, l'assistant lui propose d'être recontacté et vous transmet ses coordonnées",
+    en: 'When a visitor wants to go further, the assistant offers a call back and passes their details on to you',
+  },
+  'home.pricing_title': { fr: 'Forfaits simples, sans engagement', en: 'Simple plans, no commitment' },
+  'home.pricing_sub': {
+    fr: 'Payez au mois, changez ou arrêtez quand vous voulez.',
+    en: 'Pay monthly, change or stop whenever you want.',
+  },
+  'home.plan_popular': { fr: 'Recommandé', en: 'Recommended' },
+  'home.replies_per_month': { fr: 'réponses / mois', en: 'replies / month' },
+  'home.pricing_note': {
+    fr: "Nombre de réponses estimé selon l'usage moyen. Besoin de plus ? Des recharges sont disponibles à tout moment depuis votre tableau de bord.",
+    en: 'Number of replies estimated from average usage. Need more? Top-ups are available anytime from your dashboard.',
+  },
+  'home.final_title': {
+    fr: "Curieux de voir ce que NovIA répondrait sur votre site ?",
+    en: 'Curious what NovIA would answer on your website?',
   },
 
   // Tableau de bord - vue d'ensemble
