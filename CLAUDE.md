@@ -13,10 +13,16 @@ cette convention.
 
 ## Déploiement — contraintes importantes
 
-- Le vrai serveur tourne sur un **CT Proxmox** (`192.168.0.10`), pas sur cette
-  machine Windows. **Aucun accès SSH** n'est disponible depuis cette session
-  vers ce CT — toute étape de déploiement doit être donnée à l'utilisateur
-  sous forme de commandes exactes à copier-coller, jamais exécutée directement.
+- Le vrai serveur tourne sur le **CT Proxmox 110 "Novia"** (`192.168.0.10`),
+  pas sur cette machine Windows. Depuis le 2026-11-02, l'utilisateur autorise
+  Claude à déployer lui-même : on passe par l'hôte Proxmox
+  (`ssh proxmox-maison`), puis `timeout N pct exec 110 -- bash -c "cd
+  /opt/novia && ..."` (toujours avec `timeout`, cf. incident I/O d'octobre).
+  Les modifications se font dans ce dépôt puis sont déployées par `git pull`
+  sur le CT — ne jamais éditer les fichiers directement dans le CT ou le
+  conteneur (perdu au prochain rebuild, et diverge de GitHub). Ne jamais
+  afficher le contenu des secrets du `.env` (vérifier seulement s'ils sont
+  remplis).
 - Port de l'app : **3002** (le 3000 est déjà pris par un autre service sur ce
   serveur). `APP_BASE_URL` doit être `https://novia.help` en production — ne
   jamais laisser `localhost` dans le `.env` du CT, sinon le snippet remis aux
@@ -24,8 +30,8 @@ cette convention.
 - `docker-compose.yml` charge tout `.env` via `env_file:` (ne pas revenir à
   une liste figée de variables `environment:`, ça a déjà causé un bug où une
   nouvelle variable ajoutée au `.env` n'atteignait jamais le conteneur).
-- Après un `git push`, le flux normal est : l'utilisateur fait `git pull` sur
-  le CT, `docker compose up -d --build`, et `docker compose exec novia npm run
+- Après un `git push`, le flux normal sur le CT est : `git pull`,
+  `docker compose up -d --build`, et `docker compose exec novia npm run
   migrate` uniquement si le schéma a changé.
 
 ## Développement local
