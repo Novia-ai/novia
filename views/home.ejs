@@ -11,7 +11,7 @@
 <body class="home">
   <header class="home-header">
     <a href="/" class="home-brand">
-      <img src="/images/capybara-logo.png" alt="" class="home-brand-logo">
+      <img src="/images/capybara-logo-192.png" alt="" class="home-brand-logo">
       NovIA
     </a>
     <nav class="home-nav">
@@ -20,73 +20,64 @@
         <a href="?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
       </div>
       <a href="/login" class="home-nav-link"><%= t('home.nav_login') %></a>
-      <a href="/register" class="button button-accent"><%= t('home.cta_start') %></a>
     </nav>
   </header>
 
-  <section class="home-hero">
-    <p class="home-hero-tagline"><%= t('site.tagline') %></p>
-    <h1><%= t('pitch.title') %></h1>
-    <p class="home-hero-sub"><%= t('home.hero_sub') %></p>
-    <div class="home-hero-actions">
-      <a href="/demo" class="button button-accent button-large"><%= t('home.cta_demo') %></a>
-      <a href="/register" class="button button-ghost button-large"><%= t('home.cta_register') %></a>
-    </div>
-    <p class="home-hero-hint"><%= t('pitch.demo_hint') %></p>
-  </section>
+  <main class="home-main">
+    <section class="home-pitch">
+      <p class="home-hero-tagline"><%= t('site.tagline') %></p>
+      <h1><%= t('pitch.title') %></h1>
+      <p class="home-hero-sub"><%= t('home.hero_sub') %></p>
+      <ul class="home-points">
+        <% [1, 2, 3].forEach(function(n) { %>
+          <li><%= t('home.point' + n) %></li>
+        <% }); %>
+      </ul>
+      <div class="home-hero-actions">
+        <a href="/demo" class="button button-accent button-large"><%= t('home.cta_demo') %></a>
+        <a href="/register" class="button button-ghost button-large"><%= t('home.cta_register') %></a>
+      </div>
+      <p class="home-hero-hint"><%= t('pitch.demo_hint') %></p>
+    </section>
 
-  <section class="home-section">
-    <h2><%= t('home.steps_title') %></h2>
-    <div class="home-steps">
-      <% [1, 2, 3].forEach(function(n) { %>
-        <div class="home-step">
-          <span class="home-step-number"><%= n %></span>
+    <section class="home-pricing" id="forfaits">
+      <h2><%= t('home.pricing_title') %></h2>
+      <p class="home-pricing-sub"><%= t('home.pricing_sub') %></p>
+      <ul class="home-plan-list">
+        <% plans.forEach(function(plan) { %>
+          <li class="home-plan <%= plan.key === 'pro' ? 'home-plan-featured' : '' %>">
+            <div>
+              <strong><%= t('plan.' + plan.key + '.name') %></strong>
+              <% if (plan.key === 'pro') { %><span class="badge"><%= t('home.plan_popular') %></span><% } %>
+              <span class="home-plan-detail">≈ <%= plan.approxReplies.toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %> <%= t('home.replies_per_month') %><% if (plan.allowCustomBranding) { %> · <%= t('home.plan_branding') %><% } %></span>
+            </div>
+            <span class="home-plan-price"><%= (plan.priceCents / 100).toFixed(2) %><%= t('billing.per_month') %></span>
+          </li>
+        <% }); %>
+      </ul>
+      <a href="/register" class="button home-pricing-cta"><%= t('home.cta_register') %></a>
+      <p class="home-pricing-note"><%= t('home.pricing_note') %></p>
+    </section>
+  </main>
+
+  <section class="home-steps">
+    <% [1, 2, 3].forEach(function(n) { %>
+      <div class="home-step">
+        <span class="home-step-number"><%= n %></span>
+        <div>
           <h3><%= t('home.step' + n + '_title') %></h3>
           <p><%= t('home.step' + n + '_text') %></p>
         </div>
-      <% }); %>
-    </div>
-  </section>
-
-  <section class="home-section home-section-dark">
-    <h2><%= t('home.benefits_title') %></h2>
-    <div class="home-benefits">
-      <% [1, 2, 3, 4, 5].forEach(function(n) { %>
-        <div class="pitch-bubble"><%= t('pitch.item' + n) %></div>
-      <% }); %>
-      <div class="pitch-bubble"><%= t('home.benefit_leads') %></div>
-    </div>
-  </section>
-
-  <section class="home-section" id="forfaits">
-    <h2><%= t('home.pricing_title') %></h2>
-    <p class="home-section-sub"><%= t('home.pricing_sub') %></p>
-    <div class="plan-grid home-plans">
-      <% plans.forEach(function(plan) { %>
-        <div class="plan-card <%= plan.key === 'pro' ? 'plan-card-featured' : '' %>">
-          <% if (plan.key === 'pro') { %><span class="badge"><%= t('home.plan_popular') %></span><% } %>
-          <h3><%= t('plan.' + plan.key + '.name') %></h3>
-          <p class="plan-price"><%= (plan.priceCents / 100).toFixed(2) %><%= t('billing.per_month') %></p>
-          <p>≈ <%= plan.approxReplies.toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %> <%= t('home.replies_per_month') %></p>
-          <p><%= plan.allowCustomBranding ? t('billing.branding_yes') : t('billing.branding_no') %></p>
-          <a href="/register" class="button"><%= t('common.choose') %></a>
-        </div>
-      <% }); %>
-    </div>
-    <p class="home-pricing-note"><%= t('home.pricing_note') %></p>
-  </section>
-
-  <section class="home-section home-final-cta">
-    <h2><%= t('home.final_title') %></h2>
-    <div class="home-hero-actions">
-      <a href="/demo" class="button button-accent button-large"><%= t('home.cta_demo') %></a>
-      <a href="/register" class="button button-large"><%= t('home.cta_register') %></a>
-    </div>
+      </div>
+    <% }); %>
   </section>
 
   <footer class="home-footer">
     <span>© <%= new Date().getFullYear() %> NovIA — <%= t('site.tagline') %></span>
-    <a href="/login"><%= t('home.nav_login') %></a>
+    <span class="home-footer-links">
+      <a href="/confidentialite"><%= t('privacy.link') %></a>
+      <a href="/login"><%= t('home.nav_login') %></a>
+    </span>
   </footer>
 
   <script src="/widget.js" data-client="novia-demo" async></script>

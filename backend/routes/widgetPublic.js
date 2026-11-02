@@ -31,7 +31,7 @@ router.get('/widget/frame/:clientKey', async (req, res) => {
     botName: config.bot_name,
     greeting: config.greeting_message,
     primaryColor: branded ? config.primary_color : '#3b4256',
-    logoUrl: branded && config.logo_path ? config.logo_path : '/images/capybara-logo.png',
+    logoUrl: branded && config.logo_path ? config.logo_path : '/images/capybara-logo-192.png',
     novaHomeUrl: process.env.APP_BASE_URL || 'https://novia.help',
   });
 });
@@ -48,7 +48,7 @@ router.get('/widget/logo/:clientKey', async (req, res) => {
   );
   const config = rows[0];
   const branded = Boolean(config && config.allow_custom_branding);
-  const logoUrl = branded && config.logo_path ? config.logo_path : '/images/capybara-logo.png';
+  const logoUrl = branded && config.logo_path ? config.logo_path : '/images/capybara-logo-192.png';
   res.redirect(logoUrl);
 });
 

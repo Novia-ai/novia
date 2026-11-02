@@ -718,7 +718,8 @@ form textarea {
   color: #1f2430;
 }
 
-/* Page d'accueil publique */
+/* Page d'accueil publique : l'essentiel (offre, boutons, prix) doit tenir
+   dans un seul ecran sur ordinateur. */
 
 .button-accent {
   background-color: #ffd166;
@@ -741,8 +742,13 @@ form textarea {
 }
 
 .button-large {
-  padding: 14px 24px;
-  font-size: 1.05rem;
+  padding: 13px 22px;
+  font-size: 1rem;
+}
+
+body.home {
+  background: #1f2430;
+  color: #fff;
 }
 
 .home-header {
@@ -750,8 +756,9 @@ form textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  max-width: 1180px;
+  margin: 0 auto;
   padding: 16px 26px;
-  background: #1f2430;
 }
 
 .home-brand {
@@ -759,15 +766,15 @@ form textarea {
   align-items: center;
   gap: 10px;
   color: #fff;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-decoration: none;
 }
 
 .home-brand-logo {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
   object-fit: cover;
 }
@@ -788,93 +795,171 @@ form textarea {
   color: #fff;
 }
 
-.home-hero {
-  background: #1f2430;
-  color: #fff;
-  padding: 56px 26px 72px;
-  text-align: center;
-}
-
-.home-hero h1 {
-  font-size: 2.4rem;
-  line-height: 1.2;
-  max-width: 760px;
-  margin: 0 auto 18px;
+.home-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 26px 36px;
 }
 
 .home-hero-tagline {
   color: #8b93a6;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-style: italic;
   font-weight: 600;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
+}
+
+.home-pitch h1 {
+  font-size: 2.2rem;
+  line-height: 1.2;
+  margin: 0 0 14px;
 }
 
 .home-hero-sub {
   color: #d7dae3;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   line-height: 1.5;
-  max-width: 640px;
-  margin: 0 auto 28px;
+  margin: 0 0 16px;
+}
+
+.home-points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-points li {
+  color: #d7dae3;
+  padding-left: 26px;
+  position: relative;
+}
+
+.home-points li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #ffd166;
+  font-weight: 700;
 }
 
 .home-hero-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 12px;
 }
 
 .home-hero-hint {
   color: #ffd166;
   font-weight: 700;
-  margin: 24px 0 0;
+  font-size: 0.9rem;
+  margin: 16px 0 0;
 }
 
-.home-section {
-  padding: 56px 26px;
-  max-width: 1080px;
-  margin: 0 auto;
+.home-pricing {
+  background: #fff;
+  color: #1f2430;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-.home-section h2 {
-  text-align: center;
-  font-size: 1.8rem;
-  margin: 0 0 28px;
+.home-pricing h2 {
+  font-size: 1.3rem;
+  margin: 0;
 }
 
-.home-section-sub {
-  text-align: center;
+.home-pricing-sub {
   color: #5b6070;
-  margin: -16px 0 28px;
+  font-size: 0.9rem;
+  margin: 4px 0 14px;
 }
 
-.home-section-dark {
-  max-width: none;
-  background: #1f2430;
-  color: #fff;
+.home-plan-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.home-plan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #e2e4ea;
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.home-plan .badge {
+  margin-left: 6px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  background: #fff3cd;
+  color: #7a5b00;
+}
+
+.home-plan-featured {
+  border-color: #ffd166;
+  box-shadow: 0 0 0 1px #ffd166;
+}
+
+.home-plan-detail {
+  display: block;
+  color: #5b6070;
+  font-size: 0.85rem;
+  margin-top: 2px;
+}
+
+.home-plan-price {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.home-pricing-cta {
+  display: block;
+  text-align: center;
+}
+
+.home-pricing-note {
+  color: #8f95a3;
+  font-size: 0.78rem;
+  margin: 10px 0 0;
 }
 
 .home-steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 24px 26px 32px;
+  border-top: 1px solid #2c3242;
 }
 
 .home-step {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 12px;
 }
 
 .home-step h3 {
-  margin: 12px 0 8px;
+  font-size: 1rem;
+  margin: 4px 0 4px;
 }
 
 .home-step p {
-  color: #5b6070;
-  line-height: 1.5;
+  color: #a9afbd;
+  font-size: 0.9rem;
+  line-height: 1.45;
   margin: 0;
 }
 
@@ -882,55 +967,13 @@ form textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: #ffd166;
   color: #1f2430;
   font-weight: 700;
-}
-
-.home-benefits {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 14px;
-  max-width: 1080px;
-  margin: 0 auto;
-}
-
-.home-benefits .pitch-bubble {
-  max-width: none;
-}
-
-.home-plans .plan-card {
-  background: #fff;
-  padding: 22px;
-  gap: 8px;
-}
-
-.home-plans .plan-card p {
-  margin: 0;
-}
-
-.home-plans .plan-card .button {
-  margin-top: auto;
-  text-align: center;
-}
-
-.plan-card-featured {
-  border-color: #ffd166;
-  box-shadow: 0 0 0 2px #ffd166;
-}
-
-.home-pricing-note {
-  text-align: center;
-  color: #5b6070;
-  font-size: 0.9rem;
-  margin-top: 20px;
-}
-
-.home-final-cta {
-  text-align: center;
 }
 
 .home-footer {
@@ -938,14 +981,31 @@ form textarea {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
-  padding: 24px 26px;
-  background: #1f2430;
+  padding: 18px 26px;
+  background: #181c25;
   color: #8b93a6;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+
+.home-footer-links {
+  display: flex;
+  gap: 18px;
 }
 
 .home-footer a {
   color: #c7cbd6;
+}
+
+@media (max-width: 899px) {
+  .home-main {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .home-steps {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 }
 
 @media (max-width: 599px) {
@@ -953,15 +1013,70 @@ form textarea {
     padding: 12px 16px;
   }
 
-  .home-nav .button {
-    display: none;
+  .home-main {
+    padding: 8px 16px 28px;
   }
 
-  .home-hero h1 {
-    font-size: 1.8rem;
+  .home-pitch h1 {
+    font-size: 1.65rem;
   }
 
-  .home-section {
-    padding: 40px 18px;
+  .home-hero-actions .button {
+    flex: 1 1 100%;
+    text-align: center;
   }
+
+  .home-pricing {
+    padding: 18px;
+  }
+
+  .home-steps {
+    padding: 20px 16px 24px;
+  }
+}
+
+.auth-legal {
+  color: #8f95a3;
+  font-size: 0.8rem;
+  margin: 12px 0 0;
+}
+
+/* Pages legales (politique de confidentialite) */
+
+body.legal {
+  background: #f4f5f7;
+}
+
+.legal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 26px;
+  background: #1f2430;
+}
+
+.legal-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 26px 56px;
+  line-height: 1.6;
+}
+
+.legal-content h1 {
+  margin: 0 0 4px;
+}
+
+.legal-content h2 {
+  font-size: 1.2rem;
+  margin: 32px 0 8px;
+}
+
+.legal-content h3 {
+  font-size: 1rem;
+  margin: 18px 0 6px;
+}
+
+.legal-updated {
+  color: #8f95a3;
+  margin: 0 0 24px;
 }

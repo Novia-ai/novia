@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body class="legal">
+  <header class="legal-header">
+    <a href="/" class="home-brand">
+      <img src="/images/capybara-logo-192.png" alt="" class="home-brand-logo">
+      NovIA
+    </a>
+    <div class="lang-switch">
+      <a href="?lang=fr" class="<%= lang === 'fr' ? 'active' : '' %>">FR</a>
+      <a href="?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
+    </div>
+  </header>
+
+  <main class="legal-content">
+    <% if (lang === 'en') { %>
+      <h1>Privacy policy</h1>
+      <p class="legal-updated">Last updated: November 2, 2026</p>
+
+      <p>NovIA is a service that adds an AI assistant to businesses' websites. It is operated by Jonathan Hamel, sole proprietor, in Québec. This policy explains what personal information we collect, why, and how you can exercise your rights, in accordance with Québec's <em>Act respecting the protection of personal information in the private sector</em> (Law 25).</p>
+
+      <h2>Person in charge of personal information</h2>
+      <p>Jonathan Hamel — <a href="mailto:movia.ai.base@gmail.com">movia.ai.base@gmail.com</a>. Contact him for any question, request or complaint about your personal information.</p>
+
+      <h2>Information we collect</h2>
+      <h3>NovIA customers (businesses with an account)</h3>
+      <ul>
+        <li>Email address and password (stored only in encrypted, irreversible form).</li>
+        <li>Subscription and purchase history. Payments are handled by Stripe: NovIA never sees or stores your card number.</li>
+        <li>The content you give the assistant (knowledge base, website imported by URL, logo, colors).</li>
+      </ul>
+      <h3>Visitors who use an assistant on a website</h3>
+      <ul>
+        <li>The messages exchanged with the assistant.</li>
+        <li>A random identifier stored in your browser, used only to group the messages of one conversation.</li>
+        <li>The contact details you choose to leave when you ask to be contacted (name, email, phone, message).</li>
+      </ul>
+      <p>For these visitors, the business whose website hosts the assistant decides how the information is used: NovIA processes it on that business's behalf, to answer you and pass your request on to it.</p>
+      <h3>Cookies</h3>
+      <ul>
+        <li>A session cookie to keep you logged in (30 days).</li>
+        <li>A cookie that remembers your language choice (1 year).</li>
+      </ul>
+      <p>We do not use advertising or tracking cookies.</p>
+
+      <h2>Why we use it</h2>
+      <ul>
+        <li>To provide the service: generate the assistant's answers, show conversations and contact requests to the business concerned.</li>
+        <li>To manage accounts, subscriptions and billing.</li>
+        <li>To protect the service against abuse (for example, by temporarily limiting the number of requests).</li>
+      </ul>
+      <p>We never sell or rent your personal information.</p>
+
+      <h2>Service providers and transfers outside Québec</h2>
+      <p>Our data is hosted on a server operated by NovIA in Québec. Some providers process information outside Québec, mainly in the United States:</p>
+      <ul>
+        <li><strong>OpenAI</strong>: visitors' messages and the business's knowledge base are sent to it to generate the answers. Under OpenAI's API terms, this data is not used to train its models.</li>
+        <li><strong>Stripe</strong>: payment processing for NovIA customers.</li>
+        <li><strong>Cloudflare</strong>: network delivery and security of the site (it handles, among other things, your IP address).</li>
+      </ul>
+      <p>These providers are bound by contract to protect the information they handle.</p>
+
+      <h2>Retention</h2>
+      <p>Information is kept as long as the customer account is active. When an account is closed, or on request, the associated information (conversations, contact requests, content) is deleted within 30 days, except where the law requires us to keep it longer (for example, billing records).</p>
+
+      <h2>Your rights</h2>
+      <p>You may ask to access your personal information, have it corrected, withdraw your consent, have it deleted or receive it in a commonly used format. Write to <a href="mailto:movia.ai.base@gmail.com">movia.ai.base@gmail.com</a>; we will reply within 30 days. If you were in contact through a business's assistant, you may also contact that business directly.</p>
+      <p>If you are not satisfied with our answer, you can file a complaint with the <a href="https://www.cai.gouv.qc.ca/" rel="noopener">Commission d'accès à l'information du Québec</a>.</p>
+
+      <h2>Security</h2>
+      <p>Connections are encrypted (HTTPS), passwords are never stored in readable form and access to the server is restricted. In the event of a confidentiality incident presenting a risk of serious harm, we will notify the people concerned and the Commission d'accès à l'information.</p>
+
+      <h2>Changes</h2>
+      <p>We may update this policy. The date at the top of the page shows the latest version.</p>
+    <% } else { %>
+      <h1>Politique de confidentialité</h1>
+      <p class="legal-updated">Dernière mise à jour : 2 novembre 2026</p>
+
+      <p>NovIA est un service qui ajoute un assistant IA au site web des entreprises. Il est exploité par Jonathan Hamel, entreprise individuelle, au Québec. Cette politique explique quels renseignements personnels nous recueillons, pourquoi, et comment exercer vos droits, conformément à la <em>Loi sur la protection des renseignements personnels dans le secteur privé</em> du Québec (Loi 25).</p>
+
+      <h2>Responsable de la protection des renseignements personnels</h2>
+      <p>Jonathan Hamel — <a href="mailto:movia.ai.base@gmail.com">movia.ai.base@gmail.com</a>. Écrivez-lui pour toute question, demande ou plainte concernant vos renseignements personnels.</p>
+
+      <h2>Renseignements recueillis</h2>
+      <h3>Clients de NovIA (entreprises qui ont un compte)</h3>
+      <ul>
+        <li>Adresse courriel et mot de passe (conservé uniquement sous forme chiffrée irréversible).</li>
+        <li>Historique d'abonnement et d'achats. Les paiements sont traités par Stripe : NovIA ne voit ni ne conserve votre numéro de carte.</li>
+        <li>Le contenu que vous fournissez à l'assistant (base de connaissances, site importé par URL, logo, couleurs).</li>
+      </ul>
+      <h3>Visiteurs qui utilisent un assistant sur un site web</h3>
+      <ul>
+        <li>Les messages échangés avec l'assistant.</li>
+        <li>Un identifiant aléatoire enregistré dans votre navigateur, qui sert uniquement à regrouper les messages d'une même conversation.</li>
+        <li>Les coordonnées que vous choisissez de laisser quand vous demandez à être recontacté (nom, courriel, téléphone, message).</li>
+      </ul>
+      <p>Pour ces visiteurs, c'est l'entreprise dont le site affiche l'assistant qui décide de l'utilisation des renseignements : NovIA les traite pour son compte, afin de vous répondre et de lui transmettre votre demande.</p>
+      <h3>Témoins (cookies)</h3>
+      <ul>
+        <li>Un témoin de session pour garder votre connexion active (30 jours).</li>
+        <li>Un témoin qui retient votre choix de langue (1 an).</li>
+      </ul>
+      <p>Nous n'utilisons aucun témoin publicitaire ou de pistage.</p>
+
+      <h2>Pourquoi nous les utilisons</h2>
+      <ul>
+        <li>Fournir le service : générer les réponses de l'assistant, afficher les conversations et les demandes de contact à l'entreprise concernée.</li>
+        <li>Gérer les comptes, les abonnements et la facturation.</li>
+        <li>Protéger le service contre les abus (par exemple en limitant temporairement le nombre de requêtes).</li>
+      </ul>
+      <p>Nous ne vendons ni ne louons jamais vos renseignements personnels.</p>
+
+      <h2>Fournisseurs et communication hors du Québec</h2>
+      <p>Nos données sont hébergées sur un serveur exploité par NovIA au Québec. Certains fournisseurs traitent des renseignements à l'extérieur du Québec, principalement aux États-Unis :</p>
+      <ul>
+        <li><strong>OpenAI</strong> : les messages des visiteurs et la base de connaissances de l'entreprise lui sont transmis pour générer les réponses. Selon les conditions de l'API d'OpenAI, ces données ne servent pas à entraîner ses modèles.</li>
+        <li><strong>Stripe</strong> : traitement des paiements des clients de NovIA.</li>
+        <li><strong>Cloudflare</strong> : acheminement et sécurité du site (il traite notamment votre adresse IP).</li>
+      </ul>
+      <p>Ces fournisseurs sont tenus par contrat de protéger les renseignements qu'ils traitent.</p>
+
+      <h2>Conservation</h2>
+      <p>Les renseignements sont conservés tant que le compte client est actif. À la fermeture d'un compte, ou sur demande, les renseignements associés (conversations, demandes de contact, contenu) sont supprimés dans un délai de 30 jours, sauf si la loi nous oblige à les garder plus longtemps (par exemple, les pièces de facturation).</p>
+
+      <h2>Vos droits</h2>
+      <p>Vous pouvez demander à consulter vos renseignements personnels, à les faire corriger, à retirer votre consentement, à les faire supprimer ou à les recevoir dans un format couramment utilisé. Écrivez à <a href="mailto:movia.ai.base@gmail.com">movia.ai.base@gmail.com</a> ; nous répondons dans un délai de 30 jours. Si vous avez été en contact par l'assistant d'une entreprise, vous pouvez aussi vous adresser directement à cette entreprise.</p>
+      <p>Si notre réponse ne vous satisfait pas, vous pouvez porter plainte auprès de la <a href="https://www.cai.gouv.qc.ca/" rel="noopener">Commission d'accès à l'information du Québec</a>.</p>
+
+      <h2>Sécurité</h2>
+      <p>Les connexions sont chiffrées (HTTPS), les mots de passe ne sont jamais conservés en clair et l'accès au serveur est restreint. En cas d'incident de confidentialité présentant un risque de préjudice sérieux, nous avisons les personnes concernées et la Commission d'accès à l'information.</p>
+
+      <h2>Modifications</h2>
+      <p>Cette politique peut être mise à jour. La date en haut de la page indique la version en vigueur.</p>
+    <% } %>
+  </main>
+
+  <footer class="home-footer">
+    <span>© <%= new Date().getFullYear() %> NovIA — <%= t('site.tagline') %></span>
+    <span class="home-footer-links">
+      <a href="/"><%= t('privacy.back_home') %></a>
+    </span>
+  </footer>
+</body>
+</html>

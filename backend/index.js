@@ -25,6 +25,10 @@ const PORT = process.env.PORT || 3002;
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
+// Cloudflare et les navigateurs gardent style.css en cache 4h : on change
+// son URL a chaque demarrage (donc a chaque deploiement) pour forcer le
+// rechargement, sinon une nouvelle page s'affiche avec l'ancien CSS.
+app.locals.assetVersion = Date.now().toString(36);
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
@@ -73,6 +77,10 @@ app.get('/', (req, res) => {
     approxReplies: Math.floor(plan.monthlyTokenLimit / AVG_TOKENS_PER_REPLY / 10) * 10,
   }));
   res.render('home', { titleKey: 'title.home', plans });
+});
+
+app.get(['/confidentialite', '/privacy'], (req, res) => {
+  res.render('privacy', { titleKey: 'title.privacy' });
 });
 
 app.use((req, res) => {

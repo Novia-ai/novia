@@ -13,7 +13,7 @@
           <a href="?lang=fr" class="<%= lang === 'fr' ? 'active' : '' %>">FR</a>
           <a href="?lang=en" class="<%= lang === 'en' ? 'active' : '' %>">EN</a>
         </div>
-        <img src="/images/capybara-logo.png" alt="NovIA" class="auth-logo">
+        <img src="/images/capybara-logo-192.png" alt="NovIA" class="auth-logo">
         <h1><%= t('auth.register.title') %></h1>
         <% if (error) { %><p class="error"><%= t(error) %></p><% } %>
         <form method="POST" action="/register">
@@ -25,6 +25,7 @@
           </label>
           <button type="submit" class="button"><%= t('auth.register.submit') %></button>
         </form>
+        <p class="auth-legal"><%= t('privacy.register_notice') %> <a href="/confidentialite" target="_blank"><%= t('privacy.register_notice_link') %></a>.</p>
         <p class="auth-switch"><%= t('auth.register.switch') %> <a href="/login"><%= t('auth.register.switch_link') %></a></p>
       </div>
     </div>
