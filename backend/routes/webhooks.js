@@ -94,9 +94,15 @@ async function grantTokenPackFromSession(session) {
 }
 
 async function renewSubscriptionCycle(invoice) {
-  if (!invoice.subscription) return;
+  // Les evenements arrivent dans la version d'API du webhook (choisie a sa
+  // creation dans Stripe), pas celle du SDK : depuis 2025-03-31.basil,
+  // invoice.subscription a ete deplace sous invoice.parent.
+  const subscriptionId =
+    invoice.subscription ||
+    (invoice.parent && invoice.parent.subscription_details && invoice.parent.subscription_details.subscription);
+  if (!subscriptionId) return;
   const { rows } = await pool.query('SELECT id FROM subscriptions WHERE stripe_subscription_id = $1', [
-    invoice.subscription,
+    subscriptionId,
   ]);
   const sub = rows[0];
   if (!sub) return;
