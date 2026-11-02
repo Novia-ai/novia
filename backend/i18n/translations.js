@@ -45,6 +45,10 @@ module.exports = {
   'auth.login.switch': { fr: 'Pas encore de compte ?', en: "Don't have an account yet?" },
   'auth.login.switch_link': { fr: 'Créer un compte', en: 'Create an account' },
   'auth.error.invalid_credentials': { fr: 'Email ou mot de passe incorrect.', en: 'Incorrect email or password.' },
+  'auth.error.too_many_attempts': {
+    fr: 'Trop de tentatives. Réessayez dans quelques minutes.',
+    en: 'Too many attempts. Please try again in a few minutes.',
+  },
 
   // Authentification - inscription
   'auth.register.title': { fr: 'Créer un compte NovIA', en: 'Create a NovIA account' },

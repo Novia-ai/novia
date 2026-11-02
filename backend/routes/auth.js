@@ -1,14 +1,41 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const rateLimit = require('express-rate-limit');
 const pool = require('../db/pool');
 
 const router = express.Router();
+
+// Freine les essais de mots de passe en rafale : seuls les echecs comptent
+// pour la connexion, pour ne jamais bloquer un client qui se connecte bien.
+function tooManyAttempts(view, titleKey) {
+  return (req, res) => res.status(429).render(view, { titleKey, error: 'auth.error.too_many_attempts' });
+}
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  skipSuccessfulRequests: true,
+  handler: tooManyAttempts('auth/login', 'title.login'),
+});
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  handler: tooManyAttempts('auth/register', 'title.register'),
+});
+
+// Nouvel identifiant de session a la connexion (contre la fixation de session).
+function startSession(req, userId, done) {
+  req.session.regenerate((err) => {
+    if (err) return done(err);
+    req.session.userId = userId;
+    done();
+  });
+}
 
 router.get('/register', (req, res) => {
   res.render('auth/register', { titleKey: 'title.register', error: null });
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', registerLimiter, async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password || password.length < 8) {
@@ -21,8 +48,7 @@ router.post('/register', async (req, res) => {
       email.toLowerCase().trim(),
       passwordHash,
     ]);
-    req.session.userId = rows[0].id;
-    res.redirect('/dashboard');
+    startSession(req, rows[0].id, (err) => (err ? next(err) : res.redirect('/dashboard')));
   } catch (err) {
     if (err.code === '23505') {
       return res.status(400).render('auth/register', { titleKey: 'title.register', error: 'auth.error.account_exists' });
@@ -36,20 +62,23 @@ router.get('/login', (req, res) => {
   res.render('auth/login', { titleKey: 'title.login', error: null });
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res, next) => {
   const { email, password } = req.body;
-  const { rows } = await pool.query('SELECT id, password_hash FROM users WHERE email = $1', [
-    (email || '').toLowerCase().trim(),
-  ]);
-  const user = rows[0];
-  const valid = user && (await bcrypt.compare(password || '', user.password_hash));
+  try {
+    const { rows } = await pool.query('SELECT id, password_hash FROM users WHERE email = $1', [
+      (email || '').toLowerCase().trim(),
+    ]);
+    const user = rows[0];
+    const valid = user && (await bcrypt.compare(password || '', user.password_hash));
 
-  if (!valid) {
-    return res.status(400).render('auth/login', { titleKey: 'title.login', error: 'auth.error.invalid_credentials' });
+    if (!valid) {
+      return res.status(400).render('auth/login', { titleKey: 'title.login', error: 'auth.error.invalid_credentials' });
+    }
+
+    startSession(req, user.id, (err) => (err ? next(err) : res.redirect('/dashboard')));
+  } catch (err) {
+    next(err);
   }
-
-  req.session.userId = user.id;
-  res.redirect('/dashboard');
 });
 
 router.post('/logout', (req, res) => {

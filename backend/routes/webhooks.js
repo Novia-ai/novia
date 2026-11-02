@@ -107,7 +107,12 @@ async function renewSubscriptionCycle(invoice) {
   const sub = rows[0];
   if (!sub) return;
 
-  await tokenService.resetCycle(sub.id, new Date(invoice.period_start * 1000), new Date(invoice.period_end * 1000));
+  // invoice.period_* decrit la periode ecoulee (et vaut zero sur la premiere
+  // facture) ; la periode payee d'avance est celle de la ligne d'abonnement.
+  const line = invoice.lines && invoice.lines.data && invoice.lines.data.find((l) => l.period);
+  const period = line ? line.period : { start: invoice.period_start, end: invoice.period_end };
+
+  await tokenService.resetCycle(sub.id, new Date(period.start * 1000), new Date(period.end * 1000));
 }
 
 async function syncSubscriptionStatus(stripeSubscription) {

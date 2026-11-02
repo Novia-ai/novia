@@ -30,6 +30,33 @@ app.set('views', path.join(__dirname, '..', 'views'));
 // rechargement, sinon une nouvelle page s'affiche avec l'ancien CSS.
 app.locals.assetVersion = Date.now().toString(36);
 
+app.disable('x-powered-by');
+
+// En-tetes de securite de base. Seul /widget/frame doit pouvoir s'afficher
+// dans une iframe sur les sites des clients ; le reste (dashboard, connexion)
+// est interdit d'integration pour bloquer le clickjacking.
+app.use((req, res, next) => {
+  res.set({
+    'X-Content-Type-Options': 'nosniff',
+    'Referrer-Policy': 'strict-origin-when-cross-origin',
+    'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  });
+  if (!req.path.startsWith('/widget/')) {
+    res.set('X-Frame-Options', 'SAMEORIGIN');
+    res.set('Content-Security-Policy', "frame-ancestors 'self'");
+  }
+  if (req.secure) res.set('Strict-Transport-Security', 'max-age=31536000');
+  next();
+});
+
+// Les logos televerses peuvent etre des SVG, qui peuvent contenir du
+// script : on les sert dans un bac a sable pour qu'ouvrir l'URL directement
+// n'execute rien sur novia.help.
+app.use('/uploads', (req, res, next) => {
+  res.set('Content-Security-Policy', "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox");
+  next();
+});
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Le webhook Stripe a besoin du corps brut de la requete pour verifier la

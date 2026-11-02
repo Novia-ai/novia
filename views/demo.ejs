@@ -57,7 +57,7 @@
     var limitMessage = <%- JSON.stringify(t('demo.limit_reached')) %>;
 
     function escapeHtml(str) {
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
     function linkify(text) {
