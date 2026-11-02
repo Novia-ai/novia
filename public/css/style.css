@@ -1127,3 +1127,9 @@ body.legal {
   color: #8f95a3;
   margin: 0 0 24px;
 }
+
+.billing-terms-note {
+  color: #5b6070;
+  font-size: 0.85rem;
+  margin: 14px 0 0;
+}

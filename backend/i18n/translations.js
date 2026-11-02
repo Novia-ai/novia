@@ -13,6 +13,7 @@ module.exports = {
   'common.buy': { fr: 'Acheter', en: 'Buy' },
   'common.copy': { fr: 'Copier', en: 'Copy' },
   'common.delete': { fr: 'Supprimer', en: 'Delete' },
+  'common.and': { fr: 'et', en: 'and' },
   // Utilise dans un confirm() JavaScript : ne pas mettre d'apostrophe.
   'common.delete_confirm': {
     fr: 'Supprimer définitivement ? Cette action est irréversible.',
@@ -30,6 +31,7 @@ module.exports = {
   'title.conversations': { fr: 'Conversations', en: 'Conversations' },
   'title.home': { fr: 'Assistant IA pour votre site web', en: 'AI assistant for your website' },
   'title.privacy': { fr: 'Politique de confidentialité', en: 'Privacy policy' },
+  'title.terms': { fr: "Conditions d'utilisation", en: 'Terms of use' },
   'title.login': { fr: 'Connexion', en: 'Log in' },
   'title.register': { fr: 'Créer un compte', en: 'Sign up' },
   'title.not_found': { fr: 'Page introuvable', en: 'Page not found' },
@@ -146,11 +148,15 @@ module.exports = {
     en: 'Number of replies estimated from average usage. Top-ups available anytime.',
   },
 
+  // Conditions d'utilisation
+  'terms.link': { fr: "Conditions d'utilisation", en: 'Terms of use' },
+  'terms.register_notice_link': { fr: "conditions d'utilisation", en: 'terms of use' },
+
   // Politique de confidentialite
   'privacy.link': { fr: 'Confidentialité', en: 'Privacy' },
   'privacy.back_home': { fr: "Retour à l'accueil", en: 'Back to home' },
   'privacy.register_notice': {
-    fr: 'En créant un compte, vous acceptez notre',
+    fr: 'En créant un compte, vous acceptez nos',
     en: 'By creating an account, you accept our',
   },
   'privacy.register_notice_link': { fr: 'politique de confidentialité', en: 'privacy policy' },
@@ -244,6 +250,10 @@ module.exports = {
   'billing.autopay_disable': { fr: "Désactiver l'autopay", en: 'Turn off autopay' },
   'billing.autopay_enable': { fr: "Activer l'autopay", en: 'Turn on autopay' },
   'billing.packs_title': { fr: 'Packs de tokens', en: 'Token packs' },
+  'billing.terms_note': {
+    fr: "Paiement mensuel non remboursable. Si vous annulez, votre assistant reste actif jusqu'à la fin du mois payé.",
+    en: 'Monthly payment, non-refundable. If you cancel, your assistant stays active until the end of the paid month.',
+  },
   'billing.history_title': { fr: 'Historique des achats de tokens', en: 'Token purchase history' },
   'billing.history_empty': { fr: "Aucun achat pour l'instant.", en: 'No purchases yet.' },
   'billing.error_prefix': { fr: 'Une erreur est survenue (', en: 'Something went wrong (' },
@@ -263,8 +273,8 @@ module.exports = {
   'account.update_button': { fr: 'Mettre à jour', en: 'Update' },
   'account.delete_title': { fr: 'Supprimer mon compte', en: 'Delete my account' },
   'account.delete_text': {
-    fr: "La suppression est immédiate et définitive : votre abonnement est annulé, votre assistant cesse de fonctionner sur votre site, et toutes vos données (conversations, prospects, base de connaissances, logo) sont effacées.",
-    en: 'Deletion is immediate and permanent: your subscription is canceled, your assistant stops working on your website, and all your data (conversations, leads, knowledge base, logo) is erased.',
+    fr: "La suppression est immédiate et définitive : votre abonnement est annulé sans remboursement du reste du mois, votre assistant cesse de fonctionner sur votre site, et toutes vos données (conversations, prospects, base de connaissances, logo) sont effacées. Pour garder votre assistant jusqu'à la fin du mois payé, désactivez plutôt le renouvellement automatique dans Facturation.",
+    en: "Deletion is immediate and permanent: your subscription is canceled with no refund for the rest of the month, your assistant stops working on your website, and all your data (conversations, leads, knowledge base, logo) is erased. To keep your assistant until the end of the paid month, turn off automatic renewal in Billing instead.",
   },
   'account.delete_confirm_label': {
     fr: 'Je comprends que cette action est irréversible',

@@ -79,6 +79,10 @@ app.get('/', (req, res) => {
   res.render('home', { titleKey: 'title.home', plans, accountDeleted: req.query.account_deleted === '1' });
 });
 
+app.get(['/conditions', '/terms'], (req, res) => {
+  res.render('terms', { titleKey: 'title.terms' });
+});
+
 app.get(['/confidentialite', '/privacy'], (req, res) => {
   res.render('privacy', { titleKey: 'title.privacy' });
 });

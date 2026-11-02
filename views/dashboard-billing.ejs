@@ -33,6 +33,7 @@
             </div>
           <% }); %>
         </div>
+        <p class="billing-terms-note"><%= t('billing.terms_note') %> <a href="/conditions" target="_blank"><%= t('terms.link') %></a></p>
       </div>
 
       <% if (account && account.subscription_id) { %>
