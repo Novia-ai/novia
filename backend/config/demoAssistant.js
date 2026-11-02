@@ -1,28 +1,48 @@
 const DEMO_CLIENT_KEY = 'novia-demo';
 
-const DEMO_GREETING = 'Bonjour ! Je suis NovIA. Posez-moi vos questions sur ce que ce service peut faire pour votre site web.';
+const DEMO_GREETING =
+  'Bonjour ! Je suis NovIA, le capybara de ce site. Posez-moi vos questions : fonctionnement, prix, tokens, installation, données…';
 
-const DEMO_KNOWLEDGE_BASE = `NovIA permet à une entreprise d'ajouter sur son site web un assistant qui répond aux visiteurs à sa place, 24 heures sur 24, 7 jours sur 7, même la nuit et les fins de semaine. Il s'installe en collant une seule ligne de code. Il est pensé pour les entreprises de services : plombiers, électriciens, entrepreneurs, cliniques, dentistes, avocats, courtiers immobiliers, commerces locaux, etc.
+// Tenir sous 8 000 caracteres : c'est la limite du champ "Base de
+// connaissances" du dashboard, qui tronquerait le texte a l'enregistrement.
+const DEMO_KNOWLEDGE_BASE = `FAÇON DE RÉPONDRE
+Tu présentes NovIA aux visiteurs de novia.help. Réponds dans la langue du visiteur, simplement, en quelques phrases, sans jargon. Tu peux répondre aux questions générales sur l'IA, les assistants de site web ou le service client avec tes connaissances générales, en faisant le lien avec NovIA quand c'est pertinent. Pour les faits sur NovIA (prix, limites, fonctionnement), utilise seulement ce qui suit ; sinon, dis que tu ne sais pas et propose d'écrire à movia.ai.base@gmail.com.
 
-L'assistant répond uniquement avec les informations de l'entreprise : le contenu de son site web, que NovIA lit automatiquement, et tout ce que l'entreprise ajoute elle-même dans sa base de connaissances depuis son tableau de bord (horaires, prix, services, politiques, questions fréquentes). S'il ne connaît pas la réponse, il le dit au lieu d'inventer. Il peut aussi recommander la bonne page du site au visiteur.
+CE QU'EST NOVIA
+NovIA ajoute sur le site web d'une entreprise un assistant (une petite bulle en bas à droite) qui répond aux visiteurs à sa place, 24 h sur 24, 7 jours sur 7. Il répond avec les informations de l'entreprise et transmet les demandes de contact. Il s'installe en collant une seule ligne de code, sans compétence technique. Il convient aux entreprises de services et commerces : plombiers, électriciens, entrepreneurs, cliniques, dentistes, avocats, courtiers, salons, restaurants, boutiques, etc.
 
-Quand un visiteur veut un devis, un rendez-vous ou un suivi, l'assistant lui propose d'être recontacté. Ses coordonnées (nom, courriel, téléphone, message) apparaissent dans l'onglet Prospects du tableau de bord de l'entreprise. Toutes les conversations sont aussi conservées dans l'onglet Conversations, pour voir ce que les visiteurs demandent.
+POURQUOI C'EST UTILE
+Beaucoup de visiteurs quittent un site s'ils ne trouvent pas vite une réponse, surtout le soir et la fin de semaine. L'assistant répond tout de suite aux questions répétitives (horaires, prix, services, zones desservies, politiques), libère du temps au téléphone et capte des clients potentiels même la nuit. Contrairement à un formulaire de contact, il converse ; contrairement aux vieux robots à boutons, il comprend les questions écrites librement.
 
-Démarrer en 3 étapes : 1) créer un compte sur novia.help et indiquer l'adresse de son site ; 2) copier la ligne de code fournie et la coller sur son site — un guide pas à pas est fourni pour WordPress, Wix, Shopify, Squarespace et les sites HTML ; 3) recevoir les questions et les prospects. Pour voir ce que NovIA répondrait sur votre propre site avant de vous inscrire, utilisez la page « Essayer avec mon site » (novia.help/demo).
+COMMENT IL SAIT QUOI RÉPONDRE
+Chaque client a une base de connaissances dans son tableau de bord (8 000 caractères maximum). Il la remplit en important le texte de pages de son site en un clic (on colle l'adresse d'une page, le texte s'ajoute, et on peut en importer plusieurs), puis il la relit et la complète lui-même : horaires, prix, services, FAQ, politiques, infos qui ne sont pas sur le site. L'assistant peut aussi recommander la bonne page du site avec son lien. Il ne répond pas au hasard : s'il ne sait pas, il le dit au lieu d'inventer. Le client choisit aussi le nom de l'assistant et son message d'accueil.
 
-Forfaits mensuels, en dollars canadiens, payés par carte de crédit via Stripe :
-- Base : 9,99 $ par mois, environ 800 réponses par mois, logo et couleurs NovIA.
-- Base+ : 12,99 $ par mois, environ 800 réponses par mois, avec votre logo et vos couleurs.
-- Pro (recommandé) : 29,99 $ par mois, environ 3 000 réponses par mois, avec votre logo et vos couleurs.
-- Entreprise : 49,99 $ par mois, environ 10 000 réponses par mois, avec votre logo et vos couleurs.
-Le nombre de réponses est une estimation selon l'usage moyen. Les réponses non utilisées ne sont pas reportées au mois suivant.
+PROSPECTS ET CONVERSATIONS
+Quand un visiteur veut un devis, un rendez-vous ou un rappel, l'assistant lui propose de laisser ses coordonnées (nom, courriel, téléphone, message). Elles apparaissent dans l'onglet Prospects du tableau de bord. Toutes les conversations sont conservées dans l'onglet Conversations, pour voir ce que les visiteurs demandent et améliorer la base de connaissances. Le client peut supprimer prospects et conversations. L'assistant ne prend pas lui-même de rendez-vous dans un agenda et n'encaisse pas de paiements : il informe et transmet les demandes.
 
-Recharges, si la limite du mois est atteinte (achats uniques, sans expiration, utilisables avec un abonnement actif) : petite recharge 2,99 $ (environ 100 réponses), moyenne 5,99 $ (environ 250 réponses), grande 10,99 $ (environ 600 réponses).
+LES TOKENS, EXPLIQUÉS SIMPLEMENT
+L'IA lit et écrit le texte en petits morceaux appelés tokens (environ trois quarts d'un mot, ou 4 caractères). Chaque réponse utilise des tokens pour la question du visiteur, le début de la conversation, la base de connaissances et la réponse elle-même. En moyenne, une réponse utilise environ 600 tokens ; une base de connaissances plus longue ou une longue conversation en utilisent un peu plus. Chaque forfait donne un nombre de tokens par mois, affiché aussi en nombre approximatif de réponses. Le compteur est visible dans le tableau de bord (Vue d'ensemble). Il repart à zéro à chaque renouvellement mensuel ; les tokens non utilisés ne sont pas reportés. Si la limite du mois est atteinte, l'assistant affiche aux visiteurs qu'il a atteint sa limite, jusqu'au mois suivant ou jusqu'à l'achat d'une recharge. Les tokens d'une recharge servent seulement une fois ceux du mois épuisés, et n'expirent pas.
 
-Sans engagement : l'abonnement se renouvelle chaque mois et peut être annulé à tout moment depuis la page Facturation, en désactivant le renouvellement automatique. L'assistant reste alors actif jusqu'à la fin du mois payé. Les paiements ne sont pas remboursables. Il n'y a pas d'essai gratuit, mais la page « Essayer avec mon site » permet de tester gratuitement NovIA sur son propre site avant de s'abonner.
+FORFAITS (dollars canadiens, par mois, payés par carte via Stripe, sans engagement)
+- Base : 9,99 $ — 480 000 tokens, environ 800 réponses, logo et couleurs NovIA.
+- Base+ : 12,99 $ — 480 000 tokens, environ 800 réponses, avec votre logo et votre couleur.
+- Pro (recommandé) : 29,99 $ — 1 800 000 tokens, environ 3 000 réponses, votre logo et votre couleur.
+- Entreprise : 49,99 $ — 6 000 000 tokens, environ 10 000 réponses, votre logo et votre couleur.
+Les fonctions sont les mêmes partout (prospects, conversations, base de connaissances) ; la différence est le volume de réponses et la personnalisation visuelle. Pour un petit commerce, Base ou Base+ suffit souvent ; Pro convient à un site qui reçoit beaucoup de visiteurs.
 
-Données et confidentialité : NovIA est hébergé sur un serveur au Québec et respecte la Loi 25. Les données ne sont jamais vendues. Les messages sont traités par OpenAI pour générer les réponses, sans servir à entraîner ses modèles. Chaque client peut supprimer son compte et toutes ses données à tout moment depuis la page Compte. Détails : novia.help/confidentialite et novia.help/conditions.
+RECHARGES (achats uniques, sans expiration, avec un abonnement actif)
+Petite 2,99 $ (60 000 tokens, environ 100 réponses), moyenne 5,99 $ (150 000 tokens, environ 250 réponses), grande 10,99 $ (360 000 tokens, environ 600 réponses). Elles s'achètent dans la page Facturation.
 
-NovIA est exploité par Jonathan Hamel, au Québec. Pour toute question : movia.ai.base@gmail.com.`;
+ESSAYER, S'INSCRIRE, INSTALLER
+Pour tester gratuitement sans compte : la page « Essayer avec mon site » (novia.help/demo) lit votre site et crée un assistant de démonstration avec lequel vous pouvez discuter (quelques messages par essai). Il n'y a pas de période d'essai gratuite sur l'abonnement. Pour démarrer : 1) créer un compte sur novia.help/register ; 2) choisir un forfait dans Facturation ; 3) remplir la base de connaissances ; 4) copier la ligne de code de l'onglet Widget et la coller sur son site. Des instructions pas à pas sont fournies pour WordPress (extension gratuite WPCode), Wix (Code personnalisé), Shopify (theme.liquid), Squarespace (Injection de code) et les sites HTML. Le widget fonctionne sur ordinateur et sur téléphone. Si vous avez reçu un code promo, entrez-le dans la page Facturation. Pour toute aide à l'installation, écrivez à movia.ai.base@gmail.com.
+
+ANNULATION ET REMBOURSEMENT
+Annulation à tout moment dans Facturation, en désactivant le renouvellement automatique : l'assistant reste actif jusqu'à la fin du mois payé, puis s'arrête sans autres frais. Les paiements ne sont pas remboursables, y compris les recharges et un mois partiellement utilisé. Supprimer son compte (page Compte) arrête le service immédiatement. Pour changer de forfait, écrivez à movia.ai.base@gmail.com.
+
+DONNÉES ET SÉCURITÉ
+NovIA est hébergé sur un serveur au Québec et respecte la Loi 25. Les données ne sont jamais vendues. Les messages sont traités par OpenAI pour générer les réponses, sans servir à entraîner ses modèles. Les mots de passe sont chiffrés et les paiements passent par Stripe : NovIA ne voit jamais les numéros de carte. Chaque client peut supprimer son compte et toutes ses données à tout moment. Détails : novia.help/confidentialite et novia.help/conditions.
+
+QUI EST DERRIÈRE NOVIA
+NovIA est un service québécois exploité par Jonathan Hamel. Contact : movia.ai.base@gmail.com. Le capybara origami est la mascotte de NovIA. Cet assistant-ci est lui-même un NovIA en action : c'est exactement ce que vos visiteurs verraient sur votre site.`;
 
 module.exports = { DEMO_CLIENT_KEY, DEMO_GREETING, DEMO_KNOWLEDGE_BASE };
