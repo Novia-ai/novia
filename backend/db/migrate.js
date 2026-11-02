@@ -56,9 +56,12 @@ async function seedDemoAccount() {
   );
 
   await pool.query(
+    // Sans cible de conflit : le widget novia-demo peut avoir ete transfere a
+    // un autre compte (depuis le 2026-11-02, celui de l'admin), et il ne faut
+    // alors ni le recreer ni planter sur l'unicite de client_key.
     `INSERT INTO widget_configs (user_id, client_key, bot_name, greeting_message, knowledge_base)
      VALUES ($1, $2, 'NovIA', $3, $4)
-     ON CONFLICT (user_id) DO NOTHING`,
+     ON CONFLICT DO NOTHING`,
     [demoUserId, DEMO_CLIENT_KEY, DEMO_GREETING, DEMO_KNOWLEDGE_BASE]
   );
 
