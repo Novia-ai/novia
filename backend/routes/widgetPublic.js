@@ -2,6 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const crypto = require('crypto');
 const pool = require('../db/pool');
+const mailService = require('../services/mailService');
 const openaiService = require('../services/openaiService');
 const tokenService = require('../services/tokenService');
 
@@ -159,6 +160,39 @@ router.post('/api/widget/:clientKey/lead', leadLimiter, async (req, res) => {
   );
 
   res.json({ ok: true });
+
+  // Apres la reponse : un souci d'envoi ne doit jamais faire perdre le prospect.
+  notifyNewLead(config.user_id, { name, email, phone, message }).catch((err) =>
+    console.error('Courriel de prospect non envoye:', err.message)
+  );
 });
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+async function notifyNewLead(userId, lead) {
+  if (!mailService.isConfigured()) return;
+  const { rows } = await pool.query('SELECT COALESCE(lead_notify_email, email) AS notify_email FROM users WHERE id = $1', [
+    userId,
+  ]);
+  if (!rows[0]) return;
+
+  const lines = [
+    'Un visiteur de votre site a demandé à être recontacté :',
+    '',
+    `Nom : ${lead.name}`,
+    `Courriel : ${lead.email || '-'}`,
+    `Téléphone : ${lead.phone || '-'}`,
+    `Message : ${lead.message || '-'}`,
+    '',
+    `Tous vos prospects : ${process.env.APP_BASE_URL}/dashboard/leads`,
+    lead.email ? 'Vous pouvez répondre directement à ce courriel pour lui écrire.' : '',
+  ];
+  await mailService.sendMail({
+    to: rows[0].notify_email,
+    subject: `Nouveau prospect NovIA : ${lead.name}`,
+    text: lines.join('\n'),
+    replyTo: EMAIL_PATTERN.test(lead.email) ? lead.email : null,
+  });
+}
 
 module.exports = router;

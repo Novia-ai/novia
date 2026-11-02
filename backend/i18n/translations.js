@@ -271,7 +271,16 @@ module.exports = {
   'billing.history_empty': { fr: "Aucun achat pour l'instant.", en: 'No purchases yet.' },
   'billing.error_prefix': { fr: 'Une erreur est survenue (', en: 'Something went wrong (' },
   'billing.error_suffix': { fr: '). Contactez le support si cela persiste.', en: '). Contact support if this persists.' },
-  'billing.promo_title': { fr: 'Code promo', en: 'Promo code' },
+  'billing.plan_changed': {
+    fr: 'Forfait changé ! Il est actif tout de suite ; la différence de prix sera ajustée au prorata sur votre prochaine facture.',
+    en: 'Plan changed! It is active right away; the price difference will be prorated on your next invoice.',
+  },
+  // Utilise dans un confirm() JavaScript : ne pas mettre d'apostrophe.
+  'billing.change_plan_confirm': {
+    fr: 'Changer de forfait maintenant ? La différence de prix sera ajustée au prorata sur votre prochaine facture.',
+    en: 'Change plan now? The price difference will be prorated on your next invoice.',
+  },
+  'billing.promo_title':{ fr: 'Code promo', en: 'Promo code' },
   'billing.promo_submit': { fr: 'Appliquer', en: 'Apply' },
   'billing.promo_success': {
     fr: 'Code appliqué ! Vos mois offerts sont actifs, aucune carte requise.',
@@ -300,6 +309,14 @@ module.exports = {
   'account.current_password': { fr: 'Mot de passe actuel', en: 'Current password' },
   'account.new_password': { fr: 'Nouveau mot de passe', en: 'New password' },
   'account.update_button': { fr: 'Mettre à jour', en: 'Update' },
+  'account.notify_title': { fr: 'Avis de nouveaux prospects', en: 'New lead alerts' },
+  'account.notify_intro': {
+    fr: 'Chaque fois qu\'un visiteur demande à être recontacté, vous recevez un courriel. Laissez vide pour utiliser l\'email de votre compte.',
+    en: 'Each time a visitor asks to be contacted, you receive an email. Leave empty to use your account email.',
+  },
+  'account.notify_label': { fr: 'Courriel de réception', en: 'Receiving email' },
+  'account.notify_saved': { fr: 'Courriel de réception enregistré.', en: 'Receiving email saved.' },
+  'account.notify_invalid': { fr: 'Adresse courriel invalide.', en: 'Invalid email address.' },
   'account.delete_title': { fr: 'Supprimer mon compte', en: 'Delete my account' },
   'account.delete_text': {
     fr: "La suppression est immédiate et définitive : votre abonnement est annulé sans remboursement du reste du mois, votre assistant cesse de fonctionner sur votre site, et toutes vos données (conversations, prospects, base de connaissances, logo) sont effacées. Pour garder votre assistant jusqu'à la fin du mois payé, désactivez plutôt le renouvellement automatique dans Facturation.",

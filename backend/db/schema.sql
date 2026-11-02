@@ -130,3 +130,6 @@ CREATE TABLE IF NOT EXISTS showcase_sites (
   url TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Ou envoyer l'avis de nouveau prospect ; NULL = l'email du compte.
+ALTER TABLE users ADD COLUMN IF NOT EXISTS lead_notify_email TEXT;

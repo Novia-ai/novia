@@ -37,6 +37,16 @@ async function setAutopay(stripeSubscriptionId, autopay) {
   });
 }
 
+// Change le forfait d'un abonnement existant au lieu d'en creer un second :
+// Stripe ajuste la difference au prorata sur la prochaine facture.
+async function changeSubscriptionPrice(stripeSubscriptionId, priceId) {
+  const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+  return stripe.subscriptions.update(stripeSubscriptionId, {
+    items: [{ id: subscription.items.data[0].id, price: priceId }],
+    proration_behavior: 'create_prorations',
+  });
+}
+
 async function cancelSubscription(stripeSubscriptionId) {
   try {
     return await stripe.subscriptions.cancel(stripeSubscriptionId);
@@ -53,5 +63,6 @@ module.exports = {
   createSubscriptionCheckout,
   createTokenPackCheckout,
   setAutopay,
+  changeSubscriptionPrice,
   cancelSubscription,
 };

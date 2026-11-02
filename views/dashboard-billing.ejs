@@ -27,8 +27,10 @@
         </form>
       </div>
 
+      <% var paidPlan = account && account.status === 'active' && account.stripe_subscription_id; %>
       <div class="card">
         <h2><%= t('billing.plans_title') %></h2>
+        <% if (planChanged) { %><p class="success"><%= t('billing.plan_changed') %></p><% } %>
         <div class="plan-grid">
           <% plans.forEach(function(plan) { %>
             <div class="plan-card <%= account && account.plan_key === plan.key ? 'plan-card-active' : '' %>">
@@ -39,7 +41,7 @@
               <% if (account && account.plan_key === plan.key) { %>
                 <span class="badge"><%= t('billing.current_plan_badge') %></span>
               <% } else { %>
-                <form method="POST" action="/dashboard/billing/checkout/<%= plan.key %>">
+                <form method="POST" action="/dashboard/billing/checkout/<%= plan.key %>"<% if (paidPlan) { %> onsubmit="return confirm('<%= t('billing.change_plan_confirm') %>')"<% } %>>
                   <button type="submit" class="button"><%= t('common.choose') %></button>
                 </form>
               <% } %>

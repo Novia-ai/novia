@@ -53,6 +53,24 @@ router.post('/account/password', requireAuth, async (req, res) => {
   });
 });
 
+router.post('/account/notify-email', requireAuth, async (req, res) => {
+  const notifyEmail = String(req.body.notifyEmail || '').trim().toLowerCase().slice(0, 200);
+  const valid = !notifyEmail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(notifyEmail);
+  if (valid) {
+    await pool.query('UPDATE users SET lead_notify_email = $1 WHERE id = $2', [notifyEmail || null, req.session.userId]);
+  }
+  const account = await getAccountContext(req.session.userId);
+  res.status(valid ? 200 : 400).render('dashboard-account', {
+    titleKey: 'title.account',
+    account,
+    message: null,
+    error: null,
+    deleteError: null,
+    notifyMessage: valid ? 'account.notify_saved' : null,
+    notifyError: valid ? null : 'account.notify_invalid',
+  });
+});
+
 // Suppression definitive du compte (droit a l'effacement, Loi 25) : annule
 // l'abonnement Stripe, supprime le logo televerse, puis l'utilisateur ; les
 // conversations, prospects, config du widget, etc. suivent par ON DELETE CASCADE.

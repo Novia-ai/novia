@@ -15,6 +15,19 @@
       </div>
 
       <div class="card">
+        <h2><%= t('account.notify_title') %></h2>
+        <p><%= t('account.notify_intro') %></p>
+        <% if (typeof notifyMessage !== 'undefined' && notifyMessage) { %><p class="success"><%= t(notifyMessage) %></p><% } %>
+        <% if (typeof notifyError !== 'undefined' && notifyError) { %><p class="error"><%= t(notifyError) %></p><% } %>
+        <form method="POST" action="/dashboard/account/notify-email">
+          <label><%= t('account.notify_label') %>
+            <input type="email" name="notifyEmail" maxlength="200" value="<%= account.lead_notify_email || '' %>" placeholder="<%= account.email %>">
+          </label>
+          <button type="submit" class="button"><%= t('account.update_button') %></button>
+        </form>
+      </div>
+
+      <div class="card">
         <h2><%= t('account.change_password_title') %></h2>
         <% if (message) { %><p class="success"><%= t(message) %></p><% } %>
         <% if (error) { %><p class="error"><%= t(error) %></p><% } %>

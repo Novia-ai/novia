@@ -6,9 +6,9 @@ async function getAccountContext(userId) {
   const { rows } = await pool.query(
     `SELECT u.id AS user_id, u.email, u.bonus_token_balance,
             s.id AS subscription_id, s.status, s.autopay, s.current_period_end,
-            s.tokens_used_current_period, s.monthly_token_limit, s.free_until,
+            s.tokens_used_current_period, s.monthly_token_limit, s.free_until, s.stripe_subscription_id,
             (s.free_until = 'infinity') AS free_forever,
-            u.is_admin,
+            u.is_admin, u.lead_notify_email,
             p.key AS plan_key, p.name AS plan_name, p.allow_custom_branding, p.price_cents
      FROM users u
      LEFT JOIN subscriptions s ON s.user_id = u.id

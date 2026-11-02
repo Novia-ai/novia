@@ -34,6 +34,7 @@ router.get('/', requireAuth, async (req, res) => {
     error: req.query.error || null,
     promoError: req.query.promo_error || null,
     promoSuccess: req.query.promo === 'ok',
+    planChanged: req.query.plan_changed === '1',
   });
 });
 
@@ -42,6 +43,26 @@ router.post('/checkout/:planKey', requireAuth, async (req, res) => {
   const plan = planRows[0];
   if (!plan || !plan.stripe_price_id) {
     return res.redirect('/dashboard/billing?error=plan_non_configure');
+  }
+
+  // Deja abonne et payant : on modifie l'abonnement en place, sinon un
+  // second abonnement Stripe serait cree et le client paierait les deux.
+  const { rows: subRows } = await pool.query(
+    "SELECT stripe_subscription_id FROM subscriptions WHERE user_id = $1 AND status = 'active' AND stripe_subscription_id IS NOT NULL",
+    [req.session.userId]
+  );
+  if (subRows[0]) {
+    try {
+      await stripeService.changeSubscriptionPrice(subRows[0].stripe_subscription_id, plan.stripe_price_id);
+    } catch (err) {
+      console.error('Changement de forfait Stripe:', err.message);
+      return res.redirect('/dashboard/billing?error=changement_forfait');
+    }
+    await pool.query(
+      'UPDATE subscriptions SET plan_id = $1, monthly_token_limit = $2, updated_at = now() WHERE user_id = $3',
+      [plan.id, plan.monthly_token_limit, req.session.userId]
+    );
+    return res.redirect('/dashboard/billing?plan_changed=1');
   }
 
   const { rows: userRows } = await pool.query('SELECT * FROM users WHERE id = $1', [req.session.userId]);
