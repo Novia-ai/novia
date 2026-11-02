@@ -12,6 +12,12 @@ module.exports = {
   'common.choose': { fr: 'Choisir', en: 'Choose' },
   'common.buy': { fr: 'Acheter', en: 'Buy' },
   'common.copy': { fr: 'Copier', en: 'Copy' },
+  'common.delete': { fr: 'Supprimer', en: 'Delete' },
+  // Utilise dans un confirm() JavaScript : ne pas mettre d'apostrophe.
+  'common.delete_confirm': {
+    fr: 'Supprimer définitivement ? Cette action est irréversible.',
+    en: 'Delete permanently? This cannot be undone.',
+  },
   'common.back_to_dashboard': { fr: 'Retour au tableau de bord', en: 'Back to dashboard' },
   'common.see_plans': { fr: 'Voir les forfaits', en: 'See plans' },
 
@@ -105,8 +111,8 @@ module.exports = {
     en: 'Answers questions about your hours, pricing and availability 24/7',
   },
   'home.point2': {
-    fr: 'Uniquement avec les informations de votre site — jamais de suppositions',
-    en: "Only with your website's information — never guesses",
+    fr: "Uniquement avec vos informations : celles de votre site, et tout ce que vous voulez lui ajouter — jamais de suppositions",
+    en: "Only with your information: your website's content, plus anything you choose to add — never guesses",
   },
   'home.point3': {
     fr: 'Vous transmet les visiteurs qui veulent être rappelés',
@@ -114,8 +120,8 @@ module.exports = {
   },
   'home.step1_title': { fr: 'Indiquez votre site', en: 'Enter your website' },
   'home.step1_text': {
-    fr: "NovIA lit le contenu de votre site et s'en sert comme seule source pour répondre.",
-    en: 'NovIA reads your website content and uses it as its only source for answers.',
+    fr: "NovIA lit votre site pour apprendre. Vous pouvez ensuite compléter ses connaissances vous-même à tout moment.",
+    en: 'NovIA reads your website to learn. You can then add to its knowledge yourself at any time.',
   },
   'home.step2_title': { fr: 'Collez une ligne de code', en: 'Paste one line of code' },
   'home.step2_text': {
@@ -255,6 +261,28 @@ module.exports = {
   'account.current_password': { fr: 'Mot de passe actuel', en: 'Current password' },
   'account.new_password': { fr: 'Nouveau mot de passe', en: 'New password' },
   'account.update_button': { fr: 'Mettre à jour', en: 'Update' },
+  'account.delete_title': { fr: 'Supprimer mon compte', en: 'Delete my account' },
+  'account.delete_text': {
+    fr: "La suppression est immédiate et définitive : votre abonnement est annulé, votre assistant cesse de fonctionner sur votre site, et toutes vos données (conversations, prospects, base de connaissances, logo) sont effacées.",
+    en: 'Deletion is immediate and permanent: your subscription is canceled, your assistant stops working on your website, and all your data (conversations, leads, knowledge base, logo) is erased.',
+  },
+  'account.delete_confirm_label': {
+    fr: 'Je comprends que cette action est irréversible',
+    en: 'I understand this cannot be undone',
+  },
+  'account.delete_button': { fr: 'Supprimer définitivement mon compte', en: 'Permanently delete my account' },
+  'account.delete_confirm_required': {
+    fr: 'Cochez la case de confirmation pour supprimer votre compte.',
+    en: 'Check the confirmation box to delete your account.',
+  },
+  'account.delete_stripe_error': {
+    fr: "Votre abonnement n'a pas pu être annulé, le compte n'a donc pas été supprimé. Réessayez ou écrivez à movia.ai.base@gmail.com.",
+    en: 'Your subscription could not be canceled, so the account was not deleted. Try again or write to movia.ai.base@gmail.com.',
+  },
+  'account.deleted_notice': {
+    fr: 'Votre compte et toutes vos données ont été supprimés.',
+    en: 'Your account and all your data have been deleted.',
+  },
   'account.password_updated': { fr: 'Mot de passe mis à jour.', en: 'Password updated.' },
   'account.wrong_current_password': { fr: 'Mot de passe actuel incorrect.', en: 'Current password is incorrect.' },
   'account.password_too_short': {
@@ -348,6 +376,7 @@ module.exports = {
   'conversations.view_link': { fr: 'Voir', en: 'View' },
   'conversations.back_link': { fr: '← Retour aux conversations', en: '← Back to conversations' },
   'conversations.edit_knowledge_link': { fr: 'Modifier la base de connaissances', en: 'Edit knowledge base' },
+  'conversations.delete_button': { fr: 'Supprimer cette conversation', en: 'Delete this conversation' },
   'conversations.role_user': { fr: 'Visiteur', en: 'Visitor' },
   'conversations.role_assistant': { fr: 'Assistant', en: 'Assistant' },
 };

@@ -37,10 +37,21 @@ async function setAutopay(stripeSubscriptionId, autopay) {
   });
 }
 
+async function cancelSubscription(stripeSubscriptionId) {
+  try {
+    return await stripe.subscriptions.cancel(stripeSubscriptionId);
+  } catch (err) {
+    // Deja annule ou inexistant chez Stripe : rien a facturer, on continue.
+    if (err.code === 'resource_missing') return null;
+    throw err;
+  }
+}
+
 module.exports = {
   stripe,
   getOrCreateCustomer,
   createSubscriptionCheckout,
   createTokenPackCheckout,
   setAutopay,
+  cancelSubscription,
 };

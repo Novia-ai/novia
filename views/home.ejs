@@ -9,6 +9,7 @@
   <meta property="og:url" content="https://novia.help/">
 </head>
 <body class="home">
+  <% if (accountDeleted) { %><p class="account-deleted-notice"><%= t('account.deleted_notice') %></p><% } %>
   <header class="home-header">
     <a href="/" class="home-brand">
       <img src="/images/capybara-logo-192.png" alt="" class="home-brand-logo">

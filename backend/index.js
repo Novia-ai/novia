@@ -76,7 +76,7 @@ app.get('/', (req, res) => {
     ...plan,
     approxReplies: Math.floor(plan.monthlyTokenLimit / AVG_TOKENS_PER_REPLY / 10) * 10,
   }));
-  res.render('home', { titleKey: 'title.home', plans });
+  res.render('home', { titleKey: 'title.home', plans, accountDeleted: req.query.account_deleted === '1' });
 });
 
 app.get(['/confidentialite', '/privacy'], (req, res) => {

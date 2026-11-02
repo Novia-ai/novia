@@ -24,6 +24,9 @@
       </div>
 
       <a href="/dashboard/widget" class="button"><%= t('conversations.edit_knowledge_link') %></a>
+      <form method="POST" action="/dashboard/conversations/<%= conversation.id %>/delete" class="inline-form" onsubmit="return confirm('<%= t('common.delete_confirm') %>')">
+        <button type="submit" class="button button-danger"><%= t('conversations.delete_button') %></button>
+      </form>
     </main>
   </div>
 </body>

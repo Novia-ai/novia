@@ -14,4 +14,10 @@ router.get('/', requireAuth, async (req, res) => {
   res.render('dashboard-leads', { titleKey: 'title.leads', account, leads });
 });
 
+// Permet au client de repondre a une demande d'effacement d'un visiteur.
+router.post('/:id/delete', requireAuth, async (req, res) => {
+  await pool.query('DELETE FROM leads WHERE id = $1 AND user_id = $2', [req.params.id, req.session.userId]);
+  res.redirect('/dashboard/leads');
+});
+
 module.exports = router;

@@ -44,4 +44,11 @@ router.get('/:id', requireAuth, async (req, res) => {
   });
 });
 
+// Supprime la conversation et ses messages (ON DELETE CASCADE) ; un prospect
+// lie a cette conversation est conserve, seul son lien est retire.
+router.post('/:id/delete', requireAuth, async (req, res) => {
+  await pool.query('DELETE FROM conversations WHERE id = $1 AND user_id = $2', [req.params.id, req.session.userId]);
+  res.redirect('/dashboard/conversations');
+});
+
 module.exports = router;

@@ -74,6 +74,14 @@ async function migrate() {
   }
   await upsertPlan(DEMO_PLAN);
 
+  // Chaque abonnement garde une copie de la limite de son forfait : on la
+  // resynchronise pour qu'un changement de limite s'applique tout de suite.
+  await pool.query(
+    `UPDATE subscriptions s SET monthly_token_limit = p.monthly_token_limit, updated_at = now()
+     FROM plans p
+     WHERE s.plan_id = p.id AND s.monthly_token_limit <> p.monthly_token_limit`
+  );
+
   for (const pack of TOKEN_PACKS) {
     await pool.query(
       `INSERT INTO token_packs (key, name, price_cents, token_amount, stripe_price_id)

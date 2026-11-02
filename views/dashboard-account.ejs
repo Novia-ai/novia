@@ -28,6 +28,22 @@
           <button type="submit" class="button"><%= t('account.update_button') %></button>
         </form>
       </div>
+
+      <div class="card card-danger">
+        <h2><%= t('account.delete_title') %></h2>
+        <p><%= t('account.delete_text') %></p>
+        <% if (typeof deleteError !== 'undefined' && deleteError) { %><p class="error"><%= t(deleteError) %></p><% } %>
+        <form method="POST" action="/dashboard/account/delete">
+          <label><%= t('account.current_password') %>
+            <input type="password" name="password" required>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="confirm" value="yes" required>
+            <%= t('account.delete_confirm_label') %>
+          </label>
+          <button type="submit" class="button button-danger"><%= t('account.delete_button') %></button>
+        </form>
+      </div>
     </main>
   </div>
 </body>

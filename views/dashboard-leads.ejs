@@ -22,6 +22,7 @@
                 <th><%= t('leads.col_name') %></th>
                 <th><%= t('leads.col_contact') %></th>
                 <th><%= t('leads.col_message') %></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -34,6 +35,11 @@
                     <% if (lead.phone) { %><div><%= lead.phone %></div><% } %>
                   </td>
                   <td><%= lead.message || '' %></td>
+                  <td>
+                    <form method="POST" action="/dashboard/leads/<%= lead.id %>/delete" class="inline-form" onsubmit="return confirm('<%= t('common.delete_confirm') %>')">
+                      <button type="submit" class="button button-small button-danger"><%= t('common.delete') %></button>
+                    </form>
+                  </td>
                 </tr>
               <% }); %>
             </tbody>
