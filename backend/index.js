@@ -17,6 +17,7 @@ const widgetPublicRoutes = require('./routes/widgetPublic');
 const leadsRoutes = require('./routes/leads');
 const conversationsRoutes = require('./routes/conversations');
 const demoRoutes = require('./routes/demo');
+const hubaraRoutes = require('./routes/hubara');
 const webhookRoutes = require('./routes/webhooks');
 const { router: adminRoutes } = require('./routes/admin');
 
@@ -100,6 +101,7 @@ app.use('/dashboard', async (req, res, next) => {
 app.use('/', authRoutes);
 app.use('/', widgetPublicRoutes);
 app.use('/demo', demoRoutes);
+app.use('/api/hubara', hubaraRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/dashboard/billing', billingRoutes);
 app.use('/dashboard/widget', widgetConfigRoutes);

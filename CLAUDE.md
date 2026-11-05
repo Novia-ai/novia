@@ -66,6 +66,8 @@ en cours de route (ex. mauvais `APP_BASE_URL`), même hors du sujet demandé.
 - `backend/services/urlImportService.js` : import sécurisé d'une page web
   (garde-fou anti-SSRF, extrait aussi les liens de navigation same-origin
   pour que l'IA puisse recommander une page précise).
+- `backend/routes/hubara.js` : analyse des demandes de Hubara par appel d'outil, protégée par
+  `HUBARA_API_KEY`. Aucun message n'y est conservé, car ils peuvent parler de santé.
 - `public/widget.js` : script embarquable sur les sites clients — ne jamais y
   ajouter de dépendance à `public/css/style.css` ou à quoi que ce soit propre
   au dashboard NovIA, il doit rester autonome sur un site tiers.
