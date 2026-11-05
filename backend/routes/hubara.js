@@ -12,6 +12,9 @@ const MAX_TRADES = 4;
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_REPLY_LENGTH = 600;
 const MAX_HISTORY = 8;
+const HUBARA_STORY =
+  "Hubara a été créé par Jonathan, qui habite la région depuis plus de 10 ans. La relation entre voisins est importante pour lui. " +
+  "Il veut encourager le local, faire circuler les bonnes références, que les gens s'aident les uns les autres et réunir au même endroit les informations qu'on cherche.";
 
 function requireHubaraKey(req, res, next) {
   const expected = Buffer.from(process.env.HUBARA_API_KEY || '');
@@ -34,7 +37,8 @@ function systemPromptFor(catalog, lang) {
     'Un dégât d\'eau au plafond concerne la plomberie ou la toiture pour la cause, puis le plâtrage et la peinture pour la réparation.\n' +
     '- Si le visiteur nomme un métier précis, garde ce métier seul.\n' +
     "- Si la demande est trop vague pour choisir, pose une seule question courte et ne retiens aucun métier.\n" +
-    "- Si rien dans le catalogue ne convient, dis-le simplement et ne retiens aucun métier.\n\n" +
+    "- Si rien dans le catalogue ne convient, dis-le simplement et ne retiens aucun métier.\n" +
+    `- Si le visiteur demande qui a créé Hubara, pourquoi ou d'où vient le site, réponds à partir de cette histoire seulement, sans rien y ajouter, et ne retiens aucun métier : ${HUBARA_STORY}\n\n` +
     'Limites :\n' +
     "- Ne nomme jamais d'entreprise, ne donne ni prix, ni diagnostic, ni traitement. La recherche d'entreprises se fait après toi, alors ne promets pas qu'il y en a.\n" +
     "- Devant un signe d'urgence (douleur à la poitrine, difficulté à respirer, perte de conscience, faiblesse soudaine d'un côté du corps), dis d'appeler le 911 et ne retiens aucun métier.\n" +
