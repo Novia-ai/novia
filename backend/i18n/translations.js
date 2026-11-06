@@ -332,8 +332,8 @@ module.exports = {
     en: 'Check the confirmation box to delete your account.',
   },
   'account.delete_stripe_error': {
-    fr: "Votre abonnement n'a pas pu être annulé, le compte n'a donc pas été supprimé. Réessayez ou écrivez à movia.ai.base@gmail.com.",
-    en: 'Your subscription could not be canceled, so the account was not deleted. Try again or write to movia.ai.base@gmail.com.',
+    fr: "Votre abonnement n'a pas pu être annulé, le compte n'a donc pas été supprimé. Réessayez ou écrivez à info@novia.help.",
+    en: 'Your subscription could not be canceled, so the account was not deleted. Try again or write to info@novia.help.',
   },
   'account.deleted_notice': {
     fr: 'Votre compte et toutes vos données ont été supprimés.',
