@@ -42,7 +42,36 @@ function normalizeSiteUrl(raw) {
   }
 }
 
+const REPORT_DAYS = 30;
+const isDate = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && !Number.isNaN(Date.parse(value));
+const dayOf = (date) => date.toISOString().slice(0, 10);
+
+// Des totaux seulement : ce rapport ne lit jamais le contenu des messages.
+async function clientReport(from, to) {
+  const { rows } = await pool.query(
+    `SELECT u.email, p.key AS plan_key, s.status, s.free_until,
+            (SELECT count(*) FROM conversations c
+             WHERE c.user_id = u.id AND c.created_at >= $1::date AND c.created_at < $2::date + 1)::int AS conversations,
+            (SELECT count(*) FROM messages m JOIN conversations c ON c.id = m.conversation_id
+             WHERE c.user_id = u.id AND m.role = 'assistant'
+               AND m.created_at >= $1::date AND m.created_at < $2::date + 1)::int AS replies,
+            (SELECT count(*) FROM leads l
+             WHERE l.user_id = u.id AND l.created_at >= $1::date AND l.created_at < $2::date + 1)::int AS leads
+     FROM users u
+     JOIN subscriptions s ON s.user_id = u.id
+     JOIN plans p ON p.id = s.plan_id
+     WHERE p.key != 'demo'
+     ORDER BY replies DESC, u.email`,
+    [from, to]
+  );
+  return rows;
+}
+
 router.get('/', async (req, res) => {
+  const today = new Date();
+  const start = new Date(today.getTime() - REPORT_DAYS * 24 * 60 * 60 * 1000);
+  const reportFrom = isDate(req.query.from) ? req.query.from : dayOf(start);
+  const reportTo = isDate(req.query.to) ? req.query.to : dayOf(today);
   const { rows: plans } = await pool.query("SELECT id, key FROM plans WHERE key != 'demo' ORDER BY price_cents");
   const { rows: codes } = await pool.query(
     `SELECT c.id, c.code, c.months, c.max_uses, c.uses_count, c.note, c.created_at, p.key AS plan_key,
@@ -61,6 +90,9 @@ router.get('/', async (req, res) => {
     plans,
     codes,
     sites,
+    report: await clientReport(reportFrom, reportTo),
+    reportFrom,
+    reportTo,
     error: req.query.error || null,
     created: req.query.created || null,
   });

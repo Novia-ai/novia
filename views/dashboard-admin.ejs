@@ -66,6 +66,45 @@
         <% } %>
       </div>
 
+      <div class="card" id="report">
+        <h2><%= t('admin.report_title') %></h2>
+        <p><%= t('admin.report_intro') %></p>
+        <form method="GET" action="/dashboard/admin#report" class="admin-form">
+          <label><%= t('admin.report_from') %>
+            <input type="date" name="from" value="<%= reportFrom %>">
+          </label>
+          <label><%= t('admin.report_to') %>
+            <input type="date" name="to" value="<%= reportTo %>">
+          </label>
+          <button type="submit" class="button"><%= t('admin.report_show') %></button>
+        </form>
+
+        <% if (report.length > 0) { %>
+          <table class="leads-table">
+            <thead>
+              <tr>
+                <th><%= t('admin.report_client') %></th>
+                <th><%= t('admin.col_offer') %></th>
+                <th><%= t('admin.report_conversations') %></th>
+                <th><%= t('admin.report_replies') %></th>
+                <th><%= t('admin.report_leads') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% report.forEach(function(row) { %>
+                <tr>
+                  <td><%= row.email %></td>
+                  <td><%= t('plan.' + row.plan_key + '.name') %><% if (row.status !== 'active') { %> (<%= t('admin.report_inactive') %>)<% } %></td>
+                  <td><%= row.conversations %></td>
+                  <td><%= row.replies %></td>
+                  <td><%= row.leads %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        <% } %>
+      </div>
+
       <div class="card" id="showcase">
         <h2><%= t('admin.showcase_title') %></h2>
         <p><%= t('admin.showcase_intro') %></p>

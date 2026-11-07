@@ -66,6 +66,8 @@ en cours de route (ex. mauvais `APP_BASE_URL`), même hors du sujet demandé.
 - `backend/services/urlImportService.js` : import sécurisé d'une page web
   (garde-fou anti-SSRF, extrait aussi les liens de navigation same-origin
   pour que l'IA puisse recommander une page précise).
+- `backend/routes/admin.js` : codes promo et rapport par client, des totaux seulement, sans le contenu
+  des messages (conversations, réponses, prospects). Sert au rapport du jour 30 des pionniers.
 - `backend/routes/hubara.js` : analyse des demandes de Hubara par appel d'outil, protégée par
   `HUBARA_API_KEY`. Aucun message n'y est conservé, car ils peuvent parler de santé.
 - `public/widget.js` : script embarquable sur les sites clients — ne jamais y
