@@ -12,6 +12,8 @@ const chatLimiter = rateLimit({ windowMs: 60 * 1000, max: 20 });
 const leadLimiter = rateLimit({ windowMs: 60 * 1000, max: 5 });
 
 const CONTACT_MARKER = '[[CONTACT]]';
+const DEAD_END_PATTERN =
+  /je ne (sais|connais) pas|je n['’]ai pas (cette |l['’]|d['’])information|pas en mesure de|je ne peux pas (vous |t['’])?(aider|répondre|fournir)|i don['’]t know|i['’]m not able to|i am not able to|i can['’]t (help|answer)|i (do not|don['’]t) have (that|this) information/i;
 
 router.get('/widget/frame/:clientKey', async (req, res) => {
   const { rows } = await pool.query(
@@ -90,21 +92,35 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
     conversationId = created[0].id;
   }
 
+  // Les 20 derniers messages, remis dans l'ordre : avec les 20 premiers, une longue conversation
+  // ne voyait jamais les échanges récents et l'assistant se répétait.
   const { rows: historyRows } = await pool.query(
-    `SELECT role, content FROM messages WHERE conversation_id = $1 ORDER BY created_at ASC LIMIT 20`,
+    `SELECT role, content FROM (
+       SELECT role, content, created_at FROM messages WHERE conversation_id = $1 ORDER BY created_at DESC LIMIT 20
+     ) recent ORDER BY created_at ASC`,
     [conversationId]
   );
 
-  let systemPrompt = `Tu es ${config.bot_name}, un assistant virtuel utile et concis pour le site web de ce client.`;
+  let systemPrompt =
+    `Tu es ${config.bot_name}, un assistant virtuel utile et concis pour le site web de ce client. ` +
+    `Réponds dans la langue du visiteur.`;
   if (config.knowledge_base && config.knowledge_base.trim()) {
     systemPrompt +=
       "\n\nInformations sur l'entreprise à utiliser en priorité pour répondre. " +
-      "Si la question porte sur l'entreprise et que la réponse ne s'y trouve pas, dis que tu ne sais pas plutôt que d'inventer. " +
+      "N'invente jamais un fait sur l'entreprise (prix, horaire, service, politique) qui ne s'y trouve pas. " +
       "Si une page listée ci-dessous correspond à la demande du visiteur, recommande-la clairement en incluant son URL complète :\n" +
       config.knowledge_base;
   }
   systemPrompt +=
+    `\n\nQuand tu n'as pas la réponse, ne termine jamais sur un simple « je ne sais pas » ou « je ne suis pas en mesure de répondre ». ` +
+    `Dis-le en une courte phrase, puis donne toujours au moins une suite au visiteur : ` +
+    `une question pour qu'il précise sa demande, ce que tu peux lui dire de proche sur le sujet, ` +
+    `une page du site qui pourrait l'aider, ou l'offre de laisser ses coordonnées pour qu'une personne de l'entreprise lui réponde. ` +
+    `Si la question n'a rien à voir avec l'entreprise, dis-le gentiment et ramène la conversation vers ce que tu peux faire pour lui. ` +
+    `Ne répète pas une réponse que tu as déjà donnée dans la conversation : si le visiteur revient sur le même sujet, ` +
+    `essaie un autre angle ou propose le contact avec une personne.` +
     `\n\nSi le visiteur demande un prix précis, un devis, un rendez-vous, ou toute demande qui mérite un suivi humain direct, ` +
+    `ou si tu n'as pas pu répondre à sa question, ` +
     `termine ta réponse par le jeton ${CONTACT_MARKER} seul sur sa propre ligne, sans rien ajouter apres. ` +
     `Ne l'utilise pas pour des questions simples auxquelles tu peux deja repondre completement.`;
 
@@ -115,8 +131,10 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
       userMessage,
     });
 
-    const suggestContact = rawReply.includes(CONTACT_MARKER);
     const reply = rawReply.split(CONTACT_MARKER).join('').trim();
+    // Filet de sécurité : si l'IA avoue ne pas savoir sans proposer de suite, le bouton de contact
+    // apparaît quand même, pour que le visiteur ne reste jamais bloqué.
+    const suggestContact = rawReply.includes(CONTACT_MARKER) || DEAD_END_PATTERN.test(reply);
 
     await pool.query("INSERT INTO messages (conversation_id, role, content) VALUES ($1, 'user', $2)", [
       conversationId,
