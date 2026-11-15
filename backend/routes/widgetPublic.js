@@ -13,7 +13,7 @@ const leadLimiter = rateLimit({ windowMs: 60 * 1000, max: 5 });
 
 const CONTACT_MARKER = '[[CONTACT]]';
 const DEAD_END_PATTERN =
-  /je ne (sais|connais) pas|je n['’]ai pas (cette |l['’]|d['’])information|pas en mesure de|je ne peux pas (vous |t['’])?(aider|répondre|fournir)|i don['’]t know|i['’]m not able to|i am not able to|i can['’]t (help|answer)|i (do not|don['’]t) have (that|this) information/i;
+  /je ne (sais|connais) pas|je n['’]ai pas (cette |l['’]|d['’]|accès)|pas en mesure de|je ne peux pas (vous |t['’])?(aider|répondre|fournir)|i don['’]t know|i['’]m not able to|i am not able to|i can['’]t (help|answer)|i (do not|don['’]t) have (that|this) information/i;
 
 router.get('/widget/frame/:clientKey', async (req, res) => {
   const { rows } = await pool.query(
@@ -116,11 +116,13 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
     `Dis-le en une courte phrase, puis donne toujours au moins une suite au visiteur : ` +
     `une question pour qu'il précise sa demande, ce que tu peux lui dire de proche sur le sujet, ` +
     `une page du site qui pourrait l'aider, ou l'offre de laisser ses coordonnées pour qu'une personne de l'entreprise lui réponde. ` +
+    `Une formule générale comme « n'hésitez pas à me poser d'autres questions » ne compte pas comme une suite : ` +
+    `propose quelque chose de précis, par exemple deux ou trois sujets proches sur lesquels tu peux vraiment l'aider. ` +
     `Si la question n'a rien à voir avec l'entreprise, dis-le gentiment et ramène la conversation vers ce que tu peux faire pour lui. ` +
     `Ne répète pas une réponse que tu as déjà donnée dans la conversation : si le visiteur revient sur le même sujet, ` +
     `essaie un autre angle ou propose le contact avec une personne.` +
     `\n\nSi le visiteur demande un prix précis, un devis, un rendez-vous, ou toute demande qui mérite un suivi humain direct, ` +
-    `ou si tu n'as pas pu répondre à sa question, ` +
+    `ou si tu n'as pas pu répondre à une question qui concerne l'entreprise, ` +
     `termine ta réponse par le jeton ${CONTACT_MARKER} seul sur sa propre ligne, sans rien ajouter apres. ` +
     `Ne l'utilise pas pour des questions simples auxquelles tu peux deja repondre completement.`;
 
