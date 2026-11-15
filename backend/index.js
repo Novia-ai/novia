@@ -59,7 +59,8 @@ app.use('/uploads', (req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
+// extensions : les pages statiques (ex. /jeux/...) s'ouvrent sans ".html".
+app.use(express.static(path.join(__dirname, '..', 'public'), { extensions: ['html'] }));
 
 // Le webhook Stripe a besoin du corps brut de la requete pour verifier la
 // signature -> il est monte avant les parsers json/urlencoded globaux.

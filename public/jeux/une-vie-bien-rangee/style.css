@@ -1,0 +1,108 @@
+:root {
+  --bois: #d9c9b4;
+  --papier: #fbf8f3;
+  --encre: #26241f;
+  --douce: #6b645a;
+  --trait: #e3d9cb;
+  --accent: #26241f;
+  --sur-accent: #fbf8f3;
+  --experience: #6a9a5b;
+  --education: #4f78a8;
+  --bien-etre: #c9635f;
+  --relations: #8a6bb0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bois: #2a2621;
+    --papier: #1f1d1a;
+    --encre: #ece6dc;
+    --douce: #b5ac9f;
+    --trait: #3a362f;
+    --accent: #ece6dc;
+    --sur-accent: #1f1d1a;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--encre);
+  font: 17px/1.6 "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+
+.barre {
+  max-width: 1080px; margin: 0 auto; padding: 16px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.marque { display: flex; align-items: center; gap: 8px; font-weight: 700; text-decoration: none; }
+.marque img { width: 28px; height: 28px; }
+.langue { font-size: 0.95em; color: var(--douce); }
+
+.tete { background: var(--bois); }
+.tete-contenu {
+  max-width: 1080px; margin: 0 auto; padding: 24px 16px 56px;
+  display: grid; gap: 32px; align-items: center;
+}
+.tete h1 { font-size: clamp(2.2em, 6vw, 3.4em); line-height: 1.1; margin: 0 0 8px; letter-spacing: -0.01em; }
+.sous-titre { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85em; color: var(--douce); margin: 0 0 20px; }
+.accroche { font-size: 1.2em; max-width: 34em; margin: 0 0 28px; }
+.objets { border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
+.bouton {
+  display: inline-block; padding: 14px 26px; border-radius: 14px;
+  background: var(--accent); color: var(--sur-accent);
+  font-weight: 700; text-decoration: none;
+}
+.bouton[aria-disabled="true"] { cursor: default; }
+.note { color: var(--douce); font-size: 0.9em; margin-top: 10px; }
+
+section { max-width: 1080px; margin: 0 auto; padding: 64px 16px 0; }
+h2 { font-size: 1.7em; line-height: 1.2; margin: 0 0 12px; }
+.intro { max-width: 40em; color: var(--douce); margin: 0 0 32px; }
+
+.colonnes { display: grid; gap: 40px; align-items: center; }
+.ecran {
+  width: 100%; max-width: 260px; margin: 0 auto;
+  border-radius: 28px; border: 8px solid var(--encre);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+}
+ul.points { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+ul.points li { padding-left: 28px; position: relative; }
+ul.points li::before {
+  content: ""; position: absolute; left: 6px; top: 0.6em;
+  width: 9px; height: 9px; border-radius: 50%; background: var(--douce);
+}
+
+.jauges { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 0; padding: 0; list-style: none; }
+.jauges li {
+  padding: 4px 12px 4px 10px; border-radius: 999px; background: var(--papier);
+  border: 1px solid var(--trait); border-left: 4px solid; font-size: 0.9em; font-weight: 600;
+}
+
+.galerie {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(200px, 240px);
+  gap: 20px; overflow-x: auto; padding: 8px 4px 24px; scroll-snap-type: x mandatory;
+}
+.galerie figure { margin: 0; scroll-snap-align: start; }
+.galerie img { border-radius: 22px; border: 6px solid var(--encre); }
+.galerie figcaption { text-align: center; color: var(--douce); font-size: 0.9em; margin-top: 8px; }
+
+.encadre {
+  border: 1px solid var(--trait); border-radius: 20px; padding: 28px 24px;
+  background: color-mix(in srgb, var(--bois) 35%, var(--papier));
+}
+
+footer {
+  max-width: 1080px; margin: 72px auto 0; padding: 28px 16px 48px;
+  border-top: 1px solid var(--trait); color: var(--douce); font-size: 0.92em;
+  display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between;
+}
+footer nav { display: flex; flex-wrap: wrap; gap: 12px 20px; }
+
+@media (min-width: 800px) {
+  .tete-contenu { grid-template-columns: 1.1fr 1fr; padding-top: 40px; padding-bottom: 72px; }
+  .colonnes { grid-template-columns: 1fr 1fr; }
+  .colonnes.inverse > :first-child { order: 2; }
+}
