@@ -19,7 +19,7 @@
         <% if (promoSuccess) { %><p class="success"><%= t('billing.promo_success') %></p><% } %>
         <% if (promoError) { %><p class="error"><%= t('billing.promo_error_' + promoError) %></p><% } %>
         <% if (account && account.free_until && account.status === 'active' && !account.free_forever) { %>
-          <p><%= t('dashboard.free_until') %><strong><%= new Date(account.free_until).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA') %></strong></p>
+          <p><%= t('dashboard.free_until') %><strong><%= new Date(account.free_until).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA', { timeZone: 'America/Toronto' }) %></strong></p>
         <% } %>
         <form method="POST" action="/dashboard/billing/redeem" class="inline-form">
           <input type="text" name="code" required maxlength="30" placeholder="NOVIA-XXXXXX" autocomplete="off">
@@ -85,7 +85,7 @@
         <% } else { %>
           <ul>
             <% purchases.forEach(function(p) { %>
-              <li><%= new Date(p.created_at).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA') %> — <%= p.pack_name %> (+<%= p.tokens_granted %> tokens)</li>
+              <li><%= new Date(p.created_at).toLocaleDateString(lang === 'en' ? 'en-US' : 'fr-CA', { timeZone: 'America/Toronto' }) %> — <%= p.pack_name %> (+<%= p.tokens_granted %> tokens)</li>
             <% }); %>
           </ul>
         <% } %>

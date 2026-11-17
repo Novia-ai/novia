@@ -10,7 +10,7 @@
     <main class="content">
       <p><a href="/dashboard/conversations"><%= t('conversations.back_link') %></a></p>
       <h1><%= t('conversations.title') %></h1>
-      <p><%= new Date(conversation.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %></p>
+      <p><%= new Date(conversation.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA', { timeZone: 'America/Toronto' }) %></p>
 
       <div class="card">
         <div class="conversation-thread">

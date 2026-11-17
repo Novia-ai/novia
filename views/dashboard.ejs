@@ -20,11 +20,11 @@
           <% if (account.free_forever) { %>
             <p><%= t('dashboard.free_forever') %></p>
           <% } else if (account.free_until) { %>
-            <p><%= t('dashboard.free_until') %><%= new Date(account.free_until).toLocaleDateString(dateLocale) %></p>
+            <p><%= t('dashboard.free_until') %><%= new Date(account.free_until).toLocaleDateString(dateLocale, { timeZone: 'America/Toronto' }) %></p>
           <% } else { %>
             <p>
               <%= t('dashboard.renewal') %>
-              <%= account.current_period_end ? new Date(account.current_period_end).toLocaleDateString(dateLocale) : '-' %>
+              <%= account.current_period_end ? new Date(account.current_period_end).toLocaleDateString(dateLocale, { timeZone: 'America/Toronto' }) : '-' %>
               (<%= account.autopay ? t('dashboard.autopay_on') : t('dashboard.autopay_off') %>)
             </p>
           <% } %>

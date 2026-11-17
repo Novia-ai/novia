@@ -28,7 +28,7 @@
             <tbody>
               <% leads.forEach(function(lead) { %>
                 <tr>
-                  <td><%= new Date(lead.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %></td>
+                  <td><%= new Date(lead.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA', { timeZone: 'America/Toronto' }) %></td>
                   <td><%= lead.name %></td>
                   <td>
                     <% if (lead.email) { %><div><%= lead.email %></div><% } %>

@@ -27,7 +27,7 @@
             <tbody>
               <% conversations.forEach(function(conv) { %>
                 <tr>
-                  <td><%= new Date(conv.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA') %></td>
+                  <td><%= new Date(conv.created_at).toLocaleString(lang === 'en' ? 'en-US' : 'fr-CA', { timeZone: 'America/Toronto' }) %></td>
                   <td><%= conv.first_message || '-' %></td>
                   <td><%= conv.message_count %></td>
                   <td><a href="/dashboard/conversations/<%= conv.id %>"><%= t('conversations.view_link') %></a></td>
