@@ -12,6 +12,38 @@ const chatLimiter = rateLimit({ windowMs: 60 * 1000, max: 20 });
 const leadLimiter = rateLimit({ windowMs: 60 * 1000, max: 5 });
 
 const CONTACT_MARKER = '[[CONTACT]]';
+// La langue du visiteur, devinée sur ses mots les plus courants : sans consigne explicite, le modèle
+// suit la langue de ses instructions (en français) et répond en français à une question en anglais.
+const MOTS_EN = new Set(('the you your what how who where when why is are do does can could would will i me my it this that ' +
+  'of to and for with in on have has please hello hi thanks thank much many tell about english answer only').split(' '));
+const MOTS_FR = new Set(('le la les un une des vous votre vos quoi comment qui où quand pourquoi est sont je me mon ma ' +
+  'ce cette de du et pour avec dans sur avez peux pouvez bonjour merci combien quel quelle quels dites français').split(' '));
+
+function langueDe(texte) {
+  const mots = (texte || '').toLowerCase().match(/[a-zàâçéèêëîïôûùüÿœ']+/g) || [];
+  let en = 0;
+  let fr = /[àâçéèêëîïôûùüÿœ]/.test(texte || '') ? 1 : 0;
+  for (const mot of mots) {
+    if (MOTS_EN.has(mot)) en += 1;
+    if (MOTS_FR.has(mot)) fr += 1;
+  }
+  if (en > fr) return 'en';
+  if (fr > en) return 'fr';
+  return null;
+}
+
+// Le dernier message qui tranche (« 1 » ou « ok » ne disent rien) ; une demande explicite gagne.
+function langueDuVisiteur(history, userMessage) {
+  const messages = [...history.filter((m) => m.role === 'user').map((m) => m.content), userMessage];
+  for (let i = messages.length - 1; i >= 0; i -= 1) {
+    if (/\b(in|en) (english|anglais)\b/i.test(messages[i])) return 'en';
+    if (/\b(en|in) (français|french)\b/i.test(messages[i])) return 'fr';
+    const langue = langueDe(messages[i]);
+    if (langue) return langue;
+  }
+  return null;
+}
+
 const DEAD_END_PATTERN =
   /je ne (sais|connais) pas|je n['’]ai pas (cette |l['’]|d['’]|accès)|pas en mesure de|je ne peux pas (vous |t['’])?(aider|répondre|fournir)|i don['’]t know|i['’]m not able to|i am not able to|i can['’]t (help|answer)|i (do not|don['’]t) have (that|this) information/i;
 
@@ -138,6 +170,12 @@ router.post('/api/widget/:clientKey/message', chatLimiter, async (req, res) => {
     `\n\nLangue : réponds entièrement dans la langue du dernier message du visiteur, ou dans celle qu'il t'a demandée. ` +
     `Ne mélange jamais deux langues dans une même réponse, même si les informations de l'entreprise sont dans une autre langue : ` +
     `traduis-les.`;
+  const langue = langueDuVisiteur(historyRows, userMessage);
+  if (langue === 'en') {
+    systemPrompt += '\n\nThe visitor writes in English: write your whole answer in English, translating the business information as needed.';
+  } else if (langue === 'fr') {
+    systemPrompt += '\n\nLe visiteur écrit en français : écris toute ta réponse en français.';
+  }
 
   try {
     const { reply: rawReply, tokensUsed } = await openaiService.getChatReply({
