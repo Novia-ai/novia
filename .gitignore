@@ -6,3 +6,6 @@ public/uploads/*
 !public/uploads/logos
 public/uploads/logos/*
 !public/uploads/logos/.gitkeep
+
+# Exports web privés (ex. Une vie bien rangée), déposés directement sur le CT
+jeux-prives/

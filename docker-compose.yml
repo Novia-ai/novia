@@ -26,6 +26,7 @@ services:
       - DATABASE_URL=postgresql://novia:novia@postgres:5432/novia
     volumes:
       - ./public/uploads:/app/public/uploads
+      - ./jeux-prives:/app/jeux-prives:ro
 
 volumes:
   novia_pgdata:

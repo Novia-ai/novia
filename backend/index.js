@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const crypto = require('crypto');
 const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
@@ -23,6 +24,36 @@ const { router: adminRoutes } = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
+
+function memeTexte(a, b) {
+  const x = Buffer.from(a);
+  const y = Buffer.from(b);
+  return x.length === y.length && crypto.timingSafeEqual(x, y);
+}
+
+// Mot de passe partage de la version web de test d'« Une vie bien rangee »
+// (JEU_TEST_UTILISATEUR / JEU_TEST_MOT_DE_PASSE dans le .env). Sans mot de
+// passe configure, la page reste fermee.
+function jeuProtege(req, res, next) {
+  // private : Cloudflare ne doit jamais garder en cache une copie du jeu
+  // qu'il servirait ensuite sans mot de passe.
+  res.set({ 'Cache-Control': 'private, no-cache', 'X-Robots-Tag': 'noindex, nofollow' });
+  const utilisateur = process.env.JEU_TEST_UTILISATEUR;
+  const motDePasse = process.env.JEU_TEST_MOT_DE_PASSE;
+  if (!utilisateur || !motDePasse) return res.status(404).send('Page introuvable');
+  const [type, valeur] = (req.get('authorization') || '').split(' ');
+  if (type === 'Basic' && valeur) {
+    const texte = Buffer.from(valeur, 'base64').toString();
+    const i = texte.indexOf(':');
+    if (i > 0 && memeTexte(texte.slice(0, i), utilisateur) && memeTexte(texte.slice(i + 1), motDePasse)) {
+      // Les fichiers du jeu sont relatifs : il faut la barre finale.
+      if (req.originalUrl === '/uneviebienrangee') return res.redirect(301, '/uneviebienrangee/');
+      return next();
+    }
+  }
+  res.set('WWW-Authenticate', 'Basic realm="Une vie bien rangee (test)", charset="UTF-8"');
+  res.status(401).send('Mot de passe requis');
+}
 
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -58,6 +89,10 @@ app.use('/uploads', (req, res, next) => {
   res.set('Content-Security-Policy', "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox");
   next();
 });
+
+// Les fichiers de l'export Godot sont deposes sur le CT dans jeux-prives/,
+// hors du depot (trop lourds pour git).
+app.use('/uneviebienrangee', jeuProtege, express.static(path.join(__dirname, '..', 'jeux-prives', 'uneviebienrangee')));
 
 // extensions : les pages statiques (ex. /jeux/...) s'ouvrent sans ".html".
 app.use(express.static(path.join(__dirname, '..', 'public'), { extensions: ['html'] }));
