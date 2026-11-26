@@ -16,8 +16,8 @@
     'box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;z-index:2147483000;overflow:hidden;' +
     'background:#3b4256;border:none;padding:0;animation:novia-shake 4s ease-in-out infinite;}' +
     '.novia-bubble.novia-bubble-opened{animation:none;}' +
-    '.novia-bubble.novia-halo{box-shadow:0 0 0 4px #ffd166,0 4px 14px rgba(0,0,0,.25);' +
-    'animation:novia-shake 4s ease-in-out infinite,novia-halo 2s ease-out infinite;}' +
+    '.novia-bubble.novia-halo{box-shadow:0 0 0 2px rgba(255,209,102,.35),0 4px 14px rgba(0,0,0,.25);' +
+    'animation:novia-shake 4s ease-in-out infinite,novia-halo 3s ease-out infinite;}' +
     '.novia-bubble.novia-halo.novia-bubble-opened{animation:none;}' +
     '.novia-bubble img{width:100%;height:100%;object-fit:cover;display:block;}' +
     '.novia-frame{position:fixed;bottom:90px;right:20px;width:360px;height:520px;max-width:calc(100vw - 40px);' +
@@ -27,8 +27,8 @@
     '@keyframes novia-shake{0%,100%{transform:rotate(0deg) scale(1);}2%{transform:rotate(-10deg) scale(1.05);}' +
     '4%{transform:rotate(10deg) scale(1.05);}6%{transform:rotate(-8deg) scale(1.05);}' +
     '8%{transform:rotate(8deg) scale(1.05);}10%{transform:rotate(0deg) scale(1);}}' +
-    '@keyframes novia-halo{0%{box-shadow:0 0 0 4px #ffd166,0 0 0 4px rgba(255,209,102,.6),0 4px 14px rgba(0,0,0,.25);}' +
-    '100%{box-shadow:0 0 0 4px #ffd166,0 0 0 18px rgba(255,209,102,0),0 4px 14px rgba(0,0,0,.25);}}';
+    '@keyframes novia-halo{0%{box-shadow:0 0 0 2px rgba(255,209,102,.35),0 0 4px 2px rgba(255,209,102,.4),0 4px 14px rgba(0,0,0,.25);}' +
+    '100%{box-shadow:0 0 0 2px rgba(255,209,102,.35),0 0 24px 32px rgba(255,209,102,0),0 4px 14px rgba(0,0,0,.25);}}';
   document.head.appendChild(style);
 
   var bubble = document.createElement('button');
