@@ -1075,12 +1075,32 @@ body.home {
   border-color: #ffd166;
 }
 
+/* Pied de page collé au bas de l'écran quand la page est courte */
+body.home,
+body.legal {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.home > header,
+body.home > main,
+body.home > section,
+body.home > footer,
+body.legal > header,
+body.legal > main,
+body.legal > footer {
+  width: 100%;
+}
+
 .home-footer {
+  margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   padding: 18px 26px;
+  padding-right: 104px; /* la bulle du capybara (en bas à droite) ne cache pas les liens */
   background: #181c25;
   color: #8b93a6;
   font-size: 0.85rem;
